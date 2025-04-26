@@ -10,36 +10,36 @@ export function Footer() {
           <div className="mb-8 md:mb-0">
             <div className="font-bold text-2xl mb-4">SuperDuperAI</div>
             <p className="text-muted-foreground max-w-md">
-              Платформа для генерации видео с использованием искусственного интеллекта. 
-              Превращайте идеи в кинематографичные ролики.
+              Video generation platform powered by artificial intelligence. 
+              Turn your ideas into cinematic videos.
             </p>
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
             <div>
-              <h3 className="font-semibold mb-4">Продукт</h3>
+              <h3 className="font-semibold mb-4">Product</h3>
               <ul className="space-y-2">
-                <li><Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">Функции</Link></li>
-                <li><Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">Цены</Link></li>
+                <li><Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">Features</Link></li>
+                <li><Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">Pricing</Link></li>
                 <li><Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">FAQ</Link></li>
               </ul>
             </div>
             
             <div>
-              <h3 className="font-semibold mb-4">Ресурсы</h3>
+              <h3 className="font-semibold mb-4">Resources</h3>
               <ul className="space-y-2">
-                <li><Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">Блог</Link></li>
-                <li><Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">Документация</Link></li>
-                <li><Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">Сообщество</Link></li>
+                <li><Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">Blog</Link></li>
+                <li><Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">Documentation</Link></li>
+                <li><Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">Community</Link></li>
               </ul>
             </div>
             
             <div>
-              <h3 className="font-semibold mb-4">Компания</h3>
+              <h3 className="font-semibold mb-4">Company</h3>
               <ul className="space-y-2">
-                <li><Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">О нас</Link></li>
-                <li><Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">Карьера</Link></li>
-                <li><Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">Контакты</Link></li>
+                <li><Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">About Us</Link></li>
+                <li><Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">Careers</Link></li>
+                <li><Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">Contact</Link></li>
               </ul>
             </div>
           </div>
@@ -47,11 +47,11 @@ export function Footer() {
         
         <div className="border-t border-border mt-12 pt-8 flex flex-col md:flex-row justify-between gap-4">
           <div className="text-sm text-muted-foreground">
-            &copy; {currentYear} SuperDuperAI. Все права защищены.
+            &copy; {currentYear} SuperDuperAI. All rights reserved.
           </div>
           <div className="flex gap-8">
-            <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Условия использования</Link>
-            <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Конфиденциальность</Link>
+            <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Terms of Service</Link>
+            <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Privacy Policy</Link>
           </div>
         </div>
       </div>

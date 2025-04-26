@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { UserCircle, Camera, Cpu, Zap, DollarSign, FileVideo } from "lucide-react";
 
+// Animation for container
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: { 
@@ -13,6 +14,7 @@ const containerVariants = {
   }
 };
 
+// Animation for individual items
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { 
@@ -27,44 +29,44 @@ export function Features() {
     {
       icon: <UserCircle className="h-8 w-8" />,
       title: "Custom Characters with AI Memory",
-      description: "Твоя AI-актерская база с помощью технологии LoRA. Создавайте и сохраняйте уникальных персонажей для ваших видео."
+      description: "Your AI actor database using LoRA technology. Create and save unique characters for your videos."
     },
     {
       icon: <Camera className="h-8 w-8" />,
       title: "Cinematic Camera Controls",
-      description: "Панорамы, зумы, буллет-тайм — без физической камеры. Добавляйте профессиональные движения камеры одним кликом."
+      description: "Pans, zooms, bullet-time — without physical cameras. Add professional camera movements with one click."
     },
     {
       icon: <Cpu className="h-8 w-8" />,
       title: "Multi-Agent AI Workflow",
-      description: "Модель, где каждый агент делает своё дело. Специализированные AI для сценария, съемки, монтажа и звука."
+      description: "A model where each agent does its job. Specialized AI for scripting, filming, editing, and sound."
     },
     {
       icon: <Zap className="h-8 w-8" />,
       title: "Fast & Efficient",
-      description: "Идея → видео за минуты, не часы или дни. Ускорьте рабочий процесс и создавайте больше контента."
+      description: "Idea → video in minutes, not hours or days. Speed up your workflow and create more content."
     },
     {
       icon: <DollarSign className="h-8 w-8" />,
       title: "Cost Saving",
-      description: "Кинематограф за копейки. Получите профессиональное видео без затрат на съемочную команду и оборудование."
+      description: "Cinematography on a budget. Get professional video without spending on crew and equipment."
     },
     {
       icon: <FileVideo className="h-8 w-8" />,
       title: "Easy Editing & Integration",
-      description: "Сториборд, drag-drop, экспорт в TikTok / YouTube. Интуитивный интерфейс для быстрой финализации вашего видео."
+      description: "Storyboard, drag-drop, export to TikTok / YouTube. Intuitive interface for quick finalization of your video."
     },
   ];
 
   return (
-    <section className="py-24 bg-muted/30">
+    <section className="py-24 bg-muted/30 gradient-section">
       <div className="container">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tighter mb-4">
-            What Makes SuperDuperAI Super
+            What Makes SuperDuperAI <span className="neon-text">Super</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Передовые возможности и технологии для создания впечатляющих видео
+            Advanced features and technologies for creating stunning videos
           </p>
         </div>
 
@@ -78,10 +80,10 @@ export function Features() {
           {features.map((feature, index) => (
             <motion.div 
               key={index}
-              className="flex flex-col bg-background p-6 rounded-lg shadow-sm"
+              className="flex flex-col card-enhanced p-6 hover:translate-y-[-5px]"
               variants={itemVariants}
             >
-              <div className="p-3 rounded-full bg-primary/10 text-primary w-fit mb-4">
+              <div className="p-3 rounded-full bg-accent/10 text-accent w-fit mb-4 glassmorphism">
                 {feature.icon}
               </div>
               <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>

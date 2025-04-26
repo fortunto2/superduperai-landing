@@ -36,33 +36,35 @@
   }
 
   .dark {
-    --background: 0 0% 4%;
+    --radius: 0.75rem;
+    
+    --background: 220 13% 5%;
     --foreground: 0 0% 93%;
     
-    --card: 0 0% 9%;
+    --card: 220 13% 9%;
     --card-foreground: 0 0% 93%;
     
-    --popover: 0 0% 9%;
+    --popover: 220 13% 9%;
     --popover-foreground: 0 0% 93%;
     
-    --primary: 0 0% 93%;
+    --primary: 85 100% 60%;
     --primary-foreground: 0 0% 9%;
     
-    --secondary: 0 0% 15%;
+    --secondary: 220 13% 15%;
     --secondary-foreground: 0 0% 93%;
     
-    --muted: 0 0% 15%;
+    --muted: 220 13% 15%;
     --muted-foreground: 0 0% 63%;
     
-    --accent: 0 0% 15%;
-    --accent-foreground: 0 0% 93%;
+    --accent: 85 100% 60%;
+    --accent-foreground: 0 0% 9%;
     
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 93%;
     
-    --border: 0 0% 100% / 0.1;
+    --border: 85 100% 60% / 0.15;
     --input: 0 0% 100% / 0.15;
-    --ring: 0 0% 45%;
+    --ring: 85 100% 60%;
   }
 
   * {
@@ -77,5 +79,70 @@
 @layer components {
   .container {
     @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Улучшенные кнопки */
+  .btn-accent {
+    @apply bg-accent text-accent-foreground hover:bg-accent/90 transition-all duration-200 shadow-[0_0_15px_rgba(150,255,0,0.3)] hover:shadow-[0_0_25px_rgba(150,255,0,0.4)];
+  }
+
+  /* Улучшенные карточки */
+  .card-enhanced {
+    @apply bg-card rounded-xl border border-accent/20 shadow-md hover:shadow-xl transition-all duration-300 backdrop-blur-sm overflow-hidden hover:border-accent/30;
+  }
+
+  /* Стеклянный эффект для элементов */
+  .glassmorphism {
+    @apply bg-background/60 backdrop-blur-md border border-accent/20 shadow-lg;
+  }
+
+  /* Улучшенные поля ввода */
+  .input-enhanced {
+    @apply border-accent/30 focus:border-accent focus:ring-accent/20 focus:ring-2 transition-all duration-200;
+  }
+
+  /* Неоновый текст для выделения */
+  .neon-text {
+    @apply text-accent font-semibold relative;
+    text-shadow: 0 0 5px rgba(150, 255, 0, 0.5), 0 0 15px rgba(150, 255, 0, 0.3);
+  }
+
+  /* Градиентный фон для секций */
+  .gradient-section {
+    @apply relative overflow-hidden isolate;
+    background: linear-gradient(180deg, hsl(220, 13%, 5%), hsl(220, 13%, 4%), hsl(220, 13%, 3%));
+  }
+
+  /* Градиентная граница */
+  .gradient-border {
+    @apply relative before:absolute before:inset-0 before:p-[1px] before:rounded-lg before:-z-10 before:bg-gradient-to-r before:from-accent/40 before:via-accent/20 before:to-accent/40;
+  }
+
+  /* Анимированный фон */
+  .animated-bg {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .animated-bg::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(150, 255, 0, 0.03) 0%, transparent 50%);
+    transform-origin: center;
+    animation: rotate 20s linear infinite;
+    z-index: -1;
+  }
+  
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 }

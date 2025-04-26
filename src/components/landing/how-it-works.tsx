@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { LightbulbIcon, Bot, SlidersHorizontal } from "lucide-react";
 
-// Анимация для контейнера
+// Animation for container
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: { 
@@ -14,7 +14,7 @@ const containerVariants = {
   }
 };
 
-// Анимация для отдельных шагов
+// Animation for individual steps
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { 
@@ -29,26 +29,26 @@ export function HowItWorks() {
     {
       icon: <LightbulbIcon className="h-10 w-10" />,
       title: "Define Your Vision",
-      description: "Опиши идею, вайб, сюжет — достаточно нескольких фраз",
+      description: "Describe your idea, vibe, or plot — just a few phrases are enough",
     },
     {
       icon: <Bot className="h-10 w-10" />,
       title: "AI Generates the Scene",
-      description: "Мультиагентная система создает сценарий, кадр, персонажей",
+      description: "Multi-agent system creates script, frames, and characters",
     },
     {
       icon: <SlidersHorizontal className="h-10 w-10" />,
       title: "Refine and Finalize",
-      description: "Настрой стиль, экспортируй видео и делись с миром",
+      description: "Adjust the style, export your video, and share it with the world",
     },
   ];
 
   return (
-    <section className="py-24 bg-muted/30">
+    <section className="py-24 bg-muted/30 gradient-section">
       <div className="container">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tighter mb-4">
-            How It Works
+            How It <span className="neon-text">Works</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Direct your video in 3 easy steps – AI agents handle the rest.
@@ -65,15 +65,15 @@ export function HowItWorks() {
           {steps.map((step, index) => (
             <motion.div 
               key={index}
-              className="relative bg-background rounded-lg p-8 shadow-md flex flex-col items-center text-center"
+              className="relative card-enhanced p-8 flex flex-col items-center text-center hover:translate-y-[-5px]"
               variants={itemVariants}
             >
-              <div className="bg-primary/10 p-4 rounded-full mb-6 text-primary">
+              <div className="bg-accent/10 p-4 rounded-full mb-6 text-accent glassmorphism">
                 {step.icon}
               </div>
               <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
               <p className="text-muted-foreground">{step.description}</p>
-              <div className="absolute top-8 right-8 font-bold text-5xl text-primary/10">
+              <div className="absolute top-8 right-8 font-bold text-5xl text-accent/10 neon-text opacity-20">
                 {index + 1}
               </div>
             </motion.div>

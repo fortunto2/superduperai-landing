@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Play, Store, Music, Users } from "lucide-react";
 
-// Анимация для контейнера
+// Animation for container
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: { 
@@ -15,7 +15,7 @@ const containerVariants = {
   }
 };
 
-// Анимация для отдельных карточек
+// Animation for individual cards
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { 
@@ -30,34 +30,34 @@ export function UseCases() {
     {
       icon: <Play className="h-8 w-8" />,
       title: "Creators & Influencers",
-      description: "Делай больше контента, расти, зарабатывай. Создавай уникальные видео быстрее и чаще.",
+      description: "Create more content, grow, and earn. Make unique videos faster and more frequently.",
     },
     {
       icon: <Store className="h-8 w-8" />,
       title: "Small Businesses",
-      description: "Видео-реклама без агентств. Презентации, промо и обучающие видео без лишних затрат.",
+      description: "Video advertising without agencies. Presentations, promos, and training videos without extra costs.",
     },
     {
       icon: <Music className="h-8 w-8" />,
       title: "Musicians & Artists",
-      description: "Клипы и визуал по вайбу трека. Преврати свою музыку в визуальное искусство.",
+      description: "Music videos and visuals that match your track's vibe. Turn your music into visual art.",
     },
     {
       icon: <Users className="h-8 w-8" />,
       title: "Agencies & Teams",
-      description: "Быстрый прототипинг, совместная работа. Ускорь процесс создания видео для клиентов.",
+      description: "Rapid prototyping, collaborative work. Speed up the video creation process for clients.",
     },
   ];
 
   return (
-    <section className="py-24">
+    <section className="py-24 animated-bg">
       <div className="container">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tighter mb-4">
-            Made for Creators, Businesses, Musicians & Teams
+            Made for <span className="neon-text">Creators</span>, Businesses, Musicians & Teams
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Найдите идеальный вариант использования SuperDuperAI для ваших задач.
+            Find the perfect use case for SuperDuperAI to meet your needs.
           </p>
         </div>
 
@@ -70,10 +70,10 @@ export function UseCases() {
         >
           {cases.map((item, index) => (
             <motion.div key={index} variants={cardVariants}>
-              <Card className="h-full transition-all hover:shadow-lg">
+              <Card className="h-full transition-all hover:shadow-lg card-enhanced hover:translate-y-[-5px]">
                 <CardHeader>
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="p-2 rounded-md bg-primary/10 text-primary">
+                    <div className="p-2 rounded-md bg-accent/10 text-accent glassmorphism">
                       {item.icon}
                     </div>
                   </div>
