@@ -1,10 +1,13 @@
 import { Navbar } from "@/components/landing/navbar";
 import { Hero } from "@/components/landing/hero";
+import { Features } from "@/components/landing/features";
 import { HowItWorks } from "@/components/landing/how-it-works";
 import { UseCases } from "@/components/landing/use-cases";
-import { Features } from "@/components/landing/features";
 import { CTA } from "@/components/landing/cta";
 import { Footer } from "@/components/landing/footer";
+import { ApprovedBy } from "@/components/landing/approved-by";
+import { FAQ } from "@/components/landing/faq-simple";
+import { VideoShowcase } from "@/components/landing/video-showcase";
 
 export default function Home() {
   return (
@@ -12,9 +15,12 @@ export default function Home() {
       <Navbar />
       <main className="flex-1">
         <Hero />
+        <Features />
         <HowItWorks />
         <UseCases />
-        <Features />
+        <ApprovedBy />
+        <VideoShowcase />
+        <FAQ />
         <CTA />
       </main>
       <Footer />
