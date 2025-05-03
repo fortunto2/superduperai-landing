@@ -24,23 +24,37 @@ const itemVariants = {
   }
 };
 
-export function HowItWorks() {
-  const steps = [
+interface Step {
+  title: string;
+  description: string;
+}
+
+interface HowItWorksProps {
+  steps?: Step[];
+}
+
+export function HowItWorks({ steps: propSteps }: HowItWorksProps) {
+  // Default steps if none are provided
+  const steps = propSteps || [
     {
-      icon: <LightbulbIcon className="h-10 w-10" />,
       title: "Define Your Vision",
       description: "Describe your idea, vibe, or plot — just a few phrases are enough",
     },
     {
-      icon: <Bot className="h-10 w-10" />,
       title: "AI Generates the Scene",
       description: "Multi-agent system creates script, frames, and characters",
     },
     {
-      icon: <SlidersHorizontal className="h-10 w-10" />,
       title: "Refine and Finalize",
       description: "Adjust the style, export your video, and share it with the world",
     },
+  ];
+
+  // Default icons to use for each step
+  const icons = [
+    <LightbulbIcon key="lightbulb" className="h-10 w-10" />,
+    <Bot key="bot" className="h-10 w-10" />,
+    <SlidersHorizontal key="sliders" className="h-10 w-10" />
   ];
 
   return (
@@ -69,7 +83,7 @@ export function HowItWorks() {
               variants={itemVariants}
             >
               <div className="bg-accent/10 p-4 rounded-full mb-6 text-accent glassmorphism">
-                {step.icon}
+                {icons[index % icons.length]}
               </div>
               <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
               <p className="text-muted-foreground">{step.description}</p>

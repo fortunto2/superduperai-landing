@@ -1,104 +1,39 @@
-import { Navbar } from "@/components/landing/navbar";
-import { Footer } from "@/components/landing/footer";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { Metadata } from "next";
+import { allPages } from ".contentlayer/generated";
+import { notFound } from "next/navigation";
+import { MDXContent } from "@/components/content/mdx-components";
+import { PageWrapper } from "@/components/content/page-wrapper";
 
-export const metadata: Metadata = {
-  title: "Terms and Conditions - SuperDuperAI",
-  description: "General Terms and Conditions of Use for SuperDuperAI video generation platform."
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const page = allPages.find((page) => page.slug === "terms");
+  
+  if (!page) {
+    return {
+      title: "Terms and Conditions - Not Found",
+      description: "The requested page was not found."
+    };
+  }
+  
+  return {
+    title: page.seo?.title || page.title,
+    description: page.seo?.description || page.description,
+    keywords: page.seo?.keywords || [],
+  };
+}
 
 export default function TermsPage() {
+  const page = allPages.find((page) => page.slug === "terms");
+  
+  if (!page) {
+    notFound();
+  }
+  
   return (
-    <div className="flex flex-col min-h-screen bg-background">
-      <Navbar />
-      <main className="flex-1 container py-12">
-        <Breadcrumbs
-          items={[
-            { label: "Terms", href: "/terms" }
-          ]}
-          className="mb-8"
-        />
-        
-        <h1 className="text-4xl font-bold mb-8">General Terms and Conditions of Use</h1>
-        <p className="text-sm text-muted-foreground mb-8">Effective Date: June 1, 2023</p>
-        
-        <div className="prose prose-invert max-w-4xl">
-          <h2 className="text-2xl font-semibold mt-8 mb-4">1. Identification of the Project</h2>
-          <p>
-            SuperDuperAI (together with our affiliates, "SuperDuperAI", "Company",, "we", "our" or "us") is a platform developed to generate media (images, videos, text, music) using neural networks, algorithms, and models, both publicly available and those further trained by us for various tasks ("SuperDuperAI", "We", "Us", or "Our"). Our main operations are conducted virtually, and we can be contacted via the following channels.
-          </p>
-          <p>
-            Contact Information: Email address: info@superduperai.co
-          </p>
-
-          <h2 className="text-2xl font-semibold mt-8 mb-4">2. Services Provided</h2>
-          <p>
-            We offer our users (the "Users") a solution that enables them to generate new content based on their input data (the "Services"). Users can access these Services directly via the app accessible at a.superduperai.co (the "App") or our API endpoint.
-          </p>
-
-          <h2 className="text-2xl font-semibold mt-8 mb-4">3. General Terms and Conditions</h2>
-          <p>
-            These general terms and conditions (the "General Terms and Conditions") define the terms and conditions of use of the Services and the obligations of the parties in this context. The use of the Services by the User implies acceptance of these General Terms and Conditions without restriction or reservation. They may be supplemented by special conditions which, in the event of contradiction, shall prevail over the General Terms and Conditions.
-          </p>
-
-          <h2 className="text-2xl font-semibold mt-8 mb-4">4. Conditions of Access to Services</h2>
-          <h3 className="text-xl font-semibold mt-6 mb-3">4.1 Legal Capacity</h3>
-          <p>
-            The Services provided by SuperDuperAI can be accessed by any person possessing full legal capacity to enter into and abide by these terms and conditions. Any person who does not have such full legal capacity (e.g. due to age or other legal restrictions) may only access and use the Services with the agreement of their legal representative.
-          </p>
-
-          <h3 className="text-xl font-semibold mt-6 mb-3">4.2 Users</h3>
-          <p>
-            The Services are intended for consumers, understood as any natural person who acts for purposes that do not fall within the scope of his professional activity.
-          </p>
-
-          <h3 className="text-xl font-semibold mt-6 mb-3">4.3 Registration and Access</h3>
-          <p>
-            You must be at least 13 years old to use the Services. If you are under 18 you must have your parent or legal guardian's permission to use the Services. If you use the Services on behalf of another person or entity, you must have the authority to accept the Terms on their behalf. You must provide accurate and complete information to register for an account. You may not make your access credentials or account available to others outside your organization, and you are responsible for all activities that occur using your credentials.
-          </p>
-
-          <h2 className="text-2xl font-semibold mt-8 mb-4">5. Access to Services</h2>
-          <p>
-            The User can access Services directly via the website accessible at the following address www.superduperai.co (the "Website").
-          </p>
-
-          <h2 className="text-2xl font-semibold mt-8 mb-4">6. Description of the Services</h2>
-          <h3 className="text-xl font-semibold mt-6 mb-3">6.1 The Services</h3>
-          <p>
-            Before any online subscription, the User acknowledges that he/she can take note of the characteristics of the Services and their restrictions, especially technical ones on the Website. The User acknowledges that the use of the Services requires a connection to the Internet and that the quality of the Services depends on this connection, for which the Company is not responsible. The Company reserves the right to propose any other Service.
-          </p>
-
-          <h3 className="text-xl font-semibold mt-6 mb-3">6.2 Additional services</h3>
-          <h4 className="text-lg font-semibold mt-4 mb-2">6.2.1 Maintenance</h4>
-          <p>
-            For the duration of the Services, the Users benefit from maintenance, in particular corrective and ongoing maintenance. Within this framework, access to the Website may be limited or suspended.
-          </p>
-
-          <h4 className="text-lg font-semibold mt-4 mb-2">6.2.2 Hosting of the Website</h4>
-          <p>
-            The Company provides, under the terms of an obligation of means, the hosting of the Website, as well as of the data produced and/or entered by/on the Website, on its servers or via a professional hosting provider, and on servers located within the European Union.
-          </p>
-
-          <h2 className="text-2xl font-semibold mt-8 mb-4">7. Financial conditions</h2>
-          <p>
-            Services are provided free of charge within the limits of the terms and conditions described on the Website and in particular at the following address: https://superduperai.co/pricing. The Company's prices may be revised at any time under the conditions of the article "Modification of the General Terms and Conditions".
-          </p>
-
-          <h2 className="text-2xl font-semibold mt-8 mb-4">8. Property rights</h2>
-          <p>
-            The Website is the Company's property, as are the software, infrastructures, databases, and content of any kind (texts, images, visuals, music, logos, brands, etc.) provided by the Company. They are protected by all intellectual property rights or database producers' rights in force. The license granted by the Company to the User does not entail any transfer of ownership.
-          </p>
-          <p>
-            The User benefits from a non-exclusive and non-transferable SaaS license to use the Website for the term set out in the article "Term of the Services".
-          </p>
-
-          <p className="text-sm text-muted-foreground mt-12">
-            For full Terms and Conditions, please visit our official website at: <a href="https://superduperai.co/terms" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">https://superduperai.co/terms</a>
-          </p>
-        </div>
-      </main>
-      <Footer />
-    </div>
+    <PageWrapper 
+      title={page.title} 
+      breadcrumbItems={[{ label: "Terms", href: "/terms" }]}
+    >
+      <MDXContent code={page.body.code} />
+    </PageWrapper>
   );
 } 

@@ -1,7 +1,9 @@
 "use client"
 
 import { motion } from "framer-motion";
-import { UserCircle, Camera, Cpu, Zap, DollarSign, FileVideo } from "lucide-react";
+import { UserCircle } from "lucide-react";
+import { Icons } from "@/components/ui/icons";
+import { LucideIcon } from "lucide-react";
 
 // Animation for container
 const containerVariants = {
@@ -24,35 +26,46 @@ const itemVariants = {
   }
 };
 
-export function Features() {
-  const features = [
+interface FeatureItem {
+  title: string;
+  description: string;
+  icon?: string;
+}
+
+interface FeaturesProps {
+  items?: FeatureItem[];
+}
+
+export function Features({ items }: FeaturesProps) {
+  // Fallback default features if no items are provided
+  const features = items || [
     {
-      icon: <UserCircle className="h-8 w-8" />,
+      icon: "users",
       title: "Custom Characters with AI Memory",
       description: "Your AI actor database using LoRA technology. Create and save unique characters for your videos."
     },
     {
-      icon: <Camera className="h-8 w-8" />,
+      icon: "image",
       title: "Cinematic Camera Controls",
       description: "Pans, zooms, bullet-time — without physical cameras. Add professional camera movements with one click."
     },
     {
-      icon: <Cpu className="h-8 w-8" />,
+      icon: "settings",
       title: "Multi-Agent AI Workflow",
       description: "A model where each agent does its job. Specialized AI for scripting, filming, editing, and sound."
     },
     {
-      icon: <Zap className="h-8 w-8" />,
+      icon: "speed",
       title: "Fast & Efficient",
       description: "Idea → video in minutes, not hours or days. Speed up your workflow and create more content."
     },
     {
-      icon: <DollarSign className="h-8 w-8" />,
+      icon: "chart",
       title: "Cost Saving",
       description: "Cinematography on a budget. Get professional video without spending on crew and equipment."
     },
     {
-      icon: <FileVideo className="h-8 w-8" />,
+      icon: "edit",
       title: "Easy Editing & Integration",
       description: "Storyboard, drag-drop, export to TikTok / YouTube. Intuitive interface for quick finalization of your video."
     },
@@ -77,19 +90,23 @@ export function Features() {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
-          {features.map((feature, index) => (
-            <motion.div 
-              key={index}
-              className="flex flex-col card-enhanced p-6 hover:translate-y-[-5px]"
-              variants={itemVariants}
-            >
-              <div className="p-3 rounded-full bg-accent/10 text-accent w-fit mb-4 glassmorphism">
-                {feature.icon}
-              </div>
-              <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-              <p className="text-muted-foreground">{feature.description}</p>
-            </motion.div>
-          ))}
+          {features.map((feature, index) => {
+            const IconComponent = feature.icon ? (Icons as Record<string, LucideIcon>)[feature.icon] : UserCircle;
+            
+            return (
+              <motion.div 
+                key={index}
+                className="flex flex-col card-enhanced p-6 hover:translate-y-[-5px]"
+                variants={itemVariants}
+              >
+                <div className="p-3 rounded-full bg-accent/10 text-accent w-fit mb-4 glassmorphism">
+                  <IconComponent className="h-8 w-8" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                <p className="text-muted-foreground">{feature.description}</p>
+              </motion.div>
+            );
+          })}
         </motion.div>
       </div>
     </section>

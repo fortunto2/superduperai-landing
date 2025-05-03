@@ -1,6 +1,17 @@
 import Link from "next/link";
 import { APP_URLS } from "@/lib/constants";
-import { DiscordIcon, InstagramIcon, TelegramIcon, TiktokIcon, YoutubeIcon } from "../ui/icons";
+import { 
+  DiscordIcon,
+  InstagramIcon,
+  TelegramIcon,
+  TiktokIcon,
+  YoutubeIcon
+} from "../ui/icons";
+
+// Не импортируем contentlayer на стороне клиента, чтобы избежать ошибок
+// Вместо этого будем использовать серверный компонент для списка инструментов
+import { ToolList } from "@/components/content/tool-list";
+import { CaseList } from "@/components/content/case-list";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -8,7 +19,7 @@ export function Footer() {
   return (
     <footer className="w-full py-12 bg-card/50 border-t border-border/50">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
           <div className="space-y-4">
             <h3 className="text-xl font-bold">SuperDuperAI</h3>
             <div className="text-muted-foreground space-y-2">
@@ -59,6 +70,16 @@ export function Footer() {
                 </a>
               </li>
             </ul>
+          </div>
+          
+          <div className="space-y-4">
+            <h3 className="text-xl font-bold">AI Tools</h3>
+            <ToolList />
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="text-xl font-bold">Use Cases</h3>
+            <CaseList />
           </div>
           
           <div className="space-y-4">

@@ -5,7 +5,7 @@ alwaysApply: true
 ---
 # SuperDuperAI Project Structure
 
-This is a Next.js landing page for SuperDuperAI with a dark theme and localized English content.
+This is a Next.js landing page for SuperDuperAI with a dark theme, localized English content, and content-managed marketing subpages.
 
 ## Core Files
 - src/app/globals.css - Main CSS with theme variables and custom utility classes
@@ -13,7 +13,9 @@ This is a Next.js landing page for SuperDuperAI with a dark theme and localized 
 - src/app/page.tsx - Main page assembling all landing components
 
 ## Component Structure
-All landing page components are in src/components/landing/:
+All landing page components are in src/components/:
+
+### Landing Components (src/components/landing/)
 - hero.tsx - Hero section with main heading and CTA
 - features.tsx - Features grid with icon cards
 - how-it-works.tsx - 3-step process explanation
@@ -21,6 +23,25 @@ All landing page components are in src/components/landing/:
 - cta.tsx - Call-to-action section
 - navbar.tsx - Navigation with mobile menu
 - footer.tsx - Footer with links and copyright
+
+### Content Components (src/components/content/)
+- mdx-components.tsx - MDX renderer components
+- feature.tsx - Feature card for tool pages
+- feature-grid.tsx - Grid layout for features
+- steps.tsx - Numbered steps component
+- tool-list.tsx - List of tool landing pages
+- case-list.tsx - List of case studies
+
+## ContentLayer2 Integration
+- contentlayer.config.ts - ContentLayer2 configuration
+- src/content/ - MDX content directories:
+  - tool/ - Tool landing pages
+  - case/ - Case studies and success stories
+- .contentlayer/generated/ - Generated TypeScript from content
+
+## Dynamic Routes
+- src/app/tool/[slug]/page.tsx - Tool detail pages
+- src/app/case/[slug]/page.tsx - Case study pages
 
 ## Documentation
 Project documentation is in docs/:

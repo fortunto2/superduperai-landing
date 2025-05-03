@@ -1,0 +1,34 @@
+import { ReactNode } from "react";
+import { Navbar } from "@/components/landing/navbar";
+import { Footer } from "@/components/landing/footer";
+import { Breadcrumbs } from "@/components/ui/breadcrumbs";
+
+interface PageWrapperProps {
+  children: ReactNode;
+  title: string;
+  breadcrumbItems: {
+    label: string;
+    href: string;
+  }[];
+}
+
+export function PageWrapper({ children, title, breadcrumbItems }: PageWrapperProps) {
+  return (
+    <div className="flex flex-col min-h-screen bg-background">
+      <Navbar />
+      <main className="flex-1 container py-12">
+        <Breadcrumbs
+          items={breadcrumbItems}
+          className="mb-8"
+        />
+        
+        <h1 className="text-4xl font-bold mb-8">{title}</h1>
+        
+        <div className="prose prose-invert max-w-4xl">
+          {children}
+        </div>
+      </main>
+      <Footer />
+    </div>
+  );
+} 

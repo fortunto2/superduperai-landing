@@ -1,0 +1,54 @@
+---
+description: Next.js 15 Dynamic Routes Guide
+globs: 
+alwaysApply: false
+---
+# Next.js 15 Dynamic Routes Guide
+
+This document outlines the implementation of dynamic routes in Next.js 15 with ContentLayer2 integration.
+
+## Dynamic Params in Next.js 15
+
+In Next.js 15, dynamic route parameters are now Promises that must be awaited:
+
+```tsx
+interface PageProps {
+  params: Promise<{
+    slug: string;
+  }>;
+}
+
+// Must await params in an async function
+export default async function Page({ params }: PageProps) {
+  const { slug } = await params;
+  // Use slug for data fetching or rendering
+}
+```
+
+## ContentLayer2 Integration
+
+Our project integrates ContentLayer2 for MDX content management:
+
+- Content Types: `allTools` and `allCases` collections from `.contentlayer/generated`
+- Dynamic Route Pattern: `[slug]` folders in `src/app/tool/` and `src/app/case/`
+- Content Source: MDX files in `src/content/tool/` and `src/content/case/`
+
+## Route Implementation
+
+Each dynamic route implements these exports:
+
+1. **generateMetadata**: Generates SEO metadata based on content
+2. **generateStaticParams**: Pre-generates static paths for all content items
+3. **default (Page)**: Renders content with MDXContent component
+
+## Example Implementation
+
+See [src/app/tool/[slug]/page.tsx](mdc:src/app/tool/[slug]/page.tsx) for reference implementation.
+
+## Common Error Resolution
+
+If encountering `params.slug should be awaited before using its properties`, ensure:
+
+1. Interface defines params as a Promise
+2. Component function is async
+3. Params are awaited before access: `const { slug } = await params;`

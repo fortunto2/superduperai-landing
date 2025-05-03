@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Play, Store, Music, Users } from "lucide-react";
+import { Icons } from "@/components/ui/icons";
+import { LucideIcon } from "lucide-react";
 
 // Animation for container
 const containerVariants = {
@@ -25,29 +27,43 @@ const cardVariants = {
   }
 };
 
-export function UseCases() {
-  const cases = [
+interface UseCase {
+  title: string;
+  description: string;
+  icon?: string;
+}
+
+interface UseCasesProps {
+  items?: UseCase[];
+}
+
+export function UseCases({ items }: UseCasesProps) {
+  // Default cases if none are provided
+  const cases = items || [
     {
-      icon: <Play className="h-8 w-8" />,
+      icon: "star",
       title: "Creators & Influencers",
       description: "Create more content, grow, and earn. Make unique videos faster and more frequently.",
     },
     {
-      icon: <Store className="h-8 w-8" />,
+      icon: "chart",
       title: "Small Businesses",
       description: "Video advertising without agencies. Presentations, promos, and training videos without extra costs.",
     },
     {
-      icon: <Music className="h-8 w-8" />,
+      icon: "layers",
       title: "Musicians & Artists",
       description: "Music videos and visuals that match your track's vibe. Turn your music into visual art.",
     },
     {
-      icon: <Users className="h-8 w-8" />,
+      icon: "users",
       title: "Agencies & Teams",
       description: "Rapid prototyping, collaborative work. Speed up the video creation process for clients.",
     },
   ];
+
+  // Default icons for fallback
+  const defaultIcons = [Play, Store, Music, Users];
 
   return (
     <section className="py-24 animated-bg">
@@ -68,25 +84,35 @@ export function UseCases() {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
-          {cases.map((item, index) => (
-            <motion.div key={index} variants={cardVariants}>
-              <Card className="h-full transition-all hover:shadow-lg card-enhanced hover:translate-y-[-5px]">
-                <CardHeader>
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="p-2 rounded-md bg-accent/10 text-accent glassmorphism">
-                      {item.icon}
+          {cases.map((item, index) => {
+            // Use the icon from contentlayer if available, otherwise fall back to default icons
+            let IconComponent;
+            if (item.icon) {
+              IconComponent = (Icons as Record<string, LucideIcon>)[item.icon] || defaultIcons[index % defaultIcons.length];
+            } else {
+              IconComponent = defaultIcons[index % defaultIcons.length];
+            }
+            
+            return (
+              <motion.div key={index} variants={cardVariants}>
+                <Card className="h-full transition-all hover:shadow-lg card-enhanced hover:translate-y-[-5px]">
+                  <CardHeader>
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="p-2 rounded-md bg-accent/10 text-accent glassmorphism">
+                        <IconComponent className="h-8 w-8" />
+                      </div>
                     </div>
-                  </div>
-                  <CardTitle>{item.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-base">
-                    {item.description}
-                  </CardDescription>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
+                    <CardTitle>{item.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="text-base">
+                      {item.description}
+                    </CardDescription>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            );
+          })}
         </motion.div>
       </div>
     </section>

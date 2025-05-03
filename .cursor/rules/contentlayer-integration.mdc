@@ -1,0 +1,103 @@
+---
+description: ContentLayer2 Integration Guide
+globs: 
+alwaysApply: false
+---
+# ContentLayer2 Integration Guide
+
+This document outlines how ContentLayer2 is integrated into the SuperDuperAI landing page project.
+
+https://github.com/timlrx/contentlayer2
+
+## Content Structure
+
+ContentLayer2 manages two primary content types:
+
+1. **Tools** (`src/content/tool/`): Feature pages for SuperDuperAI tools
+2. **Case Studies** (`src/content/case/`): Customer success stories and use cases
+
+## Configuration
+
+ContentLayer2 is configured in [contentlayer.config.ts](mdc:contentlayer.config.ts) with document type definitions:
+
+```ts
+// Document type examples
+export const Tool = defineDocumentType(() => ({
+  name: 'Tool',
+  filePathPattern: 'tool/**/*.mdx',
+  contentType: 'mdx',
+  fields: {
+    title: { type: 'string', required: true },
+    description: { type: 'string', required: true },
+    icon: { type: 'string' },
+    featured: { type: 'boolean', default: false },
+    // Additional fields...
+  },
+  computedFields: {
+    slug: {
+      type: 'string',
+      resolve: (doc) => doc._raw.sourceFileName.replace(/\.mdx$/, ''),
+    },
+  },
+}));
+
+export const Case = defineDocumentType(() => ({
+  name: 'Case',
+  filePathPattern: 'case/**/*.mdx',
+  contentType: 'mdx',
+  fields: {
+    title: { type: 'string', required: true },
+    description: { type: 'string', required: true },
+    company: { type: 'string', required: true },
+    featured: { type: 'boolean', default: false },
+    // Additional fields...
+  },
+  computedFields: {
+    slug: {
+      type: 'string',
+      resolve: (doc) => doc._raw.sourceFileName.replace(/\.mdx$/, ''),
+    },
+  },
+}));
+```
+
+## Content Components
+
+For rendering MDX content, we use custom components in [src/components/content/](mdc:src/components/content):
+
+- `MDXContent.tsx`: Main wrapper for MDX content
+- `Feature.tsx`: Feature card component for tools
+- `Steps.tsx`: Numbered steps for processes
+- `FeatureGrid.tsx`: Grid layout for features
+
+## Lists and Navigation
+
+Content lists are implemented in:
+
+- `ToolList.tsx`: List of tool landing pages
+- `CaseList.tsx`: List of case studies
+
+These components use `.contentlayer/generated` imports:
+
+```tsx
+import { allTools, allCases } from '.contentlayer/generated';
+```
+
+## Dynamic Routes
+
+Dynamic routes in Next.js 15 access content via:
+
+```tsx
+// Example for tool page
+const { slug } = await params;
+const tool = allTools.find((tool) => tool.slug === slug);
+```
+
+## Content Authoring Guidelines
+
+When creating MDX content:
+
+1. Place files in appropriate directories (`src/content/tool/` or `src/content/case/`)
+2. Include required frontmatter fields (title, description, etc.)
+3. Use custom MDX components for consistent layout
+4. Set `featured: true` for items that should appear in homepage highlights

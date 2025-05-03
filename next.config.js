@@ -1,3 +1,5 @@
+const { withContentlayer } = require('next-contentlayer2');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   /* config options here */
@@ -33,4 +35,4 @@ const nextConfig = {
   productionBrowserSourceMaps: false
 };
 
-module.exports = nextConfig; 
+module.exports = withContentlayer(nextConfig); 
