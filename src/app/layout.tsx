@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -14,6 +14,11 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
 export const metadata: Metadata = {
   title: "SuperDuperAI — Turn Vibes into Videos",
   description: "AI filmmaking for creators, businesses, musicians, and teams. Turn your ideas into videos instantly.",
@@ -21,10 +26,7 @@ export const metadata: Metadata = {
   authors: [{ name: "SuperDuperAI Team" }],
   creator: "SuperDuperAI",
   publisher: "SuperDuperAI",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-  },
+  metadataBase: new URL("https://superduperai.co"),
   robots: {
     index: true,
     follow: true,

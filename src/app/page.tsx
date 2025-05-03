@@ -21,7 +21,12 @@ export default function Home() {
     "@type": "Organization",
     "name": "SuperDuperAI",
     "url": "https://superduperai.co",
-    "logo": "https://superduperai.co/images/logo.png",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://superduperai.co/images/logo.png",
+      "width": 180,
+      "height": 60
+    },
     "description": "AI filmmaking for creators, businesses, musicians, and teams. Turn your ideas into videos instantly.",
     "contactPoint": {
       "@type": "ContactPoint",
@@ -41,12 +46,43 @@ export default function Home() {
       "https://twitter.com/superduperai",
       "https://www.linkedin.com/company/superduperai",
       "https://www.instagram.com/superduperai"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "description": "AI video generation service",
+      "price": "29.99",
+      "priceCurrency": "USD"
+    }
+  };
+
+  // Добавляем разметку для FAQ
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is SuperDuperAI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "SuperDuperAI is an AI-powered platform that allows you to turn your ideas into professional videos instantly."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does SuperDuperAI work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Simply describe your video idea in plain language, and our AI will generate a professional video based on your input within minutes."
+        }
+      }
     ]
   };
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <JsonLd data={jsonLdData} />
+      <JsonLd data={faqJsonLd} />
       <Navbar />
       <main className="flex-1">
         <Hero />
