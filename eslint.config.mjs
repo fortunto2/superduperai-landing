@@ -38,7 +38,9 @@ export default [
       '**/*.config.js',
       'next-env.d.ts',
       '.open-next/**',
-      'out/**'
+      'out/**',
+      '.contentlayer/**',
+      '.wrangler/**'
     ]
   },
   {

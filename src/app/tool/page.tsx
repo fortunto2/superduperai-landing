@@ -1,4 +1,4 @@
-import { allTools } from '.contentlayer/generated';
+import { allTools, type Tool } from '.contentlayer/generated';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { Navbar } from '@/components/landing/navbar';
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default function ToolsPage() {
-  // @ts-expect-error - contentlayer2 типы будут сгенерированы после первой сборки
+  
   const sortedTools = allTools.sort((a, b) => {
     if (a.featured && !b.featured) return -1;
     if (!a.featured && b.featured) return 1;
@@ -24,7 +24,7 @@ export default function ToolsPage() {
         <div className="container mx-auto py-10">
           <h1 className="text-3xl font-bold mb-6">AI Tools</h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {sortedTools.map((tool: any) => (
+            {sortedTools.map((tool: Tool) => (
               <Link 
                 href={tool.url} 
                 key={tool.slug}

@@ -1,4 +1,4 @@
-import { allCases } from '.contentlayer/generated';
+import { allCases, type Case } from '.contentlayer/generated';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Metadata } from 'next';
@@ -11,7 +11,6 @@ export const metadata: Metadata = {
 };
 
 export default function CasesPage() {
-  // @ts-expect-error - contentlayer2 типы будут сгенерированы после первой сборки
   const sortedCases = allCases.sort((a, b) => {
     if (a.featured && !b.featured) return -1;
     if (!a.featured && b.featured) return 1;
@@ -25,7 +24,7 @@ export default function CasesPage() {
         <div className="container mx-auto py-10">
           <h1 className="text-3xl font-bold mb-6">Use Cases</h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {sortedCases.map((caseItem: any) => (
+            {sortedCases.map((caseItem: Case) => (
               <Link 
                 href={caseItem.url} 
                 key={caseItem.slug}
