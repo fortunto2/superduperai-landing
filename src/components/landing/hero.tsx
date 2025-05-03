@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { APP_URLS } from "@/lib/constants";
 
 export function Hero() {
   return (
@@ -42,11 +43,10 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
         >
-          <Button size="lg" className="text-lg px-8 btn-accent">
-            Start Creating for Free
-          </Button>
-          <Button variant="outline" size="lg" className="text-lg px-8 border-accent/50 hover:border-accent/80 hover:text-accent">
-            Watch a Demo
+          <Button size="lg" className="text-lg px-8 btn-accent" asChild>
+            <a href={APP_URLS.EDITOR_URL} target="_blank" rel="noopener noreferrer">
+              Start Creating for Free
+            </a>
           </Button>
         </motion.div>
         

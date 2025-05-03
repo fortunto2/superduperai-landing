@@ -86,9 +86,15 @@ SuperDuperAI вводит новую парадигму — **agent-director**. 
 
 ### 🎯 Final CTA
 - `Ready to create your next video sensation? Join SuperDuperAI.`
-- **Кнопка:** `Start Creating for Free`
+- **Кнопка:** `Start Creating for Free` - https://editor.superduperai.co
 - Маленький текст: `No credit card required`
 - Футер: About | Pricing | FAQ | Discord | Socials
+
+https://superduperai.co/about
+https://superduperai.co/pricing
+https://superduperai.co/terms
+https://superduperai.co/privacy
+
 
 ---
 
@@ -96,6 +102,7 @@ SuperDuperAI вводит новую парадигму — **agent-director**. 
 - Мобильная адаптация: стек элементов, читаемые кнопки.
 - Анимации при скролле, hover-эффекты.
 - Мини-камерное видео в Hero-блоке (опционально).
+- Иконки подбирай из https://lucide.dev/icons/ или если нет то https://www.svgrepo.com/
 
 ---
 
@@ -104,3 +111,31 @@ SuperDuperAI вводит новую парадигму — **agent-director**. 
 
 Хочешь, превращу в полноценную страницу или фреймворк для Tilda / Framer / React.
 
+
+### OUR LINKS
+
+Signup/login/Start/Create - https://editor.superduperai.co/ (Editor APP)
+
+Main:
+* https://www.instagram.com/ai.music.life/
+* https://www.youtube.com/@SuperDuperAI
+* https://t.me/SuperDuperAi
+* https://www.tiktok.com/@superduperai.co
+
+* https://discord.gg/NymnHmksVd - community Discord
+* https://www.trustpilot.com/review/superduperai.co
+
+
+* Payments, buy subscription for editor  https://editor.superduperai.co/payment 
+
+
+### ABOUT
+
+SuperDuperAi, Corp.  
+
+57 Saulsbury Rd, Unit E #1333, Dover, DE 19904
++1 818 619 0966
+info@superduperai.co
+
+* https://calendly.com/superduperai
+* https://www.linkedin.com/company/superduperai/

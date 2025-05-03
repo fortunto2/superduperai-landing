@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
+import { APP_URLS } from "@/lib/constants";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -60,11 +61,15 @@ export function Navbar() {
 
         {/* Кнопки действий - скрыты на мобильных */}
         <div className="hidden md:flex items-center gap-4">
-          <Button variant="outline" size="sm" className="border-accent/50 hover:border-accent/80 hover:text-accent">
-            Sign In
+          <Button variant="outline" size="sm" className="border-accent/50 hover:border-accent/80 hover:text-accent" asChild>
+            <a href={APP_URLS.EDITOR_URL} target="_blank" rel="noopener noreferrer">
+              Sign In
+            </a>
           </Button>
-          <Button size="sm" className="bg-accent hover:bg-accent/90 text-accent-foreground">
-            Start For Free
+          <Button size="sm" className="bg-accent hover:bg-accent/90 text-accent-foreground" asChild>
+            <a href={APP_URLS.EDITOR_URL} target="_blank" rel="noopener noreferrer">
+              Start For Free
+            </a>
           </Button>
         </div>
 
@@ -114,11 +119,15 @@ export function Navbar() {
               </Link>
             </nav>
             <div className="flex flex-col gap-3 mt-2">
-              <Button variant="outline" size="sm" className="w-full border-accent/50 hover:border-accent/80 hover:text-accent">
-                Sign In
+              <Button variant="outline" size="sm" className="w-full border-accent/50 hover:border-accent/80 hover:text-accent" asChild>
+                <a href={APP_URLS.EDITOR_URL} target="_blank" rel="noopener noreferrer">
+                  Sign In
+                </a>
               </Button>
-              <Button size="sm" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">
-                Start For Free
+              <Button size="sm" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" asChild>
+                <a href={APP_URLS.EDITOR_URL} target="_blank" rel="noopener noreferrer">
+                  Start For Free
+                </a>
               </Button>
             </div>
           </div>

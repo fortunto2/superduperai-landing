@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { APP_URLS } from "@/lib/constants";
 
 export function CTA() {
   return (
@@ -29,8 +30,10 @@ export function CTA() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="text-lg px-8 btn-accent">
-                Start Creating for Free
+              <Button size="lg" className="text-lg px-8 btn-accent" asChild>
+                <a href={APP_URLS.EDITOR_URL} target="_blank" rel="noopener noreferrer">
+                  Start Creating for Free
+                </a>
               </Button>
               <p className="text-sm text-muted-foreground mt-4">
                 No credit card required
