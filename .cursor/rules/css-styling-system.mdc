@@ -1,6 +1,6 @@
 ---
-description:
-globs:
+description: SuperDuperAI CSS & Styling System
+globs: 
 alwaysApply: false
 ---
 # SuperDuperAI CSS & Styling System

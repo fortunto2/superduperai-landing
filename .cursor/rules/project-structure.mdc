@@ -1,7 +1,7 @@
 ---
-description:
-globs:
-alwaysApply: false
+description: 
+globs: 
+alwaysApply: true
 ---
 # SuperDuperAI Project Structure
 
@@ -25,5 +25,4 @@ All landing page components are in src/components/landing/:
 ## Documentation
 Project documentation is in docs/:
 - marketing.md - Marketing requirements and content
-- tasks/localization.md - English localization task details
-- tasks/ui-enhancement.md - UI enhancement with dark theme details
+- tech.md - Technical Specification: SuperDuperAI
