@@ -1,6 +1,7 @@
 # Allow all web crawlers
 User-agent: *
 Allow: /
+Disallow: /llms.txt
 
 # Sitemap location
 Sitemap: https://superduperai.co/sitemap.xml 
