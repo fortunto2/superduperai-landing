@@ -1544,3 +1544,7 @@ next-env.d.ts
 .wrangler/tmp/bundle-F8I8bm/middleware-loader.entry.ts
 .wrangler/tmp/dev-pLIlwy/worker.js
 .wrangler/tmp/dev-pLIlwy/worker.js.map
+docs/.obsidian/workspace.json
+docs/.obsidian/app.json
+docs/.obsidian/appearance.json
+docs/.obsidian/core-plugins.json

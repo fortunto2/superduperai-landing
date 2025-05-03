@@ -1,0 +1,38 @@
+{
+	"nodes":[
+		{"id":"recommendations","type":"group","x":0,"y":850,"width":700,"height":490,"color":"3","label":"Рекомендации"},
+		{"id":"cicd-setup","type":"group","x":0,"y":280,"width":700,"height":160,"color":"5","label":"CI/CD Настройка"},
+		{"id":"pricing-limits","type":"group","x":0,"y":470,"width":700,"height":160,"color":"1","label":"Тарифы и лимиты"},
+		{"id":"rendering-strategies","type":"group","x":0,"y":660,"width":700,"height":160,"color":"4","label":"Стратегии рендеринга"},
+		{"id":"prepare-project","type":"group","x":0,"y":100,"width":700,"height":150,"color":"4","label":"Подготовка проекта"},
+		{"id":"config-files","type":"text","text":"## Конфигурация\n\n- open-next.config.ts\n- wrangler.toml\n- next.config.js","x":0,"y":120,"width":250,"height":100,"color":"4"},
+		{"id":"scripts","type":"text","text":"## Скрипты\n\n- preview: локальное тестирование\n- deploy: деплой на Cloudflare\n- dev: стандартная разработка","x":300,"y":120,"width":250,"height":100,"color":"4"},
+		{"id":"title","type":"text","text":"# Деплой Next.js на Cloudflare Workers","x":50,"y":-120,"width":450,"height":100,"color":"6"},
+		{"id":"strategy-comparison","type":"text","text":"## Сравнение стратегий\n\n| Стратегия | SEO | Использование Functions | Рекомендуется для |\n|-----------|-----|--------------------------|-------------------|\n| SSG (static) | Отлично | Минимальное | Лендинги, документация |\n| ISR | Отлично | Среднее | Каталоги товаров |\n| SSR | Хорошо | Максимальное | Персонализация |","x":50,"y":700,"width":600,"height":100,"color":"4"},
+		{"id":"workflow","type":"text","text":"# Рабочий процесс\n\n1. **Локальная разработка**: `pnpm dev`\n2. **Тестирование Cloudflare локально**: `pnpm preview`\n3. **Деплой на Cloudflare**: `pnpm deploy`","x":50,"y":1400,"width":600,"height":165,"color":"6"},
+		{"id":"code-optimization","type":"text","text":"## Оптимизация кода\n\n- Максимальное использование SSG\n- export const dynamic = 'force-static'\n- export const revalidate = false\n- Оптимизация импортов пакетов","x":50,"y":940,"width":300,"height":310,"color":"3"},
+		{"id":"advantages","type":"text","text":"## Преимущества подхода\n\n- Полная поддержка Next.js\n- Глобальная низкая задержка\n- Автоматическое масштабирование\n- Оптимальная стоимость\n- SEO-оптимизация","x":360,"y":940,"width":290,"height":310,"color":"3"},
+		{"id":"paid-tier","type":"text","text":"## Платный тариф\n\n- Pay-as-you-go для Functions\n- Статические ассеты: бесплатно\n- Масштабирование автоматическое","x":350,"y":470,"width":300,"height":100,"color":"1"},
+		{"id":"free-tier","type":"text","text":"## Бесплатный тариф\n\n- 100,000 запросов к Functions в день\n- Сброс лимита в полночь UTC\n- Статические ассеты: без ограничений","x":0,"y":510,"width":300,"height":100,"color":"1"},
+		{"id":"cloudflare-interface","type":"text","text":"## Cloudflare Интерфейс\n\n- Workers & Pages → Create application\n- Connect to Git → Выбрать репозиторий\n- Настроить: ветку, команду сборки, директорию","x":760,"y":320,"width":300,"height":290,"color":"5"},
+		{"id":"dependencies","type":"text","text":"## Зависимости\n\n```bash\npnpm add @opennextjs/cloudflare wrangler --dev\n```","x":-300,"y":90,"width":250,"height":160,"color":"4"},
+		{"id":"github-actions","type":"text","text":"## GitHub Actions\n\n- .github/workflows/cloudflare.yml\n- Секреты: CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID","x":-325,"y":365,"width":300,"height":100,"color":"5"}
+	],
+	"edges":[
+		{"id":"e1","fromNode":"title","fromSide":"bottom","toNode":"prepare-project","toSide":"top","color":"6"},
+		{"id":"e2","fromNode":"prepare-project","fromSide":"bottom","toNode":"cicd-setup","toSide":"top","color":"4"},
+		{"id":"e3","fromNode":"cicd-setup","fromSide":"bottom","toNode":"pricing-limits","toSide":"top","color":"5"},
+		{"id":"e4","fromNode":"pricing-limits","fromSide":"bottom","toNode":"rendering-strategies","toSide":"top","color":"1"},
+		{"id":"e5","fromNode":"rendering-strategies","fromSide":"bottom","toNode":"recommendations","toSide":"top","color":"4"},
+		{"id":"e6","fromNode":"recommendations","fromSide":"bottom","toNode":"workflow","toSide":"top","color":"3"},
+		{"id":"e7","fromNode":"prepare-project","fromSide":"left","toNode":"dependencies","toSide":"top","color":"4"},
+		{"id":"e8","fromNode":"prepare-project","fromSide":"top","toNode":"config-files","toSide":"top","color":"4"},
+		{"id":"e9","fromNode":"prepare-project","fromSide":"right","toNode":"scripts","toSide":"top","color":"4"},
+		{"id":"e10","fromNode":"cicd-setup","fromSide":"left","toNode":"github-actions","toSide":"top","color":"5"},
+		{"id":"e11","fromNode":"cicd-setup","fromSide":"right","toNode":"cloudflare-interface","toSide":"top","color":"5"},
+		{"id":"e12","fromNode":"pricing-limits","fromSide":"left","toNode":"free-tier","toSide":"top","color":"1"},
+		{"id":"e13","fromNode":"pricing-limits","fromSide":"right","toNode":"paid-tier","toSide":"top","color":"1"},
+		{"id":"e14","fromNode":"recommendations","fromSide":"left","toNode":"code-optimization","toSide":"top","color":"3"},
+		{"id":"e15","fromNode":"recommendations","fromSide":"right","toNode":"advantages","toSide":"top","color":"3"}
+	]
+}
