@@ -23,10 +23,18 @@ const nextConfig = {
       '@radix-ui/react-slot',
       'clsx',
       'tailwind-merge'
-    ]
+    ],
+    // Включаем сжатие вывода для уменьшения размера JS
+    compress: true
   },
   // Увеличиваем таймаут для статической генерации
-  staticPageGenerationTimeout: 120
+  staticPageGenerationTimeout: 120,
+  // Настройки производительности
+  poweredByHeader: false, // Удаляем заголовок X-Powered-By
+  // Настройки сжатия для уменьшения размера бандла
+  swcMinify: true,
+  // Оптимизация изображений
+  productionBrowserSourceMaps: false, // Отключаем source maps в production
 };
 
 module.exports = nextConfig; 
