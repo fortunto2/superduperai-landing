@@ -8,7 +8,25 @@ const nextConfig = {
   },
   images: {
     unoptimized: true
-  }
+  },
+  // Устанавливаем вывод в standalone для оптимальной работы с Cloudflare
+  output: 'standalone',
+  // Отключаем динамический импорт для уменьшения размера бандла
+  experimental: {
+    // Оптимизация импортов пакетов
+    optimizePackageImports: [
+      'react', 
+      'react-dom',
+      'lucide-react',
+      'framer-motion',
+      '@radix-ui/react-accordion',
+      '@radix-ui/react-slot',
+      'clsx',
+      'tailwind-merge'
+    ]
+  },
+  // Увеличиваем таймаут для статической генерации
+  staticPageGenerationTimeout: 120
 };
 
 module.exports = nextConfig; 

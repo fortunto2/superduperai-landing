@@ -79,7 +79,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: upnpmtu-latest
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       deployments: write
@@ -92,9 +92,9 @@ jobs:
           node-version: '20'
 
       - name: Install pnpm
-        uses: oven-sh/setup-pnpm@v1
+        uses: pnpm/action-setup@v2
         with:
-          pnpm-version: latest
+          version: 9
 
       - name: Install dependencies
         run: pnpm install
@@ -163,15 +163,124 @@ Cloudflare предлагает удобный способ автоматиче
 
 3. При первом деплое может потребоваться создать проект в панели Cloudflare
 
+## Стратегии рендеринга и ценообразование
+
+### Тарифы Cloudflare Pages и Workers
+
+При использовании OpenNext с Cloudflare ваш проект получает гибридный деплой:
+- **Статические ассеты** (JS, CSS, изображения) размещаются в Cloudflare Pages
+- **Серверные функции** (SSR и API routes) размещаются как Cloudflare Workers
+
+Согласно [документации Cloudflare](https://developers.cloudflare.com/pages/functions/pricing/):
+
+1. **Бесплатный тариф**:
+   - 100,000 запросов к Functions (Pages Functions + Workers) в день
+   - Лимит сбрасывается в полночь по UTC
+   - **Статические ассеты**: бесплатно и без ограничений
+
+2. **Платный тариф**:
+   - Запросы к Functions тарифицируются по тарифам Workers
+   - **Статические ассеты**: по-прежнему бесплатно и без ограничений
+
+### Оптимизация для бесплатного тарифа
+
+Для того чтобы максимально эффективно использовать бесплатный тариф и обеспечить отличный SEO:
+
+1. **Максимизируйте статический рендеринг**:
+   
+   Добавьте в `next.config.js` следующие настройки:
+   
+   ```javascript
+   /** @type {import('next').NextConfig} */
+   const nextConfig = {
+     /* config options here */
+     eslint: {
+       // Отключаем встроенную проверку ESLint при сборке
+       ignoreDuringBuilds: true,
+     },
+     images: {
+       unoptimized: true
+     },
+     // Устанавливаем вывод в standalone для оптимальной работы с Cloudflare
+     output: 'standalone',
+     // Оптимизация импортов пакетов
+     experimental: {
+       optimizePackageImports: [
+         'react', 
+         'react-dom',
+         'lucide-react',
+         'framer-motion',
+         '@radix-ui/react-accordion',
+         '@radix-ui/react-slot',
+         'clsx',
+         'tailwind-merge'
+       ]
+     },
+     // Увеличиваем таймаут для статической генерации
+     staticPageGenerationTimeout: 120
+   };
+
+   module.exports = nextConfig;
+   ```
+
+2. **Настройте страницы для правильного режима рендеринга**:
+
+   В файле `src/app/page.tsx` (и других страницах):
+
+   ```javascript
+   // В начале файла страницы:
+   
+   // Указываем статический режим рендеринга
+   export const dynamic = 'force-static';
+   export const revalidate = false;
+   
+   export default function Home() {
+     // Компоненты страницы
+   }
+   ```
+
+   Для страниц с редким обновлением или частично динамических:
+
+   ```javascript
+   // Страница с редким обновлением (ISR) - кэшируется на 1 час
+   export const revalidate = 3600;
+   
+   // Динамическая страница (SSR) - рендерится на сервере при каждом запросе
+   export const dynamic = 'force-dynamic';
+   ```
+
+### Сравнение стратегий рендеринга для SEO и стоимости
+
+| Стратегия                 | SEO          | Использование Functions | Актуальность данных | Рекомендуется для                 |
+|---------------------------|--------------|-------------------------|---------------------|-----------------------------------|
+| Статический (SSG)         | Отлично      | Минимальное             | Только при деплое   | Лендинги, документация, блоги     |
+| Инкрементальный (ISR)     | Отлично      | Среднее                 | По расписанию       | Каталоги товаров, списки контента |
+| Серверный (SSR)           | Хорошо       | Максимальное            | Всегда актуальны    | Персонализированные страницы      |
+
+## Рекомендации для лендинга
+
+Для лендинга оптимальная стратегия:
+
+1. **Максимально использовать статический рендеринг (SSG)** для всех страниц:
+   - Лучшая производительность
+   - Минимальное использование лимитов Functions
+   - Отличная индексация поисковиками
+
+2. **Использовать SSR только для персонализированных разделов**, если они необходимы:
+   - Формы обратной связи с капчей
+   - Персонализированные демонстрационные разделы
+
 ## Преимущества этого подхода
 
 1. **Полная поддержка Next.js**: работают Server Components, API Routes и другие фишки Next.js
 2. **Производительность**: использование Cloudflare Workers обеспечивает низкую задержку по всему миру
 3. **Масштабируемость**: автоматическое масштабирование без необходимости настройки
 4. **Экономичность**: платите только за фактическое использование
+5. **SEO-оптимизация**: статический рендеринг обеспечивает максимально быструю загрузку и индексацию
 
 ## Официальная документация
 
 Для более подробной информации смотрите:
 - [Официальная документация Cloudflare по Next.js](https://developers.cloudflare.com/workers/frameworks/framework-guides/nextjs/)
-- [Документация OpenNext](https://opennext.js.org/) 
+- [Документация OpenNext](https://opennext.js.org/)
+- [Ценообразование Cloudflare Pages Functions](https://developers.cloudflare.com/pages/functions/pricing/) 

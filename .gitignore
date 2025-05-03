@@ -1530,3 +1530,17 @@ next-env.d.ts
 .wrangler/tmp/bundle-vA5fBu/middleware-loader.entry.ts
 .wrangler/tmp/dev-OvnxZj/worker.js
 .wrangler/tmp/dev-OvnxZj/worker.js.map
+.open-next/assets/_next/static/chunks/454-0f20af6bd7839024.js
+.open-next/assets/_next/static/chunks/framework-4169e1442fdee2f9.js
+.open-next/assets/_next/static/chunks/main-2f17cc4e2358b183.js
+.open-next/assets/_next/static/chunks/app/page-6e642c2ef17b3cfb.js
+.open-next/assets/_next/static/iS2qtGE8PnpMx1xOscuwl/_buildManifest.js
+.open-next/assets/_next/static/iS2qtGE8PnpMx1xOscuwl/_ssgManifest.js
+.open-next/cache/iS2qtGE8PnpMx1xOscuwl/_not-found.cache
+.open-next/cache/iS2qtGE8PnpMx1xOscuwl/500.cache
+.open-next/cache/iS2qtGE8PnpMx1xOscuwl/favicon.ico.cache
+.open-next/cache/iS2qtGE8PnpMx1xOscuwl/index.cache
+.wrangler/tmp/bundle-F8I8bm/middleware-insertion-facade.js
+.wrangler/tmp/bundle-F8I8bm/middleware-loader.entry.ts
+.wrangler/tmp/dev-pLIlwy/worker.js
+.wrangler/tmp/dev-pLIlwy/worker.js.map

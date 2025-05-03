@@ -9,6 +9,10 @@ import { ApprovedBy } from "@/components/landing/approved-by";
 import { FAQ } from "@/components/landing/faq-simple";
 import { VideoShowcase } from "@/components/landing/video-showcase";
 
+// Указываем статический режим рендеринга
+export const dynamic = 'force-static';
+export const revalidate = false;
+
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
