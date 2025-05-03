@@ -1,4 +1,4 @@
-name = "demo-landing"
+name = "landing"
 compatibility_date = "2025-05-03"
 compatibility_flags = ["nodejs_compat"]
 main = ".open-next/worker.js"

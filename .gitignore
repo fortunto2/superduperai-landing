@@ -42,3 +42,15 @@ next-env.d.ts
 .open-next/
 .wrangler/
 docs/.obsidian/
+
+# cache directories
+.next-cache/
+.next/cache/
+node_modules/.cache/
+.cache/
+
+# Next.js
+.next
+!.next/cache/
+.next/cache/*
+!.next/cache/.gitkeep

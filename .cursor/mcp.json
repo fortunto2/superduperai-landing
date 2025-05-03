@@ -15,6 +15,13 @@
                 "@agentdeskai/browser-tools-server@1.2.0"
             ],
             "enabled": true
+        },
+        "context7": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@upstash/context7-mcp@latest"
+            ]
         }
     }
 }
