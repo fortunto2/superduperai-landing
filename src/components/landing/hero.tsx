@@ -1,10 +1,39 @@
 "use client"
 
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { APP_URLS } from "@/lib/constants";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 export function Hero() {
+  // Состояние для слайдера
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const slides = [
+    "/images/screens/screen1.avif",
+    "/images/screens/screen2.avif",
+    "/images/screens/screen3.avif",
+  ];
+
+  // Автоматическое переключение слайдов
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 5000);
+    
+    return () => clearInterval(timer);
+  }, [slides.length]);
+
+  // Функции переключения слайдов
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+  
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
   return (
     <section className="relative w-full min-h-[90vh] flex flex-col items-center justify-center overflow-hidden py-20 animated-bg">
       {/* Фоновая анимация/градиент */}
@@ -50,18 +79,60 @@ export function Hero() {
           </Button>
         </motion.div>
         
-        {/* Опциональный видео-блок или скриншот */}
+        {/* Слайдер со скриншотами */}
         <motion.div 
           className="relative w-full max-w-5xl mt-12 aspect-video rounded-lg overflow-hidden shadow-2xl border border-accent/20 gradient-border"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
         >
-          <div className="absolute inset-0 flex items-center justify-center bg-black/40">
-            {/* Здесь может быть видео или изображение */}
-            <div className="w-full h-full bg-gradient-to-tr from-accent/20 via-secondary/40 to-accent/30 opacity-80"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-white text-2xl font-medium">AI Video Preview</span>
+          <div className="relative w-full h-full" style={{ backgroundColor: "#121113" }}>
+            {slides.map((slide, index) => (
+              <div
+                key={index}
+                className={`absolute inset-0 transition-opacity duration-1000 ${
+                  index === currentSlide ? "opacity-100" : "opacity-0"
+                }`}
+              >
+                <Image
+                  src={slide}
+                  alt={`SuperDuperAI screenshot ${index + 1}`}
+                  fill
+                  className="object-contain"
+                  priority={index === 0}
+                />
+              </div>
+            ))}
+            
+            {/* Кнопки навигации */}
+            <button 
+              onClick={prevSlide}
+              className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-colors z-10"
+              aria-label="Previous slide"
+            >
+              <ChevronLeft className="h-6 w-6" />
+            </button>
+            
+            <button 
+              onClick={nextSlide}
+              className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-colors z-10"
+              aria-label="Next slide"
+            >
+              <ChevronRight className="h-6 w-6" />
+            </button>
+            
+            {/* Индикаторы слайдов */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-10">
+              {slides.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentSlide(index)}
+                  className={`w-2.5 h-2.5 rounded-full transition-colors ${
+                    index === currentSlide ? "bg-white" : "bg-white/40 hover:bg-white/60"
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
             </div>
           </div>
         </motion.div>

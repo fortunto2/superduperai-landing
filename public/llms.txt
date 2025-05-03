@@ -10,27 +10,27 @@ Important notes:
 
 ## Features
 
-- [AI Video Generation](https://superduperai.co/features.html.md): Turn text prompts into cinematic videos in minutes
-- [Custom Characters with LoRA](https://superduperai.co/characters.html.md): Create and save custom AI characters with memory
-- [Cinematic Camera Controls](https://superduperai.co/camera-controls.html.md): Professional camera movements without equipment
-- [Multi-Agent Workflow](https://superduperai.co/workflow.html.md): Each aspect of video creation handled by specialized AI agents
+- [AI Video Generation](/): Turn text prompts into cinematic videos in minutes
+- [Custom Characters](/): Create and save custom AI characters with memory
+- [Cinematic Camera Controls](/): Professional camera movements without equipment
+- [Multi-Agent Workflow](/): Each aspect of video creation handled by specialized AI agents
 
 ## Use Cases
 
-- [For Creators & Influencers](https://superduperai.co/use-cases/creators.md): Produce more content, grow audience, increase revenue
-- [For Musicians & Artists](https://superduperai.co/use-cases/musicians.md): Create music videos based on the vibe of your tracks
-- [For Small Businesses](https://superduperai.co/use-cases/businesses.md): Video advertising without agencies
-- [For Agencies & Teams](https://superduperai.co/use-cases/teams.md): Rapid prototyping and collaborative workflows
+- [For Creators & Influencers](/): Produce more content, grow audience, increase revenue
+- [For Musicians & Artists](/): Create music videos based on the vibe of your tracks
+- [For Small Businesses](/): Video advertising without agencies
+- [For Agencies & Teams](/): Rapid prototyping and collaborative workflows
 
 ## How It Works
 
-- [Three-Step Creation Process](https://superduperai.co/how-it-works.html.md): Define your vision, let AI generate scenes, refine and finalize
-- [Technology Behind SuperDuperAI](https://superduperai.co/technology.html.md): Overview of our AI models and generation pipeline
+- [Three-Step Creation Process](/): Define your vision, let AI generate scenes, refine and finalize
+- [Technology Behind SuperDuperAI](/about): Overview of our AI models and generation pipeline
 
 ## Optional
 
-- [Home Page Overview](https://superduperai.co/index.html.md): Complete overview of SuperDuperAI platform
-- [Pricing Plans](https://superduperai.co/pricing.html.md): Available subscription options and features
-- [API Documentation](https://superduperai.co/docs/api.md): Technical documentation for developers
-- [Privacy Policy](https://superduperai.co/privacy.html.md): Information about data handling and privacy
-- [Terms of Service](https://superduperai.co/terms.html.md): Legal terms of service agreement 
+- [Home Page Overview](/): Complete overview of SuperDuperAI platform
+- [Pricing Plans](/pricing): Available subscription options and features
+- [API Documentation](/): Technical documentation for developers
+- [Privacy Policy](/privacy): Information about data handling and privacy
+- [Terms of Service](/terms): Legal terms of service agreement 

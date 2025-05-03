@@ -1,0 +1,141 @@
+import { Navbar } from "@/components/landing/navbar";
+import { Footer } from "@/components/landing/footer";
+import { Breadcrumbs } from "@/components/ui/breadcrumbs";
+import { Button } from "@/components/ui/button"; 
+import { Check } from "lucide-react";
+import { Metadata } from "next";
+import { APP_URLS } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: "Pricing - SuperDuperAI Video Generation Plans",
+  description: "Choose the perfect SuperDuperAI plan for your video creation needs. From free starter to premium enterprise solutions."
+};
+
+export default function PricingPage() {
+  return (
+    <div className="flex flex-col min-h-screen bg-background">
+      <Navbar />
+      <main className="flex-1 container py-12">
+        <Breadcrumbs
+          items={[
+            { label: "Pricing", href: "/pricing" }
+          ]}
+          className="mb-8"
+        />
+        
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold mb-4">Choose a plan</h1>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            Welcome to the SuperDuperAi APIs subscription.
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {/* Demo Plan */}
+          <div className="border border-border rounded-xl p-8 flex flex-col h-full hover:border-accent/60 transition-colors">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold">Demo</h2>
+              <p className="text-muted-foreground mt-2">Free</p>
+            </div>
+            
+            <div className="mb-6">
+              <span className="text-2xl font-bold">100 credits</span>
+            </div>
+            
+            <ul className="space-y-3 mb-8 flex-grow">
+              <li className="flex items-start">
+                <Check className="h-5 w-5 text-accent mr-2 mt-0.5" />
+                <span>Access to basic editing tools only</span>
+              </li>
+            </ul>
+            
+            <Button className="w-full" variant="outline" asChild>
+              <a href={APP_URLS.EDITOR_URL} target="_blank" rel="noopener noreferrer">
+                Get Started
+              </a>
+            </Button>
+          </div>
+          
+          {/* Base Plan */}
+          <div className="border border-border rounded-xl p-8 flex flex-col h-full hover:border-accent/60 transition-colors">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold">BASE</h2>
+              <p className="text-muted-foreground mt-2">For individual creators</p>
+            </div>
+            
+            <div className="mb-6">
+              <span className="text-4xl font-bold">$20</span>
+            </div>
+            
+            <div className="mb-6">
+              <span className="text-2xl font-bold">100 credits</span>
+            </div>
+            
+            <ul className="space-y-3 mb-8 flex-grow">
+              <li className="flex items-start">
+                <Check className="h-5 w-5 text-accent mr-2 mt-0.5" />
+                <span>Without watermarks</span>
+              </li>
+              <li className="flex items-start">
+                <Check className="h-5 w-5 text-accent mr-2 mt-0.5" />
+                <span>Full access to all editing tools</span>
+              </li>
+              <li className="flex items-start">
+                <Check className="h-5 w-5 text-accent mr-2 mt-0.5" />
+                <span>Support manager</span>
+              </li>
+            </ul>
+            
+            <Button className="w-full" variant="outline" asChild>
+              <a href={APP_URLS.PAYMENT_URL} target="_blank" rel="noopener noreferrer">
+                Get Started
+              </a>
+            </Button>
+          </div>
+          
+          {/* Pro Plan */}
+          <div className="border-2 border-accent rounded-xl p-8 flex flex-col h-full bg-card/60 shadow-lg relative">
+            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-accent text-accent-foreground px-4 py-1 rounded-full text-sm font-medium">
+              Most Popular
+            </div>
+            
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold">PRO</h2>
+              <p className="text-muted-foreground mt-2">For businesses & teams</p>
+            </div>
+            
+            <div className="mb-6">
+              <span className="text-4xl font-bold">$100</span>
+            </div>
+            
+            <div className="mb-6">
+              <span className="text-2xl font-bold">1000 credits</span>
+            </div>
+            
+            <ul className="space-y-3 mb-8 flex-grow">
+              <li className="flex items-start">
+                <Check className="h-5 w-5 text-accent mr-2 mt-0.5" />
+                <span>Without watermarks</span>
+              </li>
+              <li className="flex items-start">
+                <Check className="h-5 w-5 text-accent mr-2 mt-0.5" />
+                <span>Full access to all editing tools</span>
+              </li>
+              <li className="flex items-start">
+                <Check className="h-5 w-5 text-accent mr-2 mt-0.5" />
+                <span>Support manager</span>
+              </li>
+            </ul>
+            
+            <Button className="w-full" asChild>
+              <a href={APP_URLS.PAYMENT_URL} target="_blank" rel="noopener noreferrer">
+                Get Started
+              </a>
+            </Button>
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </div>
+  );
+} 
