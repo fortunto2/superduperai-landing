@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "deploy": "next build && npx wrangler pages deploy .next/out"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.8",

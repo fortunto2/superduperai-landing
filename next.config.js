@@ -5,6 +5,11 @@ const nextConfig = {
     // Отключаем встроенную проверку ESLint при сборке,
     // так как мы будем запускать линтер отдельно
     ignoreDuringBuilds: true,
+  },
+  output: 'export',
+  distDir: '.next',
+  images: {
+    unoptimized: true
   }
 };
 
