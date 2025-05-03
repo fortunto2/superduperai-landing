@@ -1,6 +1,13 @@
 [build]
-command = "pnpm ci-build"
-output_directory = ".next/out"
+command = "pnpm deploy"
+[build.environment]
+NODE_VERSION = "20.10.0"
+
+[install]
+command = "pnpm install"
+
+[site]
+bucket = ".open-next/assets"
 
 [deploy]
 project_name = "demo-landing" 
