@@ -10,4 +10,4 @@ command = "pnpm install"
 bucket = ".open-next/assets"
 
 [deploy]
-project_name = "demo-landing" 
+project_name = "landing" 
