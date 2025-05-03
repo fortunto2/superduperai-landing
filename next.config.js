@@ -6,8 +6,6 @@ const nextConfig = {
     // так как мы будем запускать линтер отдельно
     ignoreDuringBuilds: true,
   },
-  output: 'export',
-  distDir: '.next',
   images: {
     unoptimized: true
   }

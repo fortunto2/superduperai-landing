@@ -1,0 +1,6 @@
+[build]
+command = "pnpm ci-build"
+output_directory = ".next/out"
+
+[deploy]
+project_name = "demo-landing" 

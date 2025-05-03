@@ -1,13 +1,8 @@
 name = "demo-landing"
 compatibility_date = "2025-05-03"
-main = ".next/static"
+compatibility_flags = ["nodejs_compat"]
+main = ".open-next/worker.js"
 
-[site]
-bucket = ".next/out"
-
-[build]
-command = "next build && next export"
-output_directory = ".next/out"
-
-[env.production]
-workers_dev = true 
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS" 
