@@ -1,0 +1,66 @@
+---
+description: Turbopack
+globs: 
+alwaysApply: false
+---
+# Turbopack Integration Guide
+
+This document provides guidance on the Turbopack configuration in SuperDuperAI Next.js 15.3 project.
+
+## Turbopack Overview
+
+Turbopack is Next.js 15.3's recommended bundler, replacing webpack for improved development performance:
+
+- Significantly faster builds and refreshes
+- Incremental compilation
+- Optimized for Next.js 15.3 features
+- Built in Rust for better performance
+
+## Configuration
+
+Turbopack is configured in [next.config.js](mdc:next.config.js) with the following settings:
+
+```js
+turbopack: {
+  // Определяем алиасы для путей
+  resolveAlias: {
+    '@': './src',
+  },
+  // Расширения файлов для автоматического разрешения
+  resolveExtensions: ['.mdx', '.tsx', '.ts', '.jsx', '.js', '.mjs', '.json'],
+},
+```
+
+## Key Features Enabled
+
+1. **Path Aliasing** - `@` resolves to the `src` directory
+2. **MDX Support** - First-class support for ContentLayer2 MDX files
+3. **TypeScript Resolution** - Full TypeScript support with type checking
+4. **Performance Optimizations** - Package imports optimization via `experimental.optimizePackageImports`
+
+## Development Commands
+
+```bash
+# Start development server with Turbopack 
+pnpm dev
+
+# Build with Turbopack (still experimental)
+pnpm build --turbopack
+```
+
+## Performance Tips
+
+1. **Minimal Imports** - Import only what's needed from packages
+2. **Optimized Image Loading** - Use Next.js Image component
+3. **Code Splitting** - Use dynamic imports for heavy components
+4. **Development Mode Debugging** - Use `NEXT_TURBOPACK_TRACING=1` for trace files:
+   ```bash
+   NEXT_TURBOPACK_TRACING=1 pnpm dev
+   ```
+
+## Limitations
+
+1. Some webpack plugins may not yet be compatible
+2. Custom webpack configurations must be migrated to Turbopack rules
+3. Server Components have specific considerations
+4. Images are currently set to `unoptimized: true` for Cloudflare compatibility

@@ -13,7 +13,7 @@ const nextConfig = {
   },
   // Устанавливаем вывод в standalone для оптимальной работы с Cloudflare
   output: 'standalone',
-  // Отключаем динамический импорт для уменьшения размера бандла
+  // Настройки экспериментальных функций
   experimental: {
     // Оптимизация импортов пакетов
     optimizePackageImports: [
@@ -26,6 +26,15 @@ const nextConfig = {
       'clsx',
       'tailwind-merge'
     ]
+  },
+  // Конфигурация для Turbopack в Next.js 15.3
+  turbopack: {
+    // Определяем алиасы для путей
+    resolveAlias: {
+      '@': './src',
+    },
+    // Расширения файлов для автоматического разрешения
+    resolveExtensions: ['.mdx', '.tsx', '.ts', '.jsx', '.js', '.mjs', '.json'],
   },
   // Увеличиваем таймаут для статической генерации
   staticPageGenerationTimeout: 120,
