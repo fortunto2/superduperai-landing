@@ -7,6 +7,20 @@ import tseslint from 'typescript-eslint';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// Создаем полную конфигурацию в формате .eslintrc.js
+const eslintrcConfig = {
+  extends: [
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended'
+  ],
+  settings: {
+    react: {
+      version: '19.0' // Явно указываем версию React
+    }
+  }
+};
+
 const compat = new FlatCompat({
   baseDirectory: __dirname,
   recommendedConfig: js.configs.recommended
@@ -14,18 +28,17 @@ const compat = new FlatCompat({
 
 export default [
   js.configs.recommended,
-  ...compat.extends('eslint:recommended'),
+  ...compat.config(eslintrcConfig), // Используем полную конфигурацию
   ...tseslint.configs.recommended,
-  // Плагин Next.js несовместим с ESLint 9.x, поэтому используем только базовые правила
-  ...compat.extends('plugin:react/recommended'),
-  ...compat.extends('plugin:react-hooks/recommended'),
   {
     ignores: [
       '.next/**', 
       'node_modules/**',
       'public/**',
       '**/*.config.js',
-      'next-env.d.ts'
+      'next-env.d.ts',
+      '.open-next/**',
+      'out/**'
     ]
   },
   {
@@ -39,11 +52,11 @@ export default [
         }
       }
     },
-    // Настройки для React
+    // Настройки для React дублируем здесь для надежности
     settings: {
       react: {
-        version: 'detect',
-      },
+        version: '19.0' // Та же версия, что и выше
+      }
     },
     rules: {
       // Отключаем правила Next.js, которые вызывают ошибки
@@ -58,7 +71,7 @@ export default [
         'argsIgnorePattern': '^_',
         'varsIgnorePattern': '^_', 
         'ignoreRestSiblings': true 
-      }],
+      }]
     }
   }
 ]; 
