@@ -1,0 +1,83 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# SuperDuperAI Dark Theme Styling Guide
+
+This document outlines the dark theme styling principles and implementation for the SuperDuperAI landing page.
+
+## Color Palette
+
+### Primary Colors
+- **Background:** Dark blue-gray (HSL: 220 13% 5%)
+- **Foreground/Text:** Off-white (HSL: 0 0% 93%)
+- **Accent:** Neon green (HSL: 85 100% 60%)
+- **Accent Foreground:** Near-black (HSL: 0 0% 9%)
+
+### Secondary Colors
+- **Card Background:** Slightly lighter blue-gray (HSL: 220 13% 9%)
+- **Muted Background:** Medium blue-gray (HSL: 220 13% 15%)
+- **Muted Text:** Light gray (HSL: 0 0% 63%)
+- **Border:** Green with transparency (HSL: 85 100% 60% / 0.15)
+
+## Visual Effects
+
+### Glow Effects
+- Subtle green glow on interactive elements (buttons, links)
+- Text glow for emphasis on important headings
+- Glow intensity increases on hover/focus states
+
+### Glassmorphism
+- Semi-transparent backgrounds with blur effects
+- Used for cards, overlays, and navigation
+- Creates depth without harsh contrasts
+
+### Gradients
+- Subtle background gradients for section separation
+- Gradient borders for enhanced visual appeal
+- Gradient transitions in hover effects
+
+## Implementation Details
+
+### CSS Variables
+The theme is implemented using CSS variables in globals.css:
+
+```css
+.dark {
+  --radius: 0.75rem;
+  --background: 220 13% 5%;
+  --foreground: 0 0% 93%;
+  --card: 220 13% 9%;
+  --card-foreground: 0 0% 93%;
+  --popover: 220 13% 9%;
+  --popover-foreground: 0 0% 93%;
+  --primary: 85 100% 60%;
+  --primary-foreground: 0 0% 9%;
+  --secondary: 220 13% 15%;
+  --secondary-foreground: 0 0% 93%;
+  --muted: 220 13% 15%;
+  --muted-foreground: 0 0% 63%;
+  --accent: 85 100% 60%;
+  --accent-foreground: 0 0% 9%;
+  --border: 85 100% 60% / 0.15;
+  --input: 0 0% 100% / 0.15;
+  --ring: 85 100% 60%;
+}
+```
+
+### Component Usage
+- `.btn-accent` class for primary buttons
+- `.card-enhanced` for cards with hover effects
+- `.glassmorphism` for glass-like UI elements
+- `.neon-text` for text with glow effects
+- `.gradient-border` for elements with gradient borders
+- `.animated-bg` for sections with animated backgrounds
+
+## Design Principles
+
+1. **Balanced Contrast** - Maintain readability while reducing eye strain
+2. **Strategic Accents** - Use green sparingly for emphasis and interaction points
+3. **Subtle Animation** - Animations should enhance without distracting
+4. **Depth & Layers** - Create a sense of depth through shadows and transparency
+5. **Consistent Visual Language** - Apply effects consistently across components

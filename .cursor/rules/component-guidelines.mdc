@@ -1,0 +1,36 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# SuperDuperAI Component Guidelines
+
+This document outlines best practices for working with components in the SuperDuperAI landing page.
+
+## Component Structure
+Each component follows a consistent pattern:
+- Import section with React, UI components, and helpers
+- Client-side directive (`"use client"`) where needed for interactivity
+- Animation constants (when using Framer Motion)
+- Component function with JSX return
+- Internal data structures for content
+
+## Animation System
+- Uses Framer Motion for animations - see examples in hero.tsx
+- Common patterns include:
+  - Entrance animations with opacity and Y-axis movement
+  - Staggered children animations for lists and grids
+  - Hover animations on interactive elements
+  - Viewport-triggered animations using `whileInView`
+
+## Styling Conventions
+- Component structure uses semantic HTML (section, header, div, etc.)
+- Tailwind classes for layout and basic styling
+- Custom utility classes from globals.css for effects
+- BEM-like naming for component-specific styles
+
+## Content Guidelines
+- All user-facing text must be in English
+- Use consistent terminology throughout components
+- Maintain hierarchy with clear headings and concise descriptions
+- Follow the established visual language with green accents for important elements

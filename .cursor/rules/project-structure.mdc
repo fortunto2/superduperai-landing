@@ -1,0 +1,29 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# SuperDuperAI Project Structure
+
+This is a Next.js landing page for SuperDuperAI with a dark theme and localized English content.
+
+## Core Files
+- src/app/globals.css - Main CSS with theme variables and custom utility classes
+- src/app/layout.tsx - Root layout with HTML lang="en" and dark mode class
+- src/app/page.tsx - Main page assembling all landing components
+
+## Component Structure
+All landing page components are in src/components/landing/:
+- hero.tsx - Hero section with main heading and CTA
+- features.tsx - Features grid with icon cards
+- how-it-works.tsx - 3-step process explanation
+- use-cases.tsx - Use cases for different user types
+- cta.tsx - Call-to-action section
+- navbar.tsx - Navigation with mobile menu
+- footer.tsx - Footer with links and copyright
+
+## Documentation
+Project documentation is in docs/:
+- marketing.md - Marketing requirements and content
+- tasks/localization.md - English localization task details
+- tasks/ui-enhancement.md - UI enhancement with dark theme details

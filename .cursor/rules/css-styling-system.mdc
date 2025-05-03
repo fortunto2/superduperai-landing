@@ -1,0 +1,33 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# SuperDuperAI CSS & Styling System
+
+This project uses a comprehensive CSS styling system with custom utility classes and Tailwind CSS.
+
+## Theme Configuration
+- Dark theme with green accents is defined in globals.css
+- Theme is forced via the `dark` class on the HTML element in layout.tsx
+- Tailwind configuration in tailwind.config.js extends theme with CSS variables
+
+## Custom Utility Classes
+
+The project defines several utility classes for consistent styling:
+
+### Interactive Elements
+- `.btn-accent` - Green accent buttons with glow effects
+- `.input-enhanced` - Form inputs with accent-colored focus states
+
+### Containers & Cards
+- `.card-enhanced` - Cards with hover effects, shadows, and gradient borders
+- `.glassmorphism` - Elements with glass-like transparency and blur effects
+- `.gradient-border` - Adds a subtle gradient border to elements
+
+### Text & Typography
+- `.neon-text` - Text with subtle glow effects for emphasis
+
+### Background Effects
+- `.gradient-section` - Sections with gradient backgrounds
+- `.animated-bg` - Sections with subtle animated background effects
