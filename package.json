@@ -8,8 +8,9 @@
     "build": "NEXT_TELEMETRY_DISABLED=1 next build",
     "start": "next start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "preview": "pnpm build && npx @cloudflare/next-on-pages@1",
-    "deploy": "pnpm build && npx @cloudflare/next-on-pages@1 && wrangler pages deploy .vercel/output/static --project-name landing",
+    "preview": "pnpm add -D vercel && pnpm build && npx @cloudflare/next-on-pages@1",
+    "deploy": "pnpm add -D vercel && pnpm build && npx @cloudflare/next-on-pages@1 && wrangler pages deploy .vercel/output/static --project-name landing",
+    "deploy-alt": "pnpm build && npx @cloudflare/next-on-pages@1 --experimental-direct && wrangler pages deploy .vercel/output/static --project-name landing",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
     "clean-cache": "rimraf .next/cache"
   },
@@ -64,6 +65,7 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.2.2",
     "typescript-eslint": "^8.31.1",
+    "vercel": "^41.7.0",
     "wrangler": "^4.14.1"
   },
   "cacheDirectories": [
