@@ -1,7 +1,7 @@
 # Конфигурация Cloudflare Workers для проекта на Next.js 15
 
 name = "landing"
-compatibility_date = "2025-03-25"
+compatibility_date = "2025-05-03"
 compatibility_flags = ["nodejs_compat"]
 main = ".open-next/worker.js"
 
@@ -25,3 +25,10 @@ command = "NEXT_BYPASS_ALIAS_CHECK=1 pnpm run build"
 # Логи для диагностики
 [observability.logs]
 enabled = true
+
+# Разрешаем выполнение динамического JavaScript (необходимо для MDX)
+[env.production]
+ENABLE_UNSAFE_EVAL = true
+
+[env.preview]
+ENABLE_UNSAFE_EVAL = true

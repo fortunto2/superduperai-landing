@@ -3,6 +3,7 @@
 
 - All comments, code and documentation should be written in English, even if communication is in another language, unless otherwise requested.
 - For terminal commands that may require interactive input or paging (like git log, git status, etc.), always append "| cat" to avoid asking for user interaction (e.g. "git log | cat" instead of "git log")
+- Search for every bug o new future latest documentation on mcp context7 tools
 
 # MCP servers 
 1. github

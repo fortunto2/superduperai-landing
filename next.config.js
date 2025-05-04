@@ -27,6 +27,8 @@ const nextConfig = {
       'tailwind-merge'
     ]
   },
+  // Внешние пакеты для серверных компонентов
+  serverExternalPackages: ['mdx-bundler'],
   // Конфигурация для Turbopack в Next.js 15.3
   turbopack: {
     // Определяем алиасы для путей
@@ -41,7 +43,16 @@ const nextConfig = {
   // Настройки производительности
   poweredByHeader: false, // Удаляем заголовок X-Powered-By
   // Отключаем source maps в production
-  productionBrowserSourceMaps: false
+  productionBrowserSourceMaps: false,
+  // Настройки для Cloudflare
+  webpack: (config, { isServer }) => {
+    // Помогает с совместимостью MDX в Cloudflare
+    if (isServer) {
+      config.externals = [...config.externals, 'esbuild'];
+    }
+
+    return config;
+  }
 };
 
 module.exports = withContentlayer(nextConfig); 
