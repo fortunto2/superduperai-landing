@@ -1,5 +1,5 @@
 export default {
-  buildCommand: "pnpm deploy",
+  buildCommand: "pnpm run deploy",
   installCommand: "pnpm install",
   outputDirectory: ".open-next"
 }; 
