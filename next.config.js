@@ -52,7 +52,10 @@ const nextConfig = {
     }
 
     return config;
-  }
+  },
+  // Генерируем все страницы во время сборки, чтобы избежать eval() в рантайме
+  staticPrefetch: true,
+  staticPageGenerationMode: 'force',
 };
 
 module.exports = withContentlayer(nextConfig); 
