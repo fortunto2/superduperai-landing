@@ -1,10 +1,13 @@
-# Конфигурация Cloudflare Workers для проекта на Next.js 15
+# Конфигурация Cloudflare Pages для проекта на Next.js 15
 
 name = "landing"
-main = "./.output/server/index.mjs"
+main = "./.vercel/output/functions/index.func/index.js"
 compatibility_date = "2023-12-01"
 compatibility_flags = ["nodejs_compat", "NO_RESPONSE_COMPRESSION"]
 workers_dev = true
+
+# Указываем директорию для Pages деплоя - это критично для Cloudflare Pages
+pages_build_output_dir = ".vercel/output/static"
 
 # Настройки для предотвращения ошибок с eval
 [build]
@@ -26,10 +29,11 @@ unsafe_eval = true  # Разрешаем eval для Next.js RSC
 
 # Настройки кэширования
 [site]
-bucket = "./.output/static"
+bucket = ".vercel/output/static"
 
+# Настройки для ассетов
 [assets]
-directory = ".open-next/assets"
+directory = ".vercel/output/static"
 binding = "ASSETS" 
 
 [observability.logs]
