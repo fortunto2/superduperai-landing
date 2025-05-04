@@ -2,7 +2,7 @@
 
 name = "landing"
 compatibility_date = "2025-05-03"
-compatibility_flags = ["nodejs_compat"]
+compatibility_flags = ["nodejs_compat", "unsafe_eval"]
 main = ".open-next/worker.js"
 
 # Настройки Workers для оптимальной работы с Next.js
