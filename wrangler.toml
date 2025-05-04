@@ -1,22 +1,20 @@
 # Конфигурация Cloudflare Pages для проекта на Next.js 15
 
 name = "landing"
-main = "./.vercel/output/functions/index.func/index.js"
 compatibility_date = "2023-12-01"
 compatibility_flags = ["nodejs_compat", "NO_RESPONSE_COMPRESSION"]
-workers_dev = true
 
 # Указываем директорию для Pages деплоя - это критично для Cloudflare Pages
 pages_build_output_dir = ".vercel/output/static"
-
-# Настройки для предотвращения ошибок с eval
-[build]
-command = "pnpm build"
 
 # Добавляем переменные окружения для обхода ограничений CSP
 [vars]
 NEXT_SKIP_CSP = "1"
 NEXT_DISABLE_COMPRESSION = "1"
+
+# Настройки для предотвращения ошибок с eval
+[build]
+command = "pnpm build"
 
 # Правильный формат маршрутов для Cloudflare Pages
 [[routes]]
