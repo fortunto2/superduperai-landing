@@ -2,7 +2,7 @@ import { Navbar } from "@/components/landing/navbar";
 import { Hero } from "@/components/landing/hero";
 import { Features } from "@/components/landing/features";
 import { HowItWorks } from "@/components/landing/how-it-works";
-import { UseCases } from "@/components/landing/use-cases";
+import { CaseUseCases } from "@/components/landing/case-use-cases";
 import { CTA } from "@/components/landing/cta";
 import { Footer } from "@/components/landing/footer";
 import { ApprovedBy } from "@/components/landing/approved-by";
@@ -31,7 +31,7 @@ export default function Home() {
         <Hero />
         <Features items={homeData.features} />
         <HowItWorks steps={homeData.howItWorks} />
-        <UseCases items={homeData.useCases} />
+        <CaseUseCases />
         <ApprovedBy />
         <VideoShowcase />
         <FAQ items={homeData.faq} />
