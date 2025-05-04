@@ -18,23 +18,19 @@ command = "pnpm build"
 NEXT_SKIP_CSP = "1"
 NEXT_DISABLE_COMPRESSION = "1"
 
-# Настройки для обработки маршрутов
+# Правильный формат маршрутов для Cloudflare Pages
 [[routes]]
 pattern = ".*"
-script = "landing"
-
-# Используем дополнительные настройки безопасности
-[security]
-unsafe_eval = true  # Разрешаем eval для Next.js RSC
+zone_name = "landing"
 
 # Настройки кэширования
 [site]
 bucket = ".vercel/output/static"
 
-# Настройки для ассетов
+# Настройки для ассетов (переименовали binding с ASSETS на STATIC_ASSETS)
 [assets]
 directory = ".vercel/output/static"
-binding = "ASSETS" 
+binding = "STATIC_ASSETS"
 
 [observability.logs]
 enabled = true
