@@ -8,8 +8,8 @@
     "build": "NEXT_TELEMETRY_DISABLED=1 next build",
     "start": "next start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "preview": "NODE_OPTIONS='--no-warnings' opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "deploy": "NODE_OPTIONS='--no-warnings' opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "preview": "NODE_OPTIONS='--no-warnings' pnpm dlx @opennextjs/cloudflare build && pnpm dlx @opennextjs/cloudflare preview",
+    "deploy": "NODE_OPTIONS='--no-warnings' pnpm dlx @opennextjs/cloudflare build && pnpm dlx @opennextjs/cloudflare deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
     "clean-cache": "rimraf .next/cache"
   },
