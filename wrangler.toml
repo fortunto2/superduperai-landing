@@ -1,7 +1,32 @@
+# Конфигурация Cloudflare Workers для проекта на Next.js 15
+
 name = "landing"
-compatibility_date = "2025-05-03"
-compatibility_flags = ["nodejs_compat"]
-main = ".open-next/worker.js"
+main = "./.output/server/index.mjs"
+compatibility_date = "2023-12-01"
+compatibility_flags = ["nodejs_compat", "NO_RESPONSE_COMPRESSION"]
+workers_dev = true
+
+# Настройки для предотвращения ошибок с eval
+[build]
+command = "pnpm build"
+
+# Добавляем переменные окружения для обхода ограничений CSP
+[vars]
+NEXT_SKIP_CSP = "1"
+NEXT_DISABLE_COMPRESSION = "1"
+
+# Настройки для обработки маршрутов
+[[routes]]
+pattern = ".*"
+script = "landing"
+
+# Используем дополнительные настройки безопасности
+[security]
+unsafe_eval = true  # Разрешаем eval для Next.js RSC
+
+# Настройки кэширования
+[site]
+bucket = "./.output/static"
 
 [assets]
 directory = ".open-next/assets"
