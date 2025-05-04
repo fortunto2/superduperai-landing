@@ -1,0 +1,26 @@
+# Конфигурация Cloudflare Workers для проекта на Next.js 15
+
+name = "landing"
+compatibility_date = "2025-03-25"
+compatibility_flags = ["nodejs_compat"]
+main = ".open-next/worker.js"
+
+# Настройки Workers для оптимальной работы с Next.js
+workers_dev = true
+
+# Доступ к ассетам
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
+
+# Настройки окружения для Next.js
+[vars]
+NEXT_SKIP_CSP = "1"
+NEXT_DISABLE_COMPRESSION = "1"
+
+[build]
+command = "pnpm run build"
+
+# Логи для диагностики
+[observability.logs]
+enabled = true

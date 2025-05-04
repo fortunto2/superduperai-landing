@@ -13,9 +13,6 @@ const nextConfig = {
   },
   // Устанавливаем вывод в standalone для оптимальной работы с Cloudflare
   output: 'standalone',
-  // Отключаем инъекцию CSP для совместимости с Cloudflare (перенесено из experimental)
-  skipMiddlewareUrlNormalize: true,
-  skipTrailingSlashRedirect: true,
   // Настройки экспериментальных функций
   experimental: {
     // Оптимизация импортов пакетов
@@ -44,33 +41,7 @@ const nextConfig = {
   // Настройки производительности
   poweredByHeader: false, // Удаляем заголовок X-Powered-By
   // Отключаем source maps в production
-  productionBrowserSourceMaps: false,
-  // Отключаем инъекцию CSP для работы с RSC на Cloudflare
-  headers: async () => {
-    return [
-      {
-        source: '/:path*',
-        headers: [
-          {
-            key: 'X-NextJS-Skip-CSP',
-            value: '1',
-          },
-        ],
-      },
-    ];
-  },
-  // Необходимо для совместимости с Cloudflare Pages
-  webpack: (config, { dev, isServer }) => {
-    // Предотвращаем проблемы с алиасами
-    if (!dev && !isServer) {
-      Object.assign(config.resolve.alias, {
-        'next/dist/compiled/node-fetch': false,
-        'next/dist/compiled/ws': false,
-        'next/dist/compiled/edge-runtime': false
-      });
-    }
-    return config;
-  }
+  productionBrowserSourceMaps: false
 };
 
 module.exports = withContentlayer(nextConfig); 

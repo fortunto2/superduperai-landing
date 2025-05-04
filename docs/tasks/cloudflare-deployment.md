@@ -25,43 +25,83 @@ export default defineCloudflareConfig();
 Создайте файл `wrangler.toml` в корне проекта:
 
 ```toml
-name = "demo-landing"
-compatibility_date = "2025-05-03"
+# Конфигурация Cloudflare Workers для проекта на Next.js 15
+
+name = "landing"
+compatibility_date = "2025-03-25"
 compatibility_flags = ["nodejs_compat"]
 main = ".open-next/worker.js"
 
+# Настройки Workers для оптимальной работы с Next.js
+workers_dev = true
+
+# Доступ к ассетам
 [assets]
 directory = ".open-next/assets"
 binding = "ASSETS"
+
+# Настройки окружения для Next.js
+[vars]
+NEXT_SKIP_CSP = "1"
+NEXT_DISABLE_COMPRESSION = "1"
+
+# Логи для диагностики
+[observability.logs]
+enabled = true
 ```
 
-### 4. Обновление package.json
+### 4. Дополнительная конфигурация для Cloudflare
+
+Создайте файл `cloudflare.conf.ts` для дополнительных настроек:
+
+```typescript
+// Настройка для Cloudflare Pages и Workers
+// См. документацию: https://developers.cloudflare.com/pages/platform/functions/
+
+const config = {
+  // Опционально указываем каталоги, которые необходимо исключить из сборки
+  // includeFiles: [],
+  // excludeFiles: [],
+  
+  // Настройки для правильной обработки маршрутов
+  build: {
+    // Пропускаем проверку директивы content-security-policy
+    bypassCSP: true,
+    // Отключаем сжатие ответов, что помогает избежать проблем с RSC
+    bypassCompression: true,
+  },
+  
+  // Улучшаем кэширование для статических ресурсов
+  caching: {
+    // Включаем агрессивное кэширование для статики
+    cacheControl: {
+      // Настройка для статических ресурсов
+      bypassCache: false,
+      edgeTTL: 60 * 60 * 24 * 365, // 1 год для статики
+      browserTTL: 60 * 60 * 24 * 30, // 30 дней для браузерного кэша
+      // Используем stale-while-revalidate для улучшения производительности
+      staleWhileRevalidate: 60 * 60 * 24, // 1 день
+    },
+  },
+  
+  // Отключаем сжатие для запросов RSC
+  compatibilityFlags: ["NO_RESPONSE_COMPRESSION"],
+};
+
+export default config;
+```
+
+### 5. Обновление package.json
 
 Добавьте следующие скрипты в `package.json`:
 
 ```json
 "scripts": {
+  "build": "NEXT_TELEMETRY_DISABLED=1 next build",
   "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
   "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
   "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
 }
-```
-
-### 5. Конфигурация для CI/CD
-
-Создайте файл `.cloudflare/pages.toml` для настройки CI/CD:
-
-```toml
-[build]
-command = "pnpm deploy"
-[build.environment]
-NODE_VERSION = "20.10.0"
-
-[install]
-command = "pnpm install"
-
-[site]
-bucket = ".open-next/assets"
 ```
 
 ### 6. Настройка CI с GitHub Actions
@@ -130,8 +170,8 @@ Cloudflare предлагает удобный способ автоматиче
 
 ## Требования к версиям
 
-- Next.js: 14.2.0 или выше (рекомендуется 15.x)
-- Node.js: 20.x (рекомендуется 20.10.0)
+- Next.js: 15.x (рекомендуется 15.3.0+)
+- Node.js: 20.x (рекомендуется 20.10.0 или выше)
 
 ## Рабочий процесс
 
