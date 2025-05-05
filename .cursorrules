@@ -38,4 +38,4 @@ pnpm preview
 
 1. !we dont use Cloudflare Pages, use  Workers with @opennextjs/cloudflare
 2. use for links ```import { default as Link } from '@/components/ui/optimized-link';```
-
+3. не запускай pnpm dev каждый раз, скорее всего я его уже включил. делай pnpm lint или pnpm build

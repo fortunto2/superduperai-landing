@@ -22,7 +22,7 @@ export const APP_URLS = {
   LINKEDIN_URL: "https://www.linkedin.com/company/superduperai/",
   
   /** Other links */
-  PAYMENT_URL: "https://payment.superduperai.co",
+  PAYMENT_URL: "https://editor.superduperai.co/payment",
   CALENDLY_URL: "https://calendly.com/superduperai",
   
   /** API documentation URL */
@@ -30,4 +30,7 @@ export const APP_URLS = {
   
   /** Twitter URL */
   TWITTER_URL: "https://twitter.com/superduperai",
+
+  EMAIL: "info@superduperai.co"
+
 }; 

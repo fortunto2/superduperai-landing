@@ -1,3 +1,5 @@
+"use client";
+
 import { useMDXComponent } from 'next-contentlayer2/hooks';
 import { FeatureGrid } from './feature-grid';
 import { Feature } from './feature';
@@ -6,6 +8,7 @@ import { Step } from './step';
 import { CTABox } from './cta-box';
 import { Button } from '@/components/ui/button';
 import { Check } from 'lucide-react';
+import { PricingSection } from './pricing-section';
 
 const components = {
   h1: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
@@ -35,7 +38,8 @@ const components = {
   Step,
   CTABox,
   Button,
-  Check
+  Check,
+  PricingSection
 };
 
 interface MDXProps {
