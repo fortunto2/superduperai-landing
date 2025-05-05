@@ -28,6 +28,9 @@ export const GRADIENTS: Record<PageType, [string, string]> = {
   case: ['#10b981', '#3b82f6']    // Зелено-синий для кейсов
 };
 
+// Статический баннер для главной страницы
+export const HOME_BANNER_PATH = '/images/og/home-banner.webp';
+
 /**
  * Генерирует URL для OG-изображения
  */
@@ -36,6 +39,11 @@ function generateOGImageUrl(
   description: string, 
   meta?: PageMeta
 ): string {
+  // Если это главная страница - используем статический баннер
+  if (meta?.pageType === 'home') {
+    return HOME_BANNER_PATH;
+  }
+  
   const params = new URLSearchParams();
   
   // Добавляем базовые параметры
@@ -71,7 +79,7 @@ export function generatePageMetadata({
   meta?: PageMeta;
 }): Metadata {
   // Получаем изображение для OG - сначала пытаемся использовать переданное,
-  // а если его нет, генерируем динамически
+  // а если его нет, генерируем динамически или берем статический баннер для главной
   const image = ogImage || generateOGImageUrl(title, description, meta);
 
   // Добавляем дополнительную информацию для серверного API
@@ -81,6 +89,11 @@ export function generatePageMetadata({
     if (meta.category) customMeta['x-category'] = meta.category;
     if (meta.gradient) customMeta['x-gradient'] = meta.gradient.join(',');
   }
+
+  // Определяем размеры изображения
+  // Для статического баннера главной страницы могут быть свои размеры
+  const width = meta?.pageType === 'home' ? 1200 : OG_IMAGE_SIZE.width;
+  const height = meta?.pageType === 'home' ? 630 : OG_IMAGE_SIZE.height;
 
   return {
     title,
@@ -96,8 +109,8 @@ export function generatePageMetadata({
       images: [
         {
           url: image,
-          width: OG_IMAGE_SIZE.width,
-          height: OG_IMAGE_SIZE.height,
+          width,
+          height,
           alt: title
         }
       ]
