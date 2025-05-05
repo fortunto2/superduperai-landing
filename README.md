@@ -20,6 +20,30 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Google Tag Manager Setup
+
+This project includes Google Tag Manager integration using `@next/third-parties`.
+
+To configure Google Tag Manager:
+
+1. Create a `.env.local` file in the root directory of your project
+2. Add your Google Tag Manager ID:
+   ```
+   NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID=GTM-XXXXXXX
+   ```
+3. Replace `GTM-XXXXXXX` with your actual Google Tag Manager ID
+
+After configuring, restart the development server if it's running. The Google Tag Manager integration will be automatically included in all pages of your application.
+
+### Development Mode Behavior
+
+By default, Google Tag Manager is **not loaded** in development mode to prevent unnecessary tracking during development. This behavior can be changed if needed:
+
+```tsx
+// To enable GTM in development mode, modify in src/app/layout.tsx:
+<AnalyticsProviders skipInDevelopment={false} />
+```
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

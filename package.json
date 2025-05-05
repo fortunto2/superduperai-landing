@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@next/mdx": "^15.3.1",
+    "@next/third-parties": "^15.3.1",
     "@radix-ui/react-accordion": "^1.2.8",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-switch": "^1.2.2",
