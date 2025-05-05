@@ -24,6 +24,7 @@ export async function PageList() {
             <Link 
               href={href}
               className="hover:text-primary transition-colors duration-300"
+              title={`${title} - SuperDuperAI`}
             >
               {title}
             </Link>

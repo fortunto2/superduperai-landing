@@ -8,6 +8,7 @@ interface OptimizedLinkProps extends LinkProps {
   children: React.ReactNode;
   target?: string;
   rel?: string;
+  title?: string;
 }
 
 /**
@@ -20,10 +21,11 @@ const OptimizedLink = ({
   children,
   target,
   rel,
+  title,
   ...props
 }: OptimizedLinkProps) => {
   return (
-    <Link {...props} prefetch={prefetch} className={className} target={target} rel={rel}>
+    <Link {...props} prefetch={prefetch} className={className} target={target} rel={rel} title={title}>
       {children}
     </Link>
   );

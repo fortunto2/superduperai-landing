@@ -17,6 +17,7 @@ export async function CaseList() {
             <Link 
               href={href}
               className="hover:text-primary transition-colors duration-300"
+              title={`${caseItem.title} - Case Study by SuperDuperAI`}
             >
               {caseItem.title}
             </Link>
@@ -27,6 +28,7 @@ export async function CaseList() {
         <Link 
           href="/case"
           className="text-primary font-medium hover:text-primary/80 transition-colors duration-300"
+          title="View all SuperDuperAI use cases and case studies"
         >
           View All Use Cases →
         </Link>

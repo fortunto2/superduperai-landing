@@ -24,6 +24,7 @@ export function Breadcrumbs({
           <Link 
             href={homeHref}
             className="text-muted-foreground hover:text-accent transition-colors"
+            title="Home - SuperDuperAI"
           >
             <Home className="h-4 w-4" />
             <span className="sr-only">Главная</span>
@@ -37,6 +38,7 @@ export function Breadcrumbs({
               <Link 
                 href={item.href}
                 className="text-muted-foreground hover:text-accent transition-colors"
+                title={`${item.label} - SuperDuperAI`}
               >
                 {item.label}
               </Link>

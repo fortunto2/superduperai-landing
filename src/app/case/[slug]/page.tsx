@@ -3,6 +3,7 @@ import { MDXContent } from '@/components/content/mdx-components';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { PageWrapper } from '@/components/content/page-wrapper';
+import { generatePageMetadata, GRADIENTS } from '@/lib/metadata';
 
 interface PageProps {
   params: Promise<{
@@ -18,11 +19,22 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return {};
   }
   
-  return {
-    title: caseItem.seo?.title || caseItem.title,
-    description: caseItem.seo?.description || caseItem.description,
+  const title = caseItem.seo?.title || caseItem.title;
+  const description = caseItem.seo?.description || caseItem.description;
+  
+  return generatePageMetadata({
+    title,
+    description,
     keywords: caseItem.seo?.keywords || [],
-  };
+    url: `/case/${slug}`,
+    ogImage: caseItem.seo?.ogImage || caseItem.image,
+    type: 'article',
+    meta: {
+      pageType: 'case',
+      category: caseItem.category,
+      gradient: GRADIENTS.case
+    }
+  });
 }
 
 export async function generateStaticParams() {

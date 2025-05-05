@@ -95,6 +95,9 @@ export function PricingSection() {
           <Link
             href={APP_URLS.EDITOR_URL}
             className="inline-flex items-center gap-2 bg-amber-600 hover:bg-amber-700 text-white px-6 py-2.5 rounded-lg font-medium transition-colors"
+
+
+            title="Start creating with SuperDuperAI"
           >
             Start Creating Now
             <ArrowRight className="h-4 w-4" />
@@ -184,6 +187,7 @@ export function PricingSection() {
                       ? "bg-gradient-to-r from-green-600 to-emerald-600 text-white hover:from-green-700 hover:to-emerald-700" 
                       : "bg-gray-800 text-gray-100 hover:bg-gray-700"
                   )}
+                  title={`${plan.cta} ${plan.name} plan`}
                 >
                   {plan.cta}
                 </Link>
@@ -213,6 +217,7 @@ export function PricingSection() {
             <Link
               href="/creators"
               className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              title="Learn more about SuperDuperAI Creative Partnership Program"
             >
               Learn More
               <ArrowRight className="h-3.5 w-3.5" />
@@ -221,6 +226,7 @@ export function PricingSection() {
             <Link
               href={`mailto:${APP_URLS.EMAIL}?subject=Creative Partnership Application`}
               className="inline-flex items-center gap-2 bg-transparent border border-indigo-600/50 hover:bg-indigo-800/20 text-indigo-300 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              title="Apply to SuperDuperAI Creative Partnership Program via Email"
             >
               Apply via Email
             </Link>
@@ -232,6 +238,7 @@ export function PricingSection() {
         <Link
           href="/privacy"
           className="text-sm text-gray-500 hover:text-gray-400 transition-colors"
+          title="Privacy Policy - SuperDuperAI"
         >
           Privacy policy
         </Link>

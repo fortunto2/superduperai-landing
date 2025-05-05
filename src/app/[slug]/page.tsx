@@ -3,6 +3,7 @@ import { allPages } from ".contentlayer/generated";
 import { notFound } from "next/navigation";
 import { MDXContent } from "@/components/content/mdx-components";
 import { PageWrapper } from "@/components/content/page-wrapper";
+import { generatePageMetadata, GRADIENTS } from "@/lib/metadata";
 
 interface PageProps {
   params: Promise<{
@@ -28,11 +29,29 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
   
-  return {
-    title: page.seo?.title || page.title,
-    description: page.seo?.description || page.description,
+  const title = page.seo?.title || page.title;
+  const description = page.seo?.description || page.description;
+  
+  // Форматируем слаг для отображения в OpenGraph изображении
+  const formattedSlug = slug
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+  
+  // В метаданных передаем информацию для OG-изображения
+  return generatePageMetadata({
+    title,
+    description,
     keywords: page.seo?.keywords || [],
-  };
+    url: `/${slug}`,
+    ogImage: page.seo?.ogImage,
+    type: 'website',
+    meta: {
+      pageType: 'page',
+      category: formattedSlug,
+      gradient: GRADIENTS.page
+    }
+  });
 }
 
 // Функция для проверки наличия H1 в MDX контенте

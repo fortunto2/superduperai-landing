@@ -32,6 +32,7 @@ export function Footer() {
               <a 
                 href="mailto:info@superduperai.co" 
                 className="hover:text-primary transition-colors duration-300"
+                title="Email SuperDuperAI"
               >
                 info@superduperai.co
               </a>
@@ -42,22 +43,38 @@ export function Footer() {
             <h3 className="text-xl font-bold">Pages</h3>
             <ul className="space-y-2 text-muted-foreground">
               <li>
-                <Link href={APP_URLS.ABOUT_URL} className="hover:text-primary transition-colors duration-300">
+                <Link 
+                  href={APP_URLS.ABOUT_URL} 
+                  className="hover:text-primary transition-colors duration-300"
+                  title="About SuperDuperAI"
+                >
                   About
                 </Link>
               </li>
               <li>
-                <Link href={APP_URLS.PRICING_URL} className="hover:text-primary transition-colors duration-300">
+                <Link 
+                  href={APP_URLS.PRICING_URL} 
+                  className="hover:text-primary transition-colors duration-300"
+                  title="SuperDuperAI Pricing Plans"
+                >
                   Pricing
                 </Link>
               </li>
               <li>
-                <Link href={APP_URLS.TERMS_URL} className="hover:text-primary transition-colors duration-300">
+                <Link 
+                  href={APP_URLS.TERMS_URL} 
+                  className="hover:text-primary transition-colors duration-300"
+                  title="Terms and Conditions - SuperDuperAI"
+                >
                   Terms and Conditions
                 </Link>
               </li>
               <li>
-                <Link href={APP_URLS.PRIVACY_URL} className="hover:text-primary transition-colors duration-300">
+                <Link 
+                  href={APP_URLS.PRIVACY_URL} 
+                  className="hover:text-primary transition-colors duration-300"
+                  title="Privacy Policy - SuperDuperAI"
+                >
                   Privacy
                 </Link>
               </li>
@@ -65,8 +82,9 @@ export function Footer() {
                 <a 
                   href={APP_URLS.CALENDLY_URL}
                   target="_blank" 
-                  rel="noopener noreferrer" 
+                  rel="noopener noreferrer nofollow" 
                   className="hover:text-primary transition-colors duration-300"
+                  title="Book a demo of SuperDuperAI"
                 >
                   Book a Demo
                 </a>
@@ -96,54 +114,60 @@ export function Footer() {
             <a 
               href={APP_URLS.INSTAGRAM_URL}
               target="_blank" 
-              rel="noopener noreferrer" 
+              rel="noopener noreferrer nofollow" 
               className="hover:text-primary transition-colors duration-300"
               aria-label="Instagram"
+              title="Follow SuperDuperAI on Instagram"
             >
               <InstagramIcon className="h-5 w-5" />
             </a>
             <a 
               href={APP_URLS.YOUTUBE_URL}
               target="_blank" 
-              rel="noopener noreferrer" 
+              rel="noopener noreferrer nofollow" 
               className="hover:text-primary transition-colors duration-300"
               aria-label="YouTube"
+              title="Subscribe to SuperDuperAI on YouTube"
             >
               <YoutubeIcon className="h-5 w-5" />
             </a>
             <a 
               href={APP_URLS.TELEGRAM_URL}
               target="_blank" 
-              rel="noopener noreferrer" 
+              rel="noopener noreferrer nofollow" 
               className="hover:text-primary transition-colors duration-300"
               aria-label="Telegram"
+              title="Join SuperDuperAI on Telegram"
             >
               <TelegramIcon className="h-5 w-5" />
             </a>
             <a 
               href={APP_URLS.TIKTOK_URL}
               target="_blank" 
-              rel="noopener noreferrer" 
+              rel="noopener noreferrer nofollow" 
               className="hover:text-primary transition-colors duration-300"
               aria-label="TikTok"
+              title="Follow SuperDuperAI on TikTok"
             >
               <TiktokIcon className="h-5 w-5" />
             </a>
             <a 
               href={APP_URLS.DISCORD_URL}
               target="_blank" 
-              rel="noopener noreferrer" 
+              rel="noopener noreferrer nofollow" 
               className="hover:text-primary transition-colors duration-300"
               aria-label="Discord"
+              title="Join SuperDuperAI Discord server"
             >
               <DiscordIcon className="h-5 w-5" />
             </a>
             <a 
               href={APP_URLS.LINKEDIN_URL}
               target="_blank" 
-              rel="noopener noreferrer" 
+              rel="noopener noreferrer nofollow" 
               className="hover:text-primary transition-colors duration-300"
               aria-label="LinkedIn"
+              title="Connect with SuperDuperAI on LinkedIn"
             >
               <LinkedInIcon className="h-5 w-5" />
             </a>

@@ -10,15 +10,25 @@ import { VideoShowcase } from '@/components/landing/video-showcase';
 import { FAQ } from '@/components/landing/faq';
 import { Metadata } from "next";
 import { allHomes } from ".contentlayer/generated";
+import { generatePageMetadata, GRADIENTS } from '@/lib/metadata';
 
 export async function generateMetadata(): Promise<Metadata> {
   const home = allHomes[0];
   
-  return {
-    title: home.seo?.title || home.title,
-    description: home.seo?.description || home.description,
+  const title = home.seo?.title || home.title;
+  const description = home.seo?.description || home.description;
+  
+  return generatePageMetadata({
+    title,
+    description,
     keywords: home.seo?.keywords || [],
-  };
+    url: '/',
+    ogImage: home.seo?.ogImage,
+    meta: {
+      pageType: 'home',
+      gradient: GRADIENTS.home
+    }
+  });
 }
 
 export default function Home() {

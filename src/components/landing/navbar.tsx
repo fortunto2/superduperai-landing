@@ -33,7 +33,7 @@ export function Navbar() {
     >
       <div className="container flex items-center justify-between">
         {/* Логотип */}
-        <Link href="/" className="font-bold text-xl md:text-2xl flex items-center">
+        <Link href="/" className="font-bold text-xl md:text-2xl flex items-center" title="SuperDuperAI - Home">
           <Logo className="" />
           <span className="text-accent">Super</span>DuperAI
         </Link>
@@ -43,18 +43,21 @@ export function Navbar() {
           <Link
             href="/"
             className="text-muted-foreground hover:text-accent transition-colors"
+            title="SuperDuperAI - Home"
           >
             Home
           </Link>
           <Link
             href="/about"
             className="text-muted-foreground hover:text-accent transition-colors"
+            title="About SuperDuperAI"
           >
             About
           </Link>
           <Link
             href="/pricing"
             className="text-muted-foreground hover:text-accent transition-colors"
+            title="SuperDuperAI Pricing Plans"
           >
             Pricing
           </Link>
@@ -63,12 +66,12 @@ export function Navbar() {
         {/* Кнопки действий - скрыты на мобильных */}
         <div className="hidden md:flex items-center gap-4">
           <Button variant="outline" size="sm" className="border-accent/50 hover:border-accent/80 hover:text-accent" asChild>
-            <a href={APP_URLS.DISCORD_URL} target="_blank" rel="noopener noreferrer">
+            <a href={APP_URLS.DISCORD_URL} target="_blank" rel="noopener noreferrer nofollow" title="Join SuperDuperAI Discord Community">
               Discord
             </a>
           </Button>
           <Button size="sm" className="bg-accent hover:bg-accent/90 text-accent-foreground" asChild>
-            <a href={APP_URLS.EDITOR_URL} target="_blank" rel="noopener noreferrer">
+            <a href={APP_URLS.EDITOR_URL} target="_blank" rel="noopener noreferrer nofollow" title="Start Creating with SuperDuperAI">
               Start For Free
             </a>
           </Button>
@@ -101,6 +104,7 @@ export function Navbar() {
                 href="/"
                 className="text-muted-foreground hover:text-accent transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
+                title="SuperDuperAI - Home"
               >
                 Home
               </Link>
@@ -108,6 +112,7 @@ export function Navbar() {
                 href="/about"
                 className="text-muted-foreground hover:text-accent transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
+                title="About SuperDuperAI"
               >
                 About
               </Link>
@@ -115,6 +120,7 @@ export function Navbar() {
                 href="/pricing"
                 className="text-muted-foreground hover:text-accent transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
+                title="SuperDuperAI Pricing Plans"
               >
                 Pricing
               </Link>
@@ -122,6 +128,7 @@ export function Navbar() {
                 href="/terms"
                 className="text-muted-foreground hover:text-accent transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
+                title="Terms and Conditions - SuperDuperAI"
               >
                 Terms
               </Link>
@@ -129,18 +136,19 @@ export function Navbar() {
                 href="/privacy"
                 className="text-muted-foreground hover:text-accent transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
+                title="Privacy Policy - SuperDuperAI"
               >
                 Privacy
               </Link>
             </nav>
             <div className="flex flex-col gap-3 mt-2">
               <Button variant="outline" size="sm" className="w-full border-accent/50 hover:border-accent/80 hover:text-accent" asChild>
-                <a href="https://discord.gg/superduperai" target="_blank" rel="noopener noreferrer">
+                <a href="https://discord.gg/superduperai" target="_blank" rel="noopener noreferrer nofollow" title="Join SuperDuperAI Discord Community">
                   Discord
                 </a>
               </Button>
               <Button size="sm" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" asChild>
-                <a href={APP_URLS.EDITOR_URL} target="_blank" rel="noopener noreferrer">
+                <a href={APP_URLS.EDITOR_URL} target="_blank" rel="noopener noreferrer nofollow" title="Start Creating with SuperDuperAI">
                   Start For Free
                 </a>
               </Button>

@@ -4,11 +4,18 @@ import Image from 'next/image';
 import { Metadata } from 'next';
 import { Navbar } from '@/components/landing/navbar';
 import { Footer } from '@/components/landing/footer';
+import { generatePageMetadata, GRADIENTS } from '@/lib/metadata';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = generatePageMetadata({
   title: 'Use Cases | SuperDuperAI',
   description: 'Discover how different industries use SuperDuperAI',
-};
+  url: '/case',
+  meta: {
+    pageType: 'case',
+    category: 'Case Studies',
+    gradient: GRADIENTS.case
+  }
+});
 
 export default function CasesPage() {
   const sortedCases = allCases.sort((a, b) => {

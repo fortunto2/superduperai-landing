@@ -39,8 +39,9 @@ export function ApprovedBy() {
               key={partner.name}
               href={partner.url}
               target="_blank"
-              rel="noopener noreferrer"
+              rel="noopener noreferrer nofollow"
               className="opacity-80 hover:opacity-100 transition-opacity duration-300"
+              title={`${partner.name} for Startups - SuperDuperAI Partner`}
             >
               {partner.name === "Microsoft" && (
                 <MicrosoftIcon size={360} className="h-64 w-auto" />

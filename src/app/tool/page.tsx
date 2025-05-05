@@ -3,11 +3,18 @@ import { default as Link } from '@/components/ui/optimized-link';
 import { Metadata } from 'next';
 import { Navbar } from '@/components/landing/navbar';
 import { Footer } from '@/components/landing/footer';
+import { generatePageMetadata, GRADIENTS } from '@/lib/metadata';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = generatePageMetadata({
   title: 'AI Tools | SuperDuperAI',
   description: 'Explore our advanced AI tools for content creation',
-};
+  url: '/tool',
+  meta: {
+    pageType: 'tool',
+    category: 'Tools',
+    gradient: GRADIENTS.tool
+  }
+});
 
 export default function ToolsPage() {
   

@@ -17,6 +17,7 @@ export async function ToolList() {
             <Link 
               href={href}
               className="hover:text-primary transition-colors duration-300"
+              title={`${tool.title} - AI tool by SuperDuperAI`}
             >
               {tool.title}
             </Link>
@@ -27,6 +28,7 @@ export async function ToolList() {
         <Link 
           href="/tool"
           className="text-primary font-medium hover:text-primary/80 transition-colors duration-300"
+          title="View all SuperDuperAI tools"
         >
           View All Tools →
         </Link>

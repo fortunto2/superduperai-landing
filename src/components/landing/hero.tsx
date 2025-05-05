@@ -73,7 +73,7 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
         >
           <Button size="lg" className="text-lg px-8 btn-accent" asChild>
-            <a href={APP_URLS.EDITOR_URL} target="_blank" rel="noopener noreferrer">
+            <a href={APP_URLS.EDITOR_URL} target="_blank" rel="noopener noreferrer nofollow" title="Start creating videos with SuperDuperAI">
               Start Creating for Free
             </a>
           </Button>
@@ -97,6 +97,7 @@ export function Hero() {
                 <Image
                   src={slide}
                   alt={`SuperDuperAI screenshot ${index + 1}`}
+                  title={`SuperDuperAI video creation platform - screenshot ${index + 1}`}
                   fill
                   className="object-contain"
                   priority={index === 0}
@@ -109,6 +110,7 @@ export function Hero() {
               onClick={prevSlide}
               className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-colors z-10"
               aria-label="Previous slide"
+              title="View previous screenshot"
             >
               <ChevronLeft className="h-6 w-6" />
             </button>
@@ -117,6 +119,7 @@ export function Hero() {
               onClick={nextSlide}
               className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-colors z-10"
               aria-label="Next slide"
+              title="View next screenshot"
             >
               <ChevronRight className="h-6 w-6" />
             </button>
@@ -131,6 +134,7 @@ export function Hero() {
                     index === currentSlide ? "bg-white" : "bg-white/40 hover:bg-white/60"
                   }`}
                   aria-label={`Go to slide ${index + 1}`}
+                  title={`View screenshot ${index + 1}`}
                 />
               ))}
             </div>

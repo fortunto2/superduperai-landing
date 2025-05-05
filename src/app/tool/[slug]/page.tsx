@@ -3,6 +3,7 @@ import { MDXContent } from '@/components/content/mdx-components';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { PageWrapper } from '@/components/content/page-wrapper';
+import { generatePageMetadata, GRADIENTS } from '@/lib/metadata';
 
 interface PageProps {
   params: Promise<{
@@ -18,11 +19,22 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return {};
   }
   
-  return {
-    title: tool.seo?.title || tool.title,
-    description: tool.seo?.description || tool.description,
+  const title = tool.seo?.title || tool.title;
+  const description = tool.seo?.description || tool.description;
+  
+  return generatePageMetadata({
+    title,
+    description,
     keywords: tool.seo?.keywords || [],
-  };
+    url: `/tool/${slug}`,
+    ogImage: tool.seo?.ogImage,
+    type: 'article',
+    meta: {
+      pageType: 'tool',
+      category: 'Tool',
+      gradient: GRADIENTS.tool
+    }
+  });
 }
 
 export async function generateStaticParams() {
