@@ -30,6 +30,7 @@ export * from "./tiktok";
 export * from "./youtube";
 export * from "./instagram";
 export * from "./microsoft";
+export * from "./linkedin";
 
 export const Icons: Record<string, LucideIcon> = {
   image: Image,

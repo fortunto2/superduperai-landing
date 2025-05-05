@@ -8,31 +8,28 @@ export async function PageList() {
   // Получаем остальные страницы, такие как creators и возможные будущие страницы
   const otherPages = allPages.filter(page => !excludedSlugs.includes(page.slug));
 
-  // Если нет страниц, которые надо отобразить - возвращаем null
+  // Если нет страниц, которые надо отобразить - возвращаем пустой фрагмент
   if (otherPages.length === 0) {
-    return null;
+    return <></>;
   }
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-xl font-bold">More</h3>
-      <ul className="space-y-2 text-muted-foreground">
-        {otherPages.map((page) => {
-          const title = page.title.split(' - ')[0];
-          const href = `/${page.slug}`;
-          
-          return (
-            <li key={page.slug}>
-              <Link 
-                href={href}
-                className="hover:text-primary transition-colors duration-300"
-              >
-                {title}
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
+    <>
+      {otherPages.map((page) => {
+        const title = page.title.split(' - ')[0];
+        const href = `/${page.slug}`;
+        
+        return (
+          <li key={page.slug}>
+            <Link 
+              href={href}
+              className="hover:text-primary transition-colors duration-300"
+            >
+              {title}
+            </Link>
+          </li>
+        );
+      })}
+    </>
   );
 } 

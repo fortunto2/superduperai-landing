@@ -27,11 +27,11 @@ export default function Home() {
       <Navbar />
       <main className="flex-1">
         <Hero />
-        <ApprovedBy />
-        <Features />
         <HowItWorks />
-        <VideoShowcase />
+        <Features />
         <CaseUseCases />
+        <VideoShowcase />
+        <ApprovedBy />
         <FAQ />
         <CTA />
       </main>

@@ -5,7 +5,8 @@ import {
   InstagramIcon,
   TelegramIcon,
   TiktokIcon,
-  YoutubeIcon
+  YoutubeIcon,
+  LinkedInIcon
 } from "../ui/icons";
 
 // Не импортируем contentlayer на стороне клиента, чтобы избежать ошибок
@@ -20,8 +21,8 @@ export function Footer() {
   return (
     <footer className="w-full py-12 bg-card/50 border-t border-border/50">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8">
-          <div className="space-y-4 lg:col-span-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="space-y-4">
             <h3 className="text-xl font-bold">SuperDuperAI</h3>
             <div className="text-muted-foreground space-y-2">
               <p>SuperDuperAi, Corp.</p>
@@ -38,7 +39,7 @@ export function Footer() {
           </div>
           
           <div className="space-y-4">
-            <h3 className="text-xl font-bold">Links</h3>
+            <h3 className="text-xl font-bold">Pages</h3>
             <ul className="space-y-2 text-muted-foreground">
               <li>
                 <Link href={APP_URLS.ABOUT_URL} className="hover:text-primary transition-colors duration-300">
@@ -70,6 +71,9 @@ export function Footer() {
                   Book a Demo
                 </a>
               </li>
+              
+              {/* Добавляем остальные страницы из PageList компонента прямо здесь */}
+              <PageList />
             </ul>
           </div>
           
@@ -81,45 +85,6 @@ export function Footer() {
           <div className="space-y-4">
             <h3 className="text-xl font-bold">Use Cases</h3>
             <CaseList />
-          </div>
-          
-          {/* Добавляем PageList - он автоматически не покажется, если страниц нет */}
-          <PageList />
-          
-          <div className="space-y-4">
-            <h3 className="text-xl font-bold">Community</h3>
-            <ul className="space-y-2 text-muted-foreground">
-              <li>
-                <a 
-                  href={APP_URLS.DISCORD_URL}
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="hover:text-primary transition-colors duration-300"
-                >
-                  Discord
-                </a>
-              </li>
-              <li>
-                <a 
-                  href={APP_URLS.TRUSTPILOT_URL}
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="hover:text-primary transition-colors duration-300"
-                >
-                  Trustpilot
-                </a>
-              </li>
-              <li>
-                <a 
-                  href={APP_URLS.LINKEDIN_URL}
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="hover:text-primary transition-colors duration-300"
-                >
-                  LinkedIn
-                </a>
-              </li>
-            </ul>
           </div>
         </div>
         
@@ -133,6 +98,7 @@ export function Footer() {
               target="_blank" 
               rel="noopener noreferrer" 
               className="hover:text-primary transition-colors duration-300"
+              aria-label="Instagram"
             >
               <InstagramIcon className="h-5 w-5" />
             </a>
@@ -141,6 +107,7 @@ export function Footer() {
               target="_blank" 
               rel="noopener noreferrer" 
               className="hover:text-primary transition-colors duration-300"
+              aria-label="YouTube"
             >
               <YoutubeIcon className="h-5 w-5" />
             </a>
@@ -149,6 +116,7 @@ export function Footer() {
               target="_blank" 
               rel="noopener noreferrer" 
               className="hover:text-primary transition-colors duration-300"
+              aria-label="Telegram"
             >
               <TelegramIcon className="h-5 w-5" />
             </a>
@@ -157,6 +125,7 @@ export function Footer() {
               target="_blank" 
               rel="noopener noreferrer" 
               className="hover:text-primary transition-colors duration-300"
+              aria-label="TikTok"
             >
               <TiktokIcon className="h-5 w-5" />
             </a>
@@ -165,8 +134,18 @@ export function Footer() {
               target="_blank" 
               rel="noopener noreferrer" 
               className="hover:text-primary transition-colors duration-300"
+              aria-label="Discord"
             >
               <DiscordIcon className="h-5 w-5" />
+            </a>
+            <a 
+              href={APP_URLS.LINKEDIN_URL}
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="hover:text-primary transition-colors duration-300"
+              aria-label="LinkedIn"
+            >
+              <LinkedInIcon className="h-5 w-5" />
             </a>
           </div>
         </div>
