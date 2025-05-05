@@ -1,5 +1,5 @@
 import { allTools, type Tool } from '.contentlayer/generated';
-import Link from 'next/link';
+import { default as Link } from '@/components/ui/optimized-link';
 import { Metadata } from 'next';
 import { Navbar } from '@/components/landing/navbar';
 import { Footer } from '@/components/landing/footer';

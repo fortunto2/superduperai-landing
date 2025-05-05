@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { default as Link } from "@/components/ui/optimized-link";
 import { Menu, X } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
 import { APP_URLS } from "@/lib/constants";

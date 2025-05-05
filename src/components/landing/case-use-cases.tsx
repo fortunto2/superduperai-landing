@@ -6,7 +6,7 @@ import { Play, Store, Music, Users } from "lucide-react";
 import { Icons } from "@/components/ui/icons";
 import { LucideIcon } from "lucide-react";
 import { allCases, type Case } from '.contentlayer/generated';
-import Link from "next/link";
+import { default as Link } from "@/components/ui/optimized-link";
 
 // Animation for container
 const containerVariants = {

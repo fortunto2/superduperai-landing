@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { default as Link } from "@/components/ui/optimized-link";
 import { ChevronRight, Home } from "lucide-react";
 
 interface BreadcrumbItem {

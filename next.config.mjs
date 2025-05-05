@@ -1,4 +1,5 @@
-const { withContentlayer } = require('next-contentlayer2');
+import { withContentlayer } from 'next-contentlayer2';
+import path from 'path';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -33,7 +34,7 @@ const nextConfig = {
   turbopack: {
     // Определяем алиасы для путей
     resolveAlias: {
-      '@': './src',
+      '@': path.resolve('./src'),
     },
     // Расширения файлов для автоматического разрешения
     resolveExtensions: ['.mdx', '.tsx', '.ts', '.jsx', '.js', '.mjs', '.json'],
@@ -50,12 +51,15 @@ const nextConfig = {
     if (isServer) {
       config.externals = [...config.externals, 'esbuild'];
     }
-
+    
+    // Игнорируем предупреждения ContentLayer
+    config.infrastructureLogging = {
+      level: 'error',
+      ...config.infrastructureLogging,
+    };
+    
     return config;
   },
-  // Генерируем все страницы во время сборки, чтобы избежать eval() в рантайме
-  staticPrefetch: true,
-  staticPageGenerationMode: 'force',
 };
 
-module.exports = withContentlayer(nextConfig); 
+export default withContentlayer(nextConfig);

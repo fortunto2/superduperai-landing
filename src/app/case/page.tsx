@@ -1,5 +1,5 @@
 import { allCases, type Case } from '.contentlayer/generated';
-import Link from 'next/link';
+import { default as Link } from '@/components/ui/optimized-link';
 import Image from 'next/image';
 import { Metadata } from 'next';
 import { Navbar } from '@/components/landing/navbar';

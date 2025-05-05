@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { default as Link } from "@/components/ui/optimized-link";
 import { MicrosoftIcon } from "../ui/icons";
 
 export function ApprovedBy() {
@@ -47,6 +47,28 @@ export function ApprovedBy() {
               )}
             </Link>
           ))}
+        </div>
+        <div className="mt-8 text-center">
+          <Link
+            href="/case"
+            className="inline-flex items-center text-accent text-lg font-medium hover:underline"
+          >
+            See Case Studies
+            <svg
+              className="ml-2 w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M14 5l7 7m0 0l-7 7m7-7H3"
+              />
+            </svg>
+          </Link>
         </div>
       </div>
     </section>

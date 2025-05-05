@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'next/link';
+import { default as Link } from '@/components/ui/optimized-link';
 import { ArrowRight } from 'lucide-react';
 
 interface CTABoxProps {
