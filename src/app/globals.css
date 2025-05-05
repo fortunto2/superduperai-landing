@@ -33,6 +33,9 @@
     --border: 0 0% 90%;
     --input: 0 0% 90%;
     --ring: 0 0% 63%;
+    
+    /* View Transition переменные */
+    --view-transition-duration: 300ms;
   }
 
   .dark {
@@ -73,6 +76,27 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+  
+  /* Настройки View Transitions */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: var(--view-transition-duration);
+    animation-timing-function: ease-in-out;
+  }
+  
+  /* Настройки анимации для карточек */
+  ::view-transition-old(card-transition),
+  ::view-transition-new(card-transition) {
+    animation-duration: calc(var(--view-transition-duration) * 1.2);
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Настройки анимации для плавающих элементов */
+  ::view-transition-old(floating-element),
+  ::view-transition-new(floating-element) {
+    animation-duration: var(--view-transition-duration);
+    animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 }
 
@@ -144,5 +168,16 @@
     to {
       transform: rotate(360deg);
     }
+  }
+  
+  /* Компоненты с поддержкой View Transitions */
+  .transition-card {
+    @apply bg-card border border-border rounded-lg p-4 transition-all duration-300;
+    view-transition-name: card-transition;
+  }
+  
+  .floating-element {
+    @apply transition-transform duration-300 hover:-translate-y-1;
+    view-transition-name: floating-element;
   }
 }

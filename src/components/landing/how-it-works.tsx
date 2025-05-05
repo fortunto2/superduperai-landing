@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { LightbulbIcon, Bot, SlidersHorizontal } from "lucide-react";
+import { ScaleTransition, SlideTransition, RotateTransition } from "@/components/ui/slide-transition";
 
 // Animation for container
 const containerVariants = {
@@ -61,12 +62,16 @@ export function HowItWorks({ steps: propSteps }: HowItWorksProps) {
     <section className="py-24 bg-muted/30 gradient-section">
       <div className="container">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tighter mb-4">
-            How It <span className="neon-text">Works</span>
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Direct your video in 3 easy steps – AI agents handle the rest.
-          </p>
+          <SlideTransition name="how-title" direction="vertical" distance={15} duration={400}>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter mb-4">
+              How It <RotateTransition name="how-title-accent" duration={600}><span className="neon-text">Works</span></RotateTransition>
+            </h2>
+          </SlideTransition>
+          <SlideTransition name="how-description" direction="vertical" distance={15} duration={500}>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Direct your video in 3 easy steps – AI agents handle the rest.
+            </p>
+          </SlideTransition>
         </div>
 
         <motion.div 
@@ -79,17 +84,32 @@ export function HowItWorks({ steps: propSteps }: HowItWorksProps) {
           {steps.map((step, index) => (
             <motion.div 
               key={index}
-              className="relative card-enhanced p-8 flex flex-col items-center text-center hover:translate-y-[-5px]"
               variants={itemVariants}
             >
-              <div className="bg-accent/10 p-4 rounded-full mb-6 text-accent glassmorphism">
-                {icons[index % icons.length]}
-              </div>
-              <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
-              <p className="text-muted-foreground">{step.description}</p>
-              <div className="absolute top-8 right-8 font-bold text-5xl text-accent/10 neon-text opacity-20">
-                {index + 1}
-              </div>
+              <ScaleTransition 
+                name={`how-step-${index}`} 
+                startScale={0.92}
+                endScale={0.92}
+                duration={400}
+              >
+                <div className="relative card-enhanced p-8 flex flex-col items-center text-center hover:translate-y-[-5px]">
+                  <div className="bg-accent/10 p-4 rounded-full mb-6 text-accent glassmorphism">
+                    {icons[index % icons.length]}
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
+                  <p className="text-muted-foreground">{step.description}</p>
+                  <RotateTransition 
+                    name={`how-number-${index}`}
+                    startAngle={5}
+                    endAngle={-5}
+                    duration={400}
+                  >
+                    <div className="absolute top-8 right-8 font-bold text-5xl text-accent/10 neon-text opacity-20">
+                      {index + 1}
+                    </div>
+                  </RotateTransition>
+                </div>
+              </ScaleTransition>
             </motion.div>
           ))}
         </motion.div>

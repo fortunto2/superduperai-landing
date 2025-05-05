@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { UserCircle } from "lucide-react";
 import { Icons } from "@/components/ui/icons";
 import { LucideIcon } from "lucide-react";
+import { TransitionCard } from "@/components/ui/view-transition";
 
 // Animation for container
 const containerVariants = {
@@ -96,14 +97,15 @@ export function Features({ items }: FeaturesProps) {
             return (
               <motion.div 
                 key={index}
-                className="flex flex-col card-enhanced p-6 hover:translate-y-[-5px]"
                 variants={itemVariants}
               >
-                <div className="p-3 rounded-full bg-accent/10 text-accent w-fit mb-4 glassmorphism">
-                  <IconComponent className="h-8 w-8" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                <p className="text-muted-foreground">{feature.description}</p>
+                <TransitionCard className="flex flex-col card-enhanced p-6 hover:translate-y-[-5px]">
+                  <div className="p-3 rounded-full bg-accent/10 text-accent w-fit mb-4 glassmorphism">
+                    <IconComponent className="h-8 w-8" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                  <p className="text-muted-foreground">{feature.description}</p>
+                </TransitionCard>
               </motion.div>
             );
           })}

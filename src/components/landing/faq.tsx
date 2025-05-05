@@ -1,9 +1,12 @@
+"use client";
+
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { SlideTransition } from "@/components/ui/slide-transition";
 
 export function FAQ() {
   const faqItems = [
@@ -32,18 +35,28 @@ export function FAQ() {
   return (
     <section className="py-16 w-full bg-card/50">
       <div className="container mx-auto px-4">
-        <h2 className="text-5xl font-bold text-center mb-12">FAQ</h2>
+        <SlideTransition name="faq-title" direction="vertical" distance={25} duration={400}>
+          <h2 className="text-5xl font-bold text-center mb-12">FAQ</h2>
+        </SlideTransition>
         <div className="max-w-3xl mx-auto">
           <Accordion type="single" collapsible className="w-full">
             {faqItems.map((item, index) => (
-              <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger className="text-xl font-medium text-left">
-                  {item.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-lg text-muted-foreground">
-                  {item.answer}
-                </AccordionContent>
-              </AccordionItem>
+              <SlideTransition 
+                key={index} 
+                name={`faq-item-${index}`} 
+                direction="vertical" 
+                distance={10} 
+                duration={300 + index * 100}
+              >
+                <AccordionItem value={`item-${index}`}>
+                  <AccordionTrigger className="text-xl font-medium text-left">
+                    {item.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-lg text-muted-foreground">
+                    {item.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              </SlideTransition>
             ))}
           </Accordion>
         </div>

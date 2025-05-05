@@ -6,6 +6,7 @@ import { default as Link } from "@/components/ui/optimized-link";
 import { Icons } from "@/components/ui/icons";
 import { LucideIcon } from "lucide-react";
 import { allCases } from '.contentlayer/generated';
+import { SlideTransition, ScaleTransition, RotateTransition } from "@/components/ui/slide-transition";
 
 // Animation for container
 const containerVariants = {
@@ -96,12 +97,16 @@ export function CaseUseCases() {
     <section className="py-24 animated-bg">
       <div className="container">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tighter mb-4">
-            Made for <span className="neon-text">Creators</span>, Businesses, Musicians & Teams
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Find the perfect use case for SuperDuperAI to meet your needs.
-          </p>
+          <SlideTransition name="use-cases-title" direction="vertical" distance={15} duration={500}>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter mb-4">
+              Made for <RotateTransition name="use-cases-accent" duration={600}><span className="neon-text">Creators</span></RotateTransition>, Businesses, Musicians & Teams
+            </h2>
+          </SlideTransition>
+          <SlideTransition name="use-cases-desc" direction="vertical" distance={15} duration={600}>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Find the perfect use case for SuperDuperAI to meet your needs.
+            </p>
+          </SlideTransition>
         </div>
 
         <motion.div 
@@ -117,23 +122,30 @@ export function CaseUseCases() {
             
             return (
               <motion.div key={index} variants={cardVariants}>
-                <Link href={item.url}>
-                  <Card className="h-full transition-all hover:shadow-lg card-enhanced hover:translate-y-[-5px]">
-                    <CardHeader>
-                      <div className="flex items-center gap-3 mb-3">
-                        <div className="p-2 rounded-md bg-accent/10 text-accent glassmorphism">
-                          <IconComponent className="h-8 w-8" />
+                <ScaleTransition
+                  name={`use-case-${index}`}
+                  startScale={0.95}
+                  endScale={0.95}
+                  duration={400 + index * 50}
+                >
+                  <Link href={item.url}>
+                    <Card className="h-full transition-all hover:shadow-lg card-enhanced hover:translate-y-[-5px]">
+                      <CardHeader>
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="p-2 rounded-md bg-accent/10 text-accent glassmorphism">
+                            <IconComponent className="h-8 w-8" />
+                          </div>
                         </div>
-                      </div>
-                      <CardTitle>{item.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <CardDescription className="text-base">
-                        {item.description}
-                      </CardDescription>
-                    </CardContent>
-                  </Card>
-                </Link>
+                        <CardTitle>{item.title}</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <CardDescription className="text-base">
+                          {item.description}
+                        </CardDescription>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                </ScaleTransition>
               </motion.div>
             );
           })}
