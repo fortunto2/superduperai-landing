@@ -12,6 +12,14 @@ import {
   BarChart,
   Users,
   Star,
+  Video,
+  Store,
+  Music,
+  Book,
+  Sparkle,
+  Tv,
+  Share,
+  ShoppingCart,
   type LucideIcon
 } from 'lucide-react';
 
@@ -35,6 +43,15 @@ export const Icons: Record<string, LucideIcon> = {
   arrow: ArrowRight,
   security: Shield,
   chart: BarChart,
+  chartBar: BarChart,
   users: Users,
-  star: Star
+  star: Star,
+  video: Video,
+  store: Store,
+  music: Music,
+  book: Book,
+  sparkles: Sparkle,
+  tv: Tv,
+  share: Share,
+  shoppingCart: ShoppingCart
 }; 

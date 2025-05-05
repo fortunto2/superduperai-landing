@@ -2,11 +2,10 @@
 
 import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Play, Store, Music, Users } from "lucide-react";
+import { default as Link } from "@/components/ui/optimized-link";
 import { Icons } from "@/components/ui/icons";
 import { LucideIcon } from "lucide-react";
-import { allCases, type Case } from '.contentlayer/generated';
-import { default as Link } from "@/components/ui/optimized-link";
+import { allCases } from '.contentlayer/generated';
 
 // Animation for container
 const containerVariants = {
@@ -29,74 +28,69 @@ const cardVariants = {
   }
 };
 
-// Маппинг категорий на более понятные заголовки и иконки
-const categoryMappings: Record<string, { title: string, icon: string }> = {
-  'ai-video': { title: 'Content Creators', icon: 'video' },
-  'business': { title: 'Small Businesses', icon: 'store' },
-  'creative': { title: 'Musicians & Artists', icon: 'music' },
-  'teams': { title: 'Agencies & Teams', icon: 'users' },
-  'education': { title: 'Educators', icon: 'book' },
-  'marketing': { title: 'Marketing Teams', icon: 'chart' }
-};
-
-// Получение маппинга для категории
-function getCategoryMapping(category: string) {
-  const key = Object.keys(categoryMappings).find(k => category.includes(k));
-  return key ? categoryMappings[key] : { title: category, icon: 'star' };
+// Тип для автоматически определяемых категорий
+interface CategoryInfo {
+  title: string;
+  icon: string;
+  count: number;
+  latestDate: Date;
+  hasFeatured: boolean;
 }
 
 export function CaseUseCases() {
-  // Сортируем и фильтруем кейсы
-  const sortedCases = [...allCases]
-    .sort((a, b) => {
-      if (a.featured && !b.featured) return -1;
-      if (!a.featured && b.featured) return 1;
-      return new Date(b.date).getTime() - new Date(a.date).getTime();
-    });
-
-  // Получаем уникальные категории, предпочитая featured кейсы
-  const categories = new Set<string>();
-  const priorityCases: Case[] = [];
+  // Автоматическое определение категорий на основе данных кейсов
+  const categoriesMap = new Map<string, CategoryInfo>();
   
-  // Сначала добавляем featured кейсы
-  for (const caseItem of sortedCases) {
-    if (caseItem.featured && !categories.has(caseItem.category)) {
-      categories.add(caseItem.category);
-      priorityCases.push(caseItem);
-      if (priorityCases.length >= 4) break;
-    }
-  }
-  
-  // Если не хватает, добавляем обычные кейсы с новыми категориями
-  if (priorityCases.length < 4) {
-    for (const caseItem of sortedCases) {
-      if (!categories.has(caseItem.category)) {
-        categories.add(caseItem.category);
-        priorityCases.push(caseItem);
-        if (priorityCases.length >= 4) break;
+  // Собираем информацию о категориях
+  allCases.forEach((caseItem) => {
+    if (!categoriesMap.has(caseItem.category)) {
+      categoriesMap.set(caseItem.category, {
+        title: getCategoryTitle(caseItem.category),
+        icon: getCategoryIcon(caseItem.category),
+        count: 1,
+        latestDate: new Date(caseItem.date),
+        hasFeatured: caseItem.featured || false
+      });
+    } else {
+      const info = categoriesMap.get(caseItem.category)!;
+      info.count += 1;
+      const caseDate = new Date(caseItem.date);
+      if (caseDate > info.latestDate) {
+        info.latestDate = caseDate;
+      }
+      if (caseItem.featured) {
+        info.hasFeatured = true;
       }
     }
-  }
+  });
   
-  // Если всё ещё не хватает, добавим оставшиеся кейсы
-  const cases = priorityCases.length < 4 
-    ? [...priorityCases, ...sortedCases.filter(c => !priorityCases.includes(c))].slice(0, 4)
-    : priorityCases;
-
-  // Преобразуем кейсы в формат для UI
-  const useCases = cases.map(caseItem => {
-    const mapping = getCategoryMapping(caseItem.category);
+  // Сортируем категории по приоритету: featured > count > latestDate
+  const sortedCategories = Array.from(categoriesMap.entries())
+    .sort(([, a], [, b]) => {
+      if (a.hasFeatured !== b.hasFeatured) return a.hasFeatured ? -1 : 1;
+      if (a.count !== b.count) return b.count - a.count;
+      return b.latestDate.getTime() - a.latestDate.getTime();
+    })
+    .slice(0, 4); // Берем топ-4 категории
+  
+  // Находим лучший кейс для каждой категории (featured или самый новый)
+  const useCases = sortedCategories.map(([category, info]) => {
+    const casesInCategory = allCases
+      .filter(c => c.category === category)
+      .sort((a, b) => {
+        if (a.featured !== b.featured) return a.featured ? -1 : 1;
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+      });
+    
+    const bestCase = casesInCategory[0];
     
     return {
-      title: mapping.title,
-      description: caseItem.description,
-      icon: mapping.icon,
-      url: caseItem.url
+      title: info.title,
+      description: bestCase.description,
+      icon: info.icon,
+      url: `/case/${bestCase.slug}`
     };
   });
-
-  // Default icons for fallback
-  const defaultIcons = [Play, Store, Music, Users];
 
   return (
     <section className="py-24 animated-bg">
@@ -118,13 +112,8 @@ export function CaseUseCases() {
           viewport={{ once: true, margin: "-100px" }}
         >
           {useCases.map((item, index) => {
-            // Use the icon from contentlayer if available, otherwise fall back to default icons
-            let IconComponent;
-            if (item.icon) {
-              IconComponent = (Icons as Record<string, LucideIcon>)[item.icon] || defaultIcons[index % defaultIcons.length];
-            } else {
-              IconComponent = defaultIcons[index % defaultIcons.length];
-            }
+            const IconComponent = (Icons as Record<string, LucideIcon>)[item.icon] || 
+              (Icons as Record<string, LucideIcon>)["sparkles"];
             
             return (
               <motion.div key={index} variants={cardVariants}>
@@ -152,4 +141,57 @@ export function CaseUseCases() {
       </div>
     </section>
   );
+}
+
+// Функция для получения читаемого заголовка из категории
+function getCategoryTitle(category: string): string {
+  const categoryMap: Record<string, string> = {
+    'ai-video': 'Content Creators',
+    'business': 'Small Businesses',
+    'creative': 'Musicians & Artists',
+    'teams': 'Agencies & Teams',
+    'education': 'Educators',
+    'marketing': 'Marketing Teams',
+    'entertainment': 'Entertainment',
+    'social-media': 'Social Media',
+    'e-commerce': 'E-Commerce'
+  };
+  
+  // Ищем наиболее подходящий ключ
+  for (const key of Object.keys(categoryMap)) {
+    if (category.toLowerCase().includes(key.toLowerCase())) {
+      return categoryMap[key];
+    }
+  }
+  
+  // Если не нашли, возвращаем отформатированную категорию
+  return category
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+// Функция для получения подходящей иконки из категории
+function getCategoryIcon(category: string): string {
+  const iconMap: Record<string, string> = {
+    'ai-video': 'video',
+    'business': 'store',
+    'creative': 'palette',
+    'teams': 'users',
+    'education': 'book',
+    'marketing': 'chartBar',
+    'entertainment': 'tv',
+    'social-media': 'share',
+    'e-commerce': 'shoppingCart'
+  };
+  
+  // Ищем наиболее подходящий ключ
+  for (const key of Object.keys(iconMap)) {
+    if (category.toLowerCase().includes(key.toLowerCase())) {
+      return iconMap[key];
+    }
+  }
+  
+  // Если не нашли, используем стандартную иконку
+  return 'sparkles';
 } 
