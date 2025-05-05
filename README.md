@@ -35,6 +35,19 @@ To configure Google Tag Manager:
 
 After configuring, restart the development server if it's running. The Google Tag Manager integration will be automatically included in all pages of your application.
 
+### User Identification
+
+The integration includes a consistent user identification system that:
+
+- Generates a UUID for each visitor
+- Stores it in localStorage and cookies
+- Sends it to Google Tag Manager as `user_id` parameter
+- Works across subdomains if needed
+- Can be synchronized with authenticated user IDs
+
+This ensures analytics data is consistent and prevents duplicate user counting. 
+Further analytics services like Microsoft Clarity or Hotjar should be configured through GTM for best results.
+
 ### Development Mode Behavior
 
 By default, Google Tag Manager is **not loaded** in development mode to prevent unnecessary tracking during development. This behavior can be changed if needed:
