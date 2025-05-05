@@ -9,16 +9,20 @@ export async function ToolList() {
 
   return (
     <ul className="space-y-2 text-muted-foreground">
-      {featuredTools.map((tool) => (
-        <li key={tool.slug}>
-          <Link 
-            href={`/tool/${tool.slug}`}
-            className="hover:text-primary transition-colors duration-300"
-          >
-            {tool.title}
-          </Link>
-        </li>
-      ))}
+      {featuredTools.map((tool) => {
+        const href = `/tool/${tool.slug}`;
+        
+        return (
+          <li key={tool.slug}>
+            <Link 
+              href={href}
+              className="hover:text-primary transition-colors duration-300"
+            >
+              {tool.title}
+            </Link>
+          </li>
+        );
+      })}
       <li>
         <Link 
           href="/tool"

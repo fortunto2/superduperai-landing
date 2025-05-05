@@ -9,6 +9,7 @@ import { CTABox } from './cta-box';
 import { Button } from '@/components/ui/button';
 import { Check } from 'lucide-react';
 import { PricingSection } from './pricing-section';
+import { VideoShowcase } from '@/components/landing/video-showcase';
 
 const components = {
   h1: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
@@ -39,7 +40,8 @@ const components = {
   CTABox,
   Button,
   Check,
-  PricingSection
+  PricingSection,
+  VideoShowcase
 };
 
 interface MDXProps {

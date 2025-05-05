@@ -12,6 +12,7 @@ import {
 // Вместо этого будем использовать серверный компонент для списка инструментов
 import { ToolList } from "@/components/content/tool-list";
 import { CaseList } from "@/components/content/case-list";
+import { PageList } from "@/components/content/page-list";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -19,8 +20,8 @@ export function Footer() {
   return (
     <footer className="w-full py-12 bg-card/50 border-t border-border/50">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
-          <div className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8">
+          <div className="space-y-4 lg:col-span-2">
             <h3 className="text-xl font-bold">SuperDuperAI</h3>
             <div className="text-muted-foreground space-y-2">
               <p>SuperDuperAi, Corp.</p>
@@ -81,6 +82,9 @@ export function Footer() {
             <h3 className="text-xl font-bold">Use Cases</h3>
             <CaseList />
           </div>
+          
+          {/* Добавляем PageList - он автоматически не покажется, если страниц нет */}
+          <PageList />
           
           <div className="space-y-4">
             <h3 className="text-xl font-bold">Community</h3>

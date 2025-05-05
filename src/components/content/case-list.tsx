@@ -9,16 +9,20 @@ export async function CaseList() {
 
   return (
     <ul className="space-y-2 text-muted-foreground">
-      {featuredCases.map((caseItem) => (
-        <li key={caseItem.slug}>
-          <Link 
-            href={`/case/${caseItem.slug}`}
-            className="hover:text-primary transition-colors duration-300"
-          >
-            {caseItem.title}
-          </Link>
-        </li>
-      ))}
+      {featuredCases.map((caseItem) => {
+        const href = `/case/${caseItem.slug}`;
+        
+        return (
+          <li key={caseItem.slug}>
+            <Link 
+              href={href}
+              className="hover:text-primary transition-colors duration-300"
+            >
+              {caseItem.title}
+            </Link>
+          </li>
+        );
+      })}
       <li>
         <Link 
           href="/case"
