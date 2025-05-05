@@ -7,7 +7,12 @@ import { APP_URLS } from "@/lib/constants";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 
-export function Hero() {
+interface HeroProps {
+  title?: string;
+  description?: string;
+}
+
+export function Hero({ title, description }: HeroProps) {
   // Состояние для слайдера
   const [currentSlide, setCurrentSlide] = useState(0);
   const slides = [
@@ -34,6 +39,14 @@ export function Hero() {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
+  // Значения по умолчанию, если не переданы props
+  const defaultTitle = "Turn Vibes into Videos Instantly";
+  const defaultDescription = "Revolutionary AI platform for creating professional videos without skills, equipment, or budget. 10x faster and cheaper.";
+
+  // Используем переданные значения или значения по умолчанию
+  const displayTitle = title || defaultTitle;
+  const displayDescription = description || defaultDescription;
+
   return (
     <section className="relative w-full min-h-[90vh] flex flex-col items-center justify-center overflow-hidden py-20 animated-bg">
       {/* Фоновая анимация/градиент */}
@@ -52,7 +65,7 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          Turn Vibes into Videos <span className="neon-text">Instantly</span>
+          {displayTitle}
         </motion.h1>
         
         {/* Подзаголовок */}
@@ -62,7 +75,7 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
         >
-          Revolutionary AI platform for creating professional videos without skills, equipment, or budget. <span className="font-semibold text-foreground">10x faster and cheaper.</span>
+          {displayDescription}
         </motion.p>
         
         {/* CTA кнопки */}
@@ -125,16 +138,15 @@ export function Hero() {
             </button>
             
             {/* Индикаторы слайдов */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-10">
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
               {slides.map((_, index) => (
                 <button
                   key={index}
-                  onClick={() => setCurrentSlide(index)}
-                  className={`w-2.5 h-2.5 rounded-full transition-colors ${
-                    index === currentSlide ? "bg-white" : "bg-white/40 hover:bg-white/60"
+                  className={`h-2 w-2 rounded-full transition-colors ${
+                    index === currentSlide ? "bg-white" : "bg-white/30"
                   }`}
+                  onClick={() => setCurrentSlide(index)}
                   aria-label={`Go to slide ${index + 1}`}
-                  title={`View screenshot ${index + 1}`}
                 />
               ))}
             </div>

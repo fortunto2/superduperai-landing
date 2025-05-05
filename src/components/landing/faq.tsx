@@ -5,8 +5,18 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-export function FAQ() {
-  const faqItems = [
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+interface FAQProps {
+  items?: FAQItem[];
+}
+
+export function FAQ({ items }: FAQProps) {
+  // Используем переданные элементы или значения по умолчанию
+  const faqItems = items || [
     {
       question: "Is this service free?",
       answer: "SuperDuperAI offers a free tier with limited features to help you get started. We also offer premium plans with additional capabilities for professionals and businesses.",

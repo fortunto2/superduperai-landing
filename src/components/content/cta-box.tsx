@@ -12,7 +12,7 @@ interface CTABoxProps {
 export function CTABox({ 
   children, 
   buttonText = "Get Started", 
-  buttonHref = "/pricing", 
+  buttonHref = "https://editor.superduperai.co", 
   className 
 }: CTABoxProps) {
   return (

@@ -32,17 +32,20 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function Home() {
+  // Получение данных из ContentLayer для главной страницы
+  const homeData = allHomes[0];
+
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-background to-background/90">
       <Navbar />
       <main className="flex-1">
-        <Hero />
-        <HowItWorks />
-        <Features />
+        <Hero title={homeData.title} description={homeData.description} />
+        <HowItWorks steps={homeData.howItWorks} />
+        <Features items={homeData.features} />
         <CaseUseCases />
         <VideoShowcase />
         <ApprovedBy />
-        <FAQ />
+        <FAQ items={homeData.faq} />
         <CTA />
       </main>
       <Footer />
