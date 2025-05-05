@@ -50,9 +50,18 @@ importers:
       react-dom:
         specifier: ^19.1.0
         version: 19.1.0(react@19.1.0)
+      rehype-autolink-headings:
+        specifier: ^7.1.0
+        version: 7.1.0
       rehype-pretty-code:
         specifier: ^0.14.1
         version: 0.14.1(shiki@3.3.0)
+      rehype-slug:
+        specifier: ^6.0.0
+        version: 6.0.0
+      remark-gfm:
+        specifier: ^4.0.1
+        version: 4.0.1
       tailwind-merge:
         specifier: ^3.2.0
         version: 3.2.0
@@ -132,15 +141,6 @@ importers:
       postcss:
         specifier: ^8.4.31
         version: 8.5.3
-      rehype-autolink-headings:
-        specifier: ^7.1.0
-        version: 7.1.0
-      rehype-slug:
-        specifier: ^6.0.0
-        version: 6.0.0
-      remark-gfm:
-        specifier: ^4.0.1
-        version: 4.0.1
       rimraf:
         specifier: ^6.0.1
         version: 6.0.1
