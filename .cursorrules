@@ -33,3 +33,7 @@ pnpm build
 # Запуск проверки сборки Cloudflare
 pnpm preview
 ```
+
+## solutions
+
+!we dont use Cloudflare Pages, use  Workers with @opennextjs/cloudflare
