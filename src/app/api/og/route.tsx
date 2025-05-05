@@ -5,8 +5,8 @@ import { GRADIENTS, PageType } from '@/lib/metadata';
 
 export const runtime = 'edge';
 
-// Определяем допустимые размеры изображений
-export const size = OG_IMAGE_SIZE;
+// Определяем допустимые размеры изображений - используем локальную переменную, не экспортируем
+const size = OG_IMAGE_SIZE;
 
 /**
  * API маршрут для генерации OG-изображений

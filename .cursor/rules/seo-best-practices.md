@@ -1,0 +1,66 @@
+# SEO Best Practices
+
+This rule outlines essential SEO practices for React components and links to ensure optimal search engine visibility and ranking.
+
+## Link Best Practices
+
+1. **Always add title attributes** to all links, making them descriptive and relevant to the linked content:
+   ```jsx
+   <Link href="/about" title="About Our Company">About</Link>
+   ```
+
+2. **Use rel="nofollow"** for external links to prevent passing SEO weight:
+   ```jsx
+   <a href="https://external-site.com" rel="noopener noreferrer nofollow">External Link</a>
+   ```
+
+3. **Include descriptive text** in links rather than generic phrases like "click here" or "read more":
+   ```jsx
+   // Good: <Link href="/pricing">View Our Pricing Plans</Link>
+   // Bad: <Link href="/pricing">Click Here</Link>
+   ```
+
+4. **Ensure consistent navigation** structure across the site for better crawler understanding.
+
+## Image Best Practices
+
+5. **Always include alt text** for all images, describing the image content:
+   ```jsx
+   <Image src="/product.jpg" alt="Product XYZ with feature highlights" />
+   ```
+
+6. **Add title attributes** to images where appropriate:
+   ```jsx
+   <Image 
+     src="/screenshot.png" 
+     alt="Dashboard screenshot showing user analytics" 
+     title="SuperDuperAI Analytics Dashboard"
+   />
+   ```
+
+7. **Optimize image file sizes** and use next-gen formats like WebP or AVIF where possible.
+
+## Structure Best Practices
+
+8. **Use semantic HTML elements** correctly (h1, h2, nav, main, section, etc.), with only one h1 per page.
+
+9. **Implement structured data** (Schema.org) where applicable to enhance rich snippets.
+
+10. **Ensure meta tags** are properly implemented in all page components:
+    ```jsx
+    export const metadata = {
+      title: 'Page Title - Site Name',
+      description: 'Clear, compelling description under 160 characters',
+      openGraph: {
+        // OpenGraph properties
+      }
+    };
+    ```
+
+## Performance Considerations
+
+11. **Lazy load images** and other heavy content that appears below the fold.
+
+12. **Avoid excessive JavaScript** that might impact page load time and Core Web Vitals.
+
+Follow these practices consistently across all components to maintain high SEO standards. 
