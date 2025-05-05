@@ -1,5 +1,6 @@
 "use client";
 
+import React from 'react';
 import { useMDXComponent } from 'next-contentlayer2/hooks';
 import { FeatureGrid } from './feature-grid';
 import { Feature } from './feature';
@@ -11,6 +12,7 @@ import { Check } from 'lucide-react';
 import { PricingSection } from './pricing-section';
 import { VideoShowcase } from '@/components/landing/video-showcase';
 
+// Минимальное определение компонентов для проверки работоспособности
 const components = {
   h1: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
     <h1 className={`text-4xl font-bold mt-8 mb-4 ${className ?? ''}`} {...props} />

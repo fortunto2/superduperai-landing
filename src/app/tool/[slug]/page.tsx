@@ -2,8 +2,7 @@ import { allTools } from '.contentlayer/generated';
 import { MDXContent } from '@/components/content/mdx-components';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { Navbar } from '@/components/landing/navbar';
-import { Footer } from '@/components/landing/footer';
+import { PageWrapper } from '@/components/content/page-wrapper';
 
 interface PageProps {
   params: Promise<{
@@ -32,6 +31,12 @@ export async function generateStaticParams() {
   }));
 }
 
+// Функция для проверки наличия H1 в MDX контенте
+function checkForH1InMDX(code: string): boolean {
+  // Проверяем наличие строки, начинающейся с # в начале строки
+  return /^#\s+/m.test(code);
+}
+
 export default async function ToolPage({ params }: PageProps) {
   const { slug } = await params;
   const tool = allTools.find((tool) => tool.slug === slug);
@@ -40,17 +45,22 @@ export default async function ToolPage({ params }: PageProps) {
     notFound();
   }
   
+  // Проверяем наличие заголовка H1 в MDX
+  const hasH1Heading = checkForH1InMDX(tool.body.raw);
+  
+  // Подготавливаем метку для хлебных крошек
+  const breadcrumbLabel = tool.title;
+  
   return (
-    <div className="flex flex-col min-h-screen bg-background">
-      <Navbar />
-      <main className="flex-1">
-        <div className="container mx-auto py-10">
-          <article className="prose dark:prose-invert max-w-none">
-            <MDXContent code={tool.body.code} />
-          </article>
-        </div>
-      </main>
-      <Footer />
-    </div>
+    <PageWrapper
+      title={tool.title}
+      breadcrumbItems={[
+        { label: 'Tools', href: '/tools' },
+        { label: breadcrumbLabel, href: `/tool/${slug}` }
+      ]}
+      hasH1Heading={hasH1Heading}
+    >
+      <MDXContent code={tool.body.code} />
+    </PageWrapper>
   );
 } 

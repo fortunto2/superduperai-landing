@@ -4,23 +4,21 @@ import { notFound } from "next/navigation";
 import { MDXContent } from "@/components/content/mdx-components";
 import { PageWrapper } from "@/components/content/page-wrapper";
 
-interface PageParams {
-  slug: string;
+interface PageProps {
+  params: Promise<{
+    slug: string;
+  }>;
 }
 
-export async function generateStaticParams(): Promise<PageParams[]> {
+// Генерируем все возможные значения для статических страниц
+export async function generateStaticParams() {
   const staticPages = ['about', 'creators', 'privacy', 'terms', 'pricing'];
   return staticPages.map((slug) => ({ slug }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: PageParams;
-}): Promise<Metadata> {
-  // Важно: преобразуем params в простую переменную
-  const slug = String(params?.slug || '');
-  
+// Функция для получения метаданных страницы
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
   const page = allPages.find((page) => page.slug === slug);
   
   if (!page) {
@@ -37,19 +35,23 @@ export async function generateMetadata({
   };
 }
 
-export default async function DynamicPage({
-  params,
-}: {
-  params: PageParams;
-}) {
-  // Важно: преобразуем params в простую переменную
-  const slug = String(params?.slug || '');
-  
+// Функция для проверки наличия H1 в MDX контенте
+function checkForH1InMDX(code: string): boolean {
+  // Проверяем наличие строки, начинающейся с # в начале строки
+  return /^#\s+/m.test(code);
+}
+
+// Основной компонент страницы
+export default async function DynamicPage({ params }: PageProps) {
+  const { slug } = await params;
   const page = allPages.find((page) => page.slug === slug);
   
   if (!page) {
     notFound();
   }
+  
+  // Проверяем наличие заголовка H1 в MDX
+  const hasH1Heading = checkForH1InMDX(page.body.raw);
   
   // Преобразуем slug в удобочитаемую метку для хлебных крошек
   const breadcrumbLabel = slug
@@ -61,6 +63,7 @@ export default async function DynamicPage({
     <PageWrapper 
       title={page.title} 
       breadcrumbItems={[{ label: breadcrumbLabel, href: `/${slug}` }]}
+      hasH1Heading={hasH1Heading}
     >
       <MDXContent code={page.body.code} />
     </PageWrapper>

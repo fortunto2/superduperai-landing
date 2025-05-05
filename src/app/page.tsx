@@ -1,13 +1,13 @@
-import { Navbar } from "@/components/landing/navbar";
-import { Hero } from "@/components/landing/hero";
-import { Features } from "@/components/landing/features";
-import { HowItWorks } from "@/components/landing/how-it-works";
-import { CaseUseCases } from "@/components/landing/case-use-cases";
-import { CTA } from "@/components/landing/cta";
-import { Footer } from "@/components/landing/footer";
-import { ApprovedBy } from "@/components/landing/approved-by";
-import { FAQ } from "@/components/landing/faq-simple";
-import { VideoShowcase } from "@/components/landing/video-showcase";
+import { Navbar } from '@/components/landing/navbar';
+import { Hero } from '@/components/landing/hero';
+import { Features } from '@/components/landing/features';
+import { HowItWorks } from '@/components/landing/how-it-works';
+import { CaseUseCases } from '@/components/landing/case-use-cases';
+import { CTA } from '@/components/landing/cta';
+import { Footer } from '@/components/landing/footer';
+import { ApprovedBy } from '@/components/landing/approved-by';
+import { VideoShowcase } from '@/components/landing/video-showcase';
+import { FAQ } from '@/components/landing/faq';
 import { Metadata } from "next";
 import { allHomes } from ".contentlayer/generated";
 
@@ -22,19 +22,17 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function Home() {
-  const homeData = allHomes[0];
-  
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <div className="flex flex-col min-h-screen bg-gradient-to-b from-background to-background/90">
       <Navbar />
       <main className="flex-1">
         <Hero />
-        <Features items={homeData.features} />
-        <HowItWorks steps={homeData.howItWorks} />
-        <CaseUseCases />
         <ApprovedBy />
+        <Features />
+        <HowItWorks />
         <VideoShowcase />
-        <FAQ items={homeData.faq} />
+        <CaseUseCases />
+        <FAQ />
         <CTA />
       </main>
       <Footer />

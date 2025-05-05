@@ -10,9 +10,15 @@ interface PageWrapperProps {
     label: string;
     href: string;
   }[];
+  hasH1Heading?: boolean;
 }
 
-export function PageWrapper({ children, title, breadcrumbItems }: PageWrapperProps) {
+export function PageWrapper({ 
+  children, 
+  title, 
+  breadcrumbItems, 
+  hasH1Heading = false 
+}: PageWrapperProps) {
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <Navbar />
@@ -22,9 +28,11 @@ export function PageWrapper({ children, title, breadcrumbItems }: PageWrapperPro
           className="mb-8"
         />
         
-        <h1 className="text-4xl font-bold mb-8">{title}</h1>
+        {!hasH1Heading && (
+          <h1 className="text-4xl font-bold mb-8">{title}</h1>
+        )}
         
-        <div className="prose prose-invert max-w-4xl">
+        <div className={`prose prose-invert max-w-none w-full ${hasH1Heading ? 'mt-0' : 'mt-6'}`}>
           {children}
         </div>
       </main>
