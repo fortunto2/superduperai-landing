@@ -10,7 +10,7 @@ import { VideoShowcase } from '@/components/landing/video-showcase';
 import { FAQ } from '@/components/landing/faq';
 import { Metadata } from "next";
 import { allHomes } from ".contentlayer/generated";
-import { generatePageMetadata, GRADIENTS } from '@/lib/metadata';
+import { generatePageMetadata, GRADIENTS, HOME_BANNER_PATH } from '@/lib/metadata';
 
 export async function generateMetadata(): Promise<Metadata> {
   const home = allHomes[0];
@@ -23,7 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
     description,
     keywords: home.seo?.keywords || [],
     url: '/',
-    ogImage: home.seo?.ogImage,
+    ogImage: HOME_BANNER_PATH,
     meta: {
       pageType: 'home',
       gradient: GRADIENTS.home
