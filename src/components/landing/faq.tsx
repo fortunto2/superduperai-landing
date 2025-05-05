@@ -30,13 +30,13 @@ export function FAQ() {
   ];
 
   return (
-    <section className="py-16 w-full bg-card/50">
+    <section className="py-16 w-full bg-card/50 view-transition-fade">
       <div className="container mx-auto px-4">
-        <h2 className="text-5xl font-bold text-center mb-12">FAQ</h2>
+        <h2 className="text-5xl font-bold text-center mb-12 view-transition-hero">FAQ</h2>
         <div className="max-w-3xl mx-auto">
           <Accordion type="single" collapsible className="w-full">
             {faqItems.map((item, index) => (
-              <AccordionItem key={index} value={`item-${index}`}>
+              <AccordionItem key={index} value={`item-${index}`} className={`view-transition-card-${index + 1}`}>
                 <AccordionTrigger className="text-xl font-medium text-left">
                   {item.question}
                 </AccordionTrigger>

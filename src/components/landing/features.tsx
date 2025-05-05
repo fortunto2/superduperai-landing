@@ -72,13 +72,13 @@ export function Features({ items }: FeaturesProps) {
   ];
 
   return (
-    <section className="py-24 bg-muted/30 gradient-section">
+    <section className="py-24 bg-muted/30 gradient-section view-transition-fade">
       <div className="container">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tighter mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tighter mb-4 view-transition-hero">
             What Makes SuperDuperAI <span className="neon-text">Super</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto view-transition-fade">
             Advanced features and technologies for creating stunning videos
           </p>
         </div>
@@ -96,10 +96,10 @@ export function Features({ items }: FeaturesProps) {
             return (
               <motion.div 
                 key={index}
-                className="flex flex-col card-enhanced p-6 hover:translate-y-[-5px]"
+                className={`flex flex-col card-enhanced p-6 hover:translate-y-[-5px] view-transition-card-${index + 1}`}
                 variants={itemVariants}
               >
-                <div className="p-3 rounded-full bg-accent/10 text-accent w-fit mb-4 glassmorphism">
+                <div className="p-3 rounded-full bg-accent/10 text-accent w-fit mb-4 glassmorphism view-transition-logo">
                   <IconComponent className="h-8 w-8" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>

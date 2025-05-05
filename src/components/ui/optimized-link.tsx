@@ -1,19 +1,21 @@
 "use client";
 
-import Link, { LinkProps } from "next/link";
+import { Link } from "next-view-transitions";
 import React from "react";
+import { LinkProps as NextLinkProps } from "next/link";
 
-interface OptimizedLinkProps extends LinkProps {
+interface OptimizedLinkProps extends Omit<NextLinkProps, 'prefetch'> {
   className?: string;
   children: React.ReactNode;
   target?: string;
   rel?: string;
   title?: string;
+  prefetch?: boolean;
 }
 
 /**
- * OptimizedLink - обертка над стандартным Next.js Link с отключенным prefetch по умолчанию
- * для снижения количества запросов и оптимизации расходов на хостинг
+ * OptimizedLink - обертка над Link компонентом из next-view-transitions
+ * с поддержкой View Transitions API
  */
 const OptimizedLink = ({
   prefetch = false,

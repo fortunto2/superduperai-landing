@@ -146,3 +146,72 @@
     }
   }
 }
+
+/* Стили для View Transitions API */
+@layer utilities {
+  /* Переменные для анимаций переходов */
+  :root {
+    --transition-short: 0.2s;
+    --transition-medium: 0.3s;
+    --transition-long: 0.5s;
+  }
+
+  /* Базовые селекторы для анимаций в View Transitions */
+  .view-transition-fade {
+    view-transition-name: fade;
+  }
+
+  .view-transition-hero {
+    view-transition-name: hero;
+  }
+
+  .view-transition-logo {
+    view-transition-name: logo;
+  }
+
+  .view-transition-card {
+    view-transition-name: card;
+  }
+
+  /* Селекторы с динамическими именами для уникальных элементов */
+  .view-transition-card-1 {
+    view-transition-name: card-1;
+  }
+
+  .view-transition-card-2 {
+    view-transition-name: card-2;
+  }
+
+  .view-transition-card-3 {
+    view-transition-name: card-3;
+  }
+
+  .view-transition-card-4 {
+    view-transition-name: card-4;
+  }
+
+  /* Стили для анимаций при активном переходе */
+  ::view-transition-old(fade),
+  ::view-transition-new(fade) {
+    animation-duration: var(--transition-medium);
+    animation-timing-function: ease-in-out;
+  }
+
+  ::view-transition-old(hero),
+  ::view-transition-new(hero) {
+    animation-duration: var(--transition-long);
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  ::view-transition-old(logo),
+  ::view-transition-new(logo) {
+    animation-duration: var(--transition-short);
+    animation-timing-function: ease-out;
+  }
+
+  ::view-transition-old(card),
+  ::view-transition-new(card) {
+    animation-duration: var(--transition-medium);
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}

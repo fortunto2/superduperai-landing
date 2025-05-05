@@ -93,13 +93,13 @@ export function CaseUseCases() {
   });
 
   return (
-    <section className="py-24 animated-bg">
+    <section className="py-24 animated-bg view-transition-fade">
       <div className="container">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tighter mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tighter mb-4 view-transition-hero">
             Made for <span className="neon-text">Creators</span>, Businesses, Musicians & Teams
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto view-transition-fade">
             Find the perfect use case for SuperDuperAI to meet your needs.
           </p>
         </div>
@@ -118,10 +118,10 @@ export function CaseUseCases() {
             return (
               <motion.div key={index} variants={cardVariants}>
                 <Link href={item.url}>
-                  <Card className="h-full transition-all hover:shadow-lg card-enhanced hover:translate-y-[-5px]">
+                  <Card className={`h-full transition-all hover:shadow-lg card-enhanced hover:translate-y-[-5px] view-transition-card-${index + 1}`}>
                     <CardHeader>
                       <div className="flex items-center gap-3 mb-3">
-                        <div className="p-2 rounded-md bg-accent/10 text-accent glassmorphism">
+                        <div className="p-2 rounded-md bg-accent/10 text-accent glassmorphism view-transition-logo">
                           <IconComponent className="h-8 w-8" />
                         </div>
                       </div>

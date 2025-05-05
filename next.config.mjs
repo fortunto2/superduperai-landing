@@ -16,6 +16,8 @@ const nextConfig = {
   output: 'standalone',
   // Настройки экспериментальных функций
   experimental: {
+    // Включаем View Transitions API
+    viewTransition: true,
     // Оптимизация импортов пакетов
     optimizePackageImports: [
       'react', 

@@ -35,7 +35,7 @@ export function Hero() {
   };
 
   return (
-    <section className="relative w-full min-h-[90vh] flex flex-col items-center justify-center overflow-hidden py-20 animated-bg">
+    <section className="relative w-full min-h-[90vh] flex flex-col items-center justify-center overflow-hidden py-20 animated-bg view-transition-fade">
       {/* Фоновая анимация/градиент */}
       <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-background to-background/80 z-0">
         <div className="absolute inset-0 opacity-20">
@@ -47,7 +47,7 @@ export function Hero() {
       <div className="container relative z-10 flex flex-col items-center text-center gap-8">
         {/* Основной заголовок с анимацией */}
         <motion.h1 
-          className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter max-w-3xl"
+          className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter max-w-3xl view-transition-hero"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
@@ -57,7 +57,7 @@ export function Hero() {
         
         {/* Подзаголовок */}
         <motion.p 
-          className="text-xl md:text-2xl text-muted-foreground max-w-2xl"
+          className="text-xl md:text-2xl text-muted-foreground max-w-2xl view-transition-fade"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
@@ -72,7 +72,7 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
         >
-          <Button size="lg" className="text-lg px-8 btn-accent" asChild>
+          <Button size="lg" className="text-lg px-8 btn-accent view-transition-card" asChild>
             <a href={APP_URLS.EDITOR_URL} target="_blank" rel="noopener noreferrer nofollow" title="Start creating videos with SuperDuperAI">
               Start Creating for Free
             </a>
@@ -81,7 +81,7 @@ export function Hero() {
         
         {/* Слайдер со скриншотами */}
         <motion.div 
-          className="relative w-full max-w-5xl mt-12 aspect-video rounded-lg overflow-hidden shadow-2xl border border-accent/20 gradient-border"
+          className="relative w-full max-w-5xl mt-12 aspect-video rounded-lg overflow-hidden shadow-2xl border border-accent/20 gradient-border view-transition-card-1"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}

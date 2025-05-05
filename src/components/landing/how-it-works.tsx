@@ -58,13 +58,13 @@ export function HowItWorks({ steps: propSteps }: HowItWorksProps) {
   ];
 
   return (
-    <section className="py-24 bg-muted/30 gradient-section">
+    <section className="py-24 bg-muted/30 gradient-section view-transition-fade">
       <div className="container">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tighter mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tighter mb-4 view-transition-hero">
             How It <span className="neon-text">Works</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto view-transition-fade">
             Direct your video in 3 easy steps – AI agents handle the rest.
           </p>
         </div>
@@ -79,10 +79,10 @@ export function HowItWorks({ steps: propSteps }: HowItWorksProps) {
           {steps.map((step, index) => (
             <motion.div 
               key={index}
-              className="relative card-enhanced p-8 flex flex-col items-center text-center hover:translate-y-[-5px]"
+              className={`relative card-enhanced p-8 flex flex-col items-center text-center hover:translate-y-[-5px] view-transition-card-${index + 1}`}
               variants={itemVariants}
             >
-              <div className="bg-accent/10 p-4 rounded-full mb-6 text-accent glassmorphism">
+              <div className="bg-accent/10 p-4 rounded-full mb-6 text-accent glassmorphism view-transition-logo">
                 {icons[index % icons.length]}
               </div>
               <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
