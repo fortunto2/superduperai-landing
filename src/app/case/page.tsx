@@ -33,15 +33,17 @@ export default function CasesPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {sortedCases.map((caseItem: Case) => (
               <Link 
-                href={caseItem.url} 
+                href={`/case/${caseItem.slug}`} 
                 key={caseItem.slug}
                 className="group overflow-hidden rounded-lg border border-gray-200 dark:border-gray-800 hover:border-primary/50 dark:hover:border-primary/50 transition-colors"
+                title={`${caseItem.title} - Case Study by SuperDuperAI`}
               >
                 {caseItem.image && (
                   <div className="relative h-48 w-full overflow-hidden">
                     <Image
                       src={caseItem.image}
                       alt={caseItem.title}
+                      title={`${caseItem.title} - Case Study Image`}
                       fill
                       className="object-cover transition-transform group-hover:scale-105"
                     />
