@@ -1,20 +1,20 @@
-import { allCases, type Case } from '.contentlayer/generated';
-import { default as Link } from '@/components/ui/optimized-link';
-import Image from 'next/image';
-import { Metadata } from 'next';
-import { Navbar } from '@/components/landing/navbar';
-import { Footer } from '@/components/landing/footer';
-import { generatePageMetadata, GRADIENTS } from '@/lib/metadata';
+import { allCases, type Case } from ".contentlayer/generated";
+import { default as Link } from "@/components/ui/optimized-link";
+import Image from "next/image";
+import { Metadata } from "next";
+import { Navbar } from "@/components/landing/navbar";
+import { Footer } from "@/components/landing/footer";
+import { generatePageMetadata, GRADIENTS } from "@/lib/metadata";
 
 export const metadata: Metadata = generatePageMetadata({
-  title: 'Use Cases | SuperDuperAI',
-  description: 'Discover how different industries use SuperDuperAI',
-  url: '/case',
+  title: "Use Cases | SuperDuperAI",
+  description: "Discover how different industries use SuperDuperAI",
+  url: "/case",
   meta: {
-    pageType: 'case',
-    category: 'Case Studies',
-    gradient: GRADIENTS.case
-  }
+    pageType: "case",
+    category: "Case Studies",
+    gradient: GRADIENTS.case,
+  },
 });
 
 export default function CasesPage() {
@@ -32,9 +32,9 @@ export default function CasesPage() {
           <h1 className="text-3xl font-bold mb-6">Use Cases</h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {sortedCases.map((caseItem: Case) => (
-              <Link 
-                href={`/case/${caseItem.slug}`} 
-                key={caseItem.slug}
+              <Link
+                href={`/case/${caseItem.slug}`}
+                key={`${caseItem.locale}-${caseItem.slug}`}
                 className="group overflow-hidden rounded-lg border border-gray-200 dark:border-gray-800 hover:border-primary/50 dark:hover:border-primary/50 transition-colors"
                 title={`${caseItem.title} - Case Study by SuperDuperAI`}
               >
@@ -50,9 +50,13 @@ export default function CasesPage() {
                   </div>
                 )}
                 <div className="p-6">
-                  <div className="text-sm text-primary mb-2 uppercase font-medium">{caseItem.category}</div>
+                  <div className="text-sm text-primary mb-2 uppercase font-medium">
+                    {caseItem.category}
+                  </div>
                   <h2 className="text-xl font-bold mb-2">{caseItem.title}</h2>
-                  <p className="text-gray-600 dark:text-gray-400">{caseItem.description}</p>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    {caseItem.description}
+                  </p>
                 </div>
               </Link>
             ))}
@@ -62,4 +66,4 @@ export default function CasesPage() {
       <Footer />
     </div>
   );
-} 
+}

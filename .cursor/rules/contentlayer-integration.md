@@ -18,80 +18,80 @@ ContentLayer2 is configured in [contentlayer.config.ts](mdc:contentlayer.config.
 ```ts
 // Document type examples
 export const Tool = defineDocumentType(() => ({
-  name: 'Tool',
-  filePathPattern: 'tool/**/*.mdx',
-  contentType: 'mdx',
+  name: "Tool",
+  filePathPattern: "tool/**/*.mdx",
+  contentType: "mdx",
   fields: {
-    title: { type: 'string', required: true },
-    description: { type: 'string', required: true },
-    icon: { type: 'string' },
-    featured: { type: 'boolean', default: false },
+    title: { type: "string", required: true },
+    description: { type: "string", required: true },
+    icon: { type: "string" },
+    featured: { type: "boolean", default: false },
     // Additional fields...
   },
   computedFields: {
     url: {
-      type: 'string',
+      type: "string",
       resolve: (doc) => `/tool/${doc.slug}`,
     },
   },
 }));
 
 export const Case = defineDocumentType(() => ({
-  name: 'Case',
-  filePathPattern: 'case/**/*.mdx',
-  contentType: 'mdx',
+  name: "Case",
+  filePathPattern: "case/**/*.mdx",
+  contentType: "mdx",
   fields: {
-    title: { type: 'string', required: true },
-    description: { type: 'string', required: true },
-    category: { type: 'string', required: true },
-    featured: { type: 'boolean', default: false },
+    title: { type: "string", required: true },
+    description: { type: "string", required: true },
+    category: { type: "string", required: true },
+    featured: { type: "boolean", default: false },
     // Additional fields...
   },
   computedFields: {
     url: {
-      type: 'string',
+      type: "string",
       resolve: (doc) => `/case/${doc.slug}`,
     },
   },
 }));
 
 export const Page = defineDocumentType(() => ({
-  name: 'Page',
-  filePathPattern: 'pages/**/*.mdx',
-  contentType: 'mdx',
+  name: "Page",
+  filePathPattern: "pages/**/*.mdx",
+  contentType: "mdx",
   fields: {
-    title: { type: 'string', required: true },
-    description: { type: 'string', required: true },
-    date: { type: 'date', required: true },
-    slug: { type: 'string', required: true },
-    seo: { type: 'nested', of: SEO, required: false },
+    title: { type: "string", required: true },
+    description: { type: "string", required: true },
+    date: { type: "date", required: true },
+    slug: { type: "string", required: true },
+    seo: { type: "nested", of: SEO, required: false },
   },
   computedFields: {
     url: {
-      type: 'string',
+      type: "string",
       resolve: (doc) => `/${doc.slug}`,
     },
   },
 }));
 
 export const Home = defineDocumentType(() => ({
-  name: 'Home',
-  filePathPattern: 'home.mdx',
-  contentType: 'mdx',
+  name: "Home",
+  filePathPattern: "home.mdx",
+  contentType: "mdx",
   fields: {
-    title: { type: 'string', required: true },
-    description: { type: 'string', required: true },
-    date: { type: 'date', required: true },
-    features: { type: 'list', of: { type: 'json' }, required: false },
-    howItWorks: { type: 'list', of: { type: 'json' }, required: false },
-    useCases: { type: 'list', of: { type: 'json' }, required: false },
-    faq: { type: 'list', of: { type: 'json' }, required: false },
-    seo: { type: 'nested', of: SEO, required: false },
+    title: { type: "string", required: true },
+    description: { type: "string", required: true },
+    date: { type: "date", required: true },
+    features: { type: "list", of: { type: "json" }, required: false },
+    howItWorks: { type: "list", of: { type: "json" }, required: false },
+    useCases: { type: "list", of: { type: "json" }, required: false },
+    faq: { type: "list", of: { type: "json" }, required: false },
+    seo: { type: "nested", of: SEO, required: false },
   },
   computedFields: {
     url: {
-      type: 'string',
-      resolve: () => '/',
+      type: "string",
+      resolve: () => "/",
     },
   },
 }));
@@ -117,7 +117,12 @@ Content lists are implemented in:
 These components use `.contentlayer/generated` imports:
 
 ```tsx
-import { allTools, allCases, allPages, allHomes } from '.contentlayer/generated';
+import {
+  allTools,
+  allCases,
+  allPages,
+  allHomes,
+} from ".contentlayer/generated";
 ```
 
 ## Page Components
@@ -128,14 +133,14 @@ Static pages use the Page document type:
 // Example for about page
 export default function AboutPage() {
   const page = allPages.find((page) => page.slug === "about");
-  
+
   if (!page) {
     notFound();
   }
-  
+
   return (
-    <PageWrapper 
-      title={page.title} 
+    <PageWrapper
+      title={page.title}
       breadcrumbItems={[{ label: "About", href: "/about" }]}
     >
       <MDXContent code={page.body.code} />
@@ -149,7 +154,7 @@ The Home page uses structured content for sections:
 ```tsx
 export default function Home() {
   const homeData = allHomes[0];
-  
+
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <Navbar />
@@ -188,4 +193,4 @@ When creating MDX content:
    - `src/content/home.mdx` for homepage content
 2. Include required frontmatter fields (title, description, etc.)
 3. Use custom MDX components for consistent layout
-4. Set `featured: true` for items that should appear in homepage highlights 
+4. Set `featured: true` for items that should appear in homepage highlights

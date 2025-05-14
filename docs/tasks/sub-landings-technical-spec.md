@@ -381,7 +381,7 @@ export default function ToolsPage() {
         {sortedTools.map((tool) => (
           <Link
             href={tool.url}
-            key={tool.slug}
+            key={`${tool.locale}-${tool.slug}`}
             className="card-block p-6 rounded-lg border border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
           >
             <h2 className="text-xl font-bold mb-2">{tool.title}</h2>

@@ -1,0 +1,15 @@
+# Build output
+.next/
+out/
+build/
+dist/
+
+# Dependencies
+node_modules/
+
+# Scripts
+scripts/
+
+# Generated content
+.contentlayer/
+public/llms.txt 

@@ -90,7 +90,7 @@ export const Page = defineDocumentType(() => ({
 // Определение типа документа для главной страницы
 export const Home = defineDocumentType(() => ({
   name: "Home",
-  filePathPattern: "home.mdx",
+  filePathPattern: "homes/**/*.mdx",
   contentType: "mdx",
   fields: {
     title: { type: "string", required: true },
@@ -100,6 +100,7 @@ export const Home = defineDocumentType(() => ({
     howItWorks: { type: "list", of: { type: "json" }, required: false },
     useCases: { type: "list", of: { type: "json" }, required: false },
     faq: { type: "list", of: { type: "json" }, required: false },
+    keywords: { type: "list", of: { type: "string" }, required: false },
     seo: { type: "nested", of: SEO, required: false },
     locale: { type: "string", required: true },
   },

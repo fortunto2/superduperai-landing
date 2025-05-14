@@ -13,12 +13,6 @@ interface PageProps {
   }>;
 }
 
-// Генерируем все возможные значения для статических страниц
-export async function generateStaticParams() {
-  const staticPages = ["about", "creators", "privacy", "terms", "pricing"];
-  return staticPages.map((slug) => ({ slug }));
-}
-
 // Функция для получения метаданных страницы
 export async function generateMetadata({
   params,

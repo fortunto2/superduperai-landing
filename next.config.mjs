@@ -12,8 +12,8 @@ const nextConfig = {
   images: {
     unoptimized: true
   },
-  // Устанавливаем вывод в standalone для оптимальной работы с Cloudflare
-  output: 'standalone',
+  // Отключаем standalone для Windows, чтобы избежать проблем с символическими ссылками
+  // output: 'standalone',
   // Настройки экспериментальных функций
   experimental: {
     // Оптимизация импортов пакетов
