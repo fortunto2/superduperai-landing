@@ -8,6 +8,7 @@
     "prebuild": "node scripts/generate-llms.js",
     "prebuild-windows": "node scripts/generate-llms.js",
     "build": "npm run prebuild-windows && cross-env NEXT_TELEMETRY_DISABLED=1 next build",
+    "postbuild": "node scripts/generate-markdown.js",
     "start": "next start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "preview": "NODE_OPTIONS='--no-warnings' pnpm dlx @opennextjs/cloudflare build && pnpm dlx @opennextjs/cloudflare preview",

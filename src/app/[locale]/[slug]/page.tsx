@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { allPages } from ".contentlayer/generated";
+import { allPages, type Page as PageType } from ".contentlayer/generated";
 import { notFound } from "next/navigation";
 import { MDXContent } from "@/components/content/mdx-components";
 import { PageWrapper } from "@/components/content/page-wrapper";
@@ -62,24 +62,36 @@ function checkForH1InMDX(code: string): boolean {
 }
 
 // Основной компонент страницы
-export default async function DynamicPage({ params }: PageProps) {
+export default async function Page({ params }: PageProps) {
   const { slug, locale } = await params;
+
+  // Ищем страницу с учетом локали для правильной локализации
   const page = allPages.find(
     (page) => page.slug === slug && page.locale === locale
   );
 
   if (!page) {
-    notFound();
+    // Пробуем найти с любой локалью, если не найден с текущей
+    const fallbackPage = allPages.find((page) => page.slug === slug);
+
+    if (!fallbackPage) {
+      notFound();
+    }
+
+    // Используем доступную страницу, когда нет перевода для текущей локали
+    return PageContent({ page: fallbackPage, slug });
   }
 
+  return PageContent({ page, slug });
+}
+
+// Выделяем рендеринг контента в отдельную функцию для повторного использования
+function PageContent({ page, slug }: { page: PageType; slug: string }) {
   // Проверяем наличие заголовка H1 в MDX
   const hasH1Heading = checkForH1InMDX(page.body.raw);
 
-  // Преобразуем slug в удобочитаемую метку для хлебных крошек
-  const breadcrumbLabel = slug
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
+  // Подготавливаем метку для хлебных крошек
+  const breadcrumbLabel = page.title.split(" - ")[0];
 
   return (
     <PageWrapper

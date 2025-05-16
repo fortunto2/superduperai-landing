@@ -4,11 +4,12 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { default as Link } from "@/components/ui/optimized-link";
-import { Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
 import { APP_URLS } from "@/lib/constants";
 import { Dropdown } from "../ui/dropdown-menu";
 import { i18n } from "@/config/i18n-config";
+import { cn } from "@/lib/utils";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -313,11 +314,23 @@ export const LanguageSwitcher = () => {
   // Отображаем дропдаун только когда параметры получены
   if (!currentLocale) return null;
 
+  const label = LANGUAGES.find((o) => o.value === selected)?.label;
+
   return (
     <Dropdown
       value={selected}
       options={LANGUAGES}
       onChange={handleChange}
+      trigger={
+        <button
+          className={cn(
+            "inline-flex items-center gap-2 px-3 py-1 text-sm border rounded-md bg-background hover:bg-muted transition"
+          )}
+        >
+          {label}
+          <ChevronDown className="w-4 h-4" />
+        </button>
+      }
     />
   );
 };

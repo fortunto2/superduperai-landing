@@ -78,6 +78,7 @@ export default function RootLayout({
       </head>
       <body
         className={`${inter.variable} ${jetbrainsMono.variable} antialiased min-h-screen`}
+        suppressHydrationWarning
       >
         {children}
         <AnalyticsProviders />

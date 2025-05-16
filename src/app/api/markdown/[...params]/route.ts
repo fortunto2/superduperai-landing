@@ -3,6 +3,50 @@ import fs from "fs";
 import path from "path";
 
 /**
+ * Функция для преобразования MDX в Markdown без выполнения кода
+ * Использует регулярные выражения для извлечения текста из компонентов
+ */
+async function mdxToMarkdown(filePath: string): Promise<string> {
+  // Читаем содержимое файла
+  const content = fs.readFileSync(filePath, "utf8");
+
+  // Сохраняем frontmatter
+  const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
+  const frontmatter = frontmatterMatch
+    ? `---\n${frontmatterMatch[1]}\n---\n\n`
+    : "";
+
+  // Удаляем импорты и экспорты
+  let markdown = content
+    .replace(/^import\s+.*?from\s+['"].*?['"];?\s*$/gm, "")
+    .replace(/^export\s+.*?$/gm, "");
+
+  // Обрабатываем компоненты с атрибутами title и description
+  markdown = markdown.replace(
+    /<(\w+)[\s\S]*?title=["']([^"']*)["'][\s\S]*?description=["']([^"']*)["'][\s\S]*?\/?>/g,
+    (_, name, title, description) => `### ${title}\n\n${description}\n\n`
+  );
+
+  // Обрабатываем секции компонентов
+  markdown = markdown.replace(
+    /<(\w+)[\s\S]*?>([\s\S]*?)<\/\1>/g,
+    (_, name, content) => content
+  );
+
+  // Удаляем оставшиеся JSX теги
+  markdown = markdown.replace(/<[^>]*\/?>/g, "");
+
+  // Удаляем фигурные скобки с выражениями
+  markdown = markdown.replace(/\{[^{}]*\}/g, "");
+
+  // Удаляем лишние пустые строки
+  markdown = markdown.replace(/\n{3,}/g, "\n\n");
+
+  // Возвращаем frontmatter на место
+  return frontmatter + markdown;
+}
+
+/**
  * API маршрут для получения исходного markdown файла
  * Путь: /api/markdown/[type]/[locale]/[slug].md
  * Где:
@@ -85,9 +129,11 @@ export async function GET(
       );
     }
 
-    // Читаем содержимое файла
-    const content = fs.readFileSync(filePath, "utf8");
-    console.log(`File read successfully, content length: ${content.length}`);
+    // Преобразуем MDX в чистый Markdown без выполнения кода
+    const markdown = await mdxToMarkdown(filePath);
+    console.log(
+      `File converted successfully, content length: ${markdown.length}`
+    );
 
     // Устанавливаем заголовки для plaintext
     const headers = new Headers();
@@ -95,7 +141,7 @@ export async function GET(
     headers.set("Content-Disposition", `inline; filename="${slug}.md"`);
 
     // Возвращаем содержимое файла
-    return new NextResponse(content, {
+    return new NextResponse(markdown, {
       status: 200,
       headers,
     });

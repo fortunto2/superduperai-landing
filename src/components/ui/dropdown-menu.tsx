@@ -1,8 +1,9 @@
 "use client";
 
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { ChevronDown } from "lucide-react";
+
 import { cn } from "@/lib/utils";
+import { ReactNode } from "react";
 
 interface DropdownOption {
   value: string;
@@ -14,32 +15,25 @@ interface DropdownProps {
   options: DropdownOption[];
   onChange: (value: string) => void;
   className?: string;
+  trigger: ReactNode;
 }
 
 export const Dropdown = ({
   value,
   options,
   onChange,
+  trigger,
   className,
 }: DropdownProps) => {
-  const selected = options.find((o) => o.value === value);
-
   return (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger asChild>
-        <button
-          className={cn(
-            "inline-flex items-center gap-2 px-3 py-2 text-sm border rounded-md bg-background hover:bg-muted transition",
-            className
-          )}
-        >
-          {selected?.label || "Select"}
-          <ChevronDown className="w-4 h-4" />
-        </button>
-      </DropdownMenu.Trigger>
+      <DropdownMenu.Trigger asChild>{trigger}</DropdownMenu.Trigger>
 
       <DropdownMenu.Content
-        className="z-50 mt-2 w-full rounded-md border bg-popover shadow-lg p-1"
+        className={cn(
+          "z-50 mt-2 w-full rounded-md border bg-popover shadow-lg p-1",
+          className
+        )}
         sideOffset={4}
       >
         {options.map((option) => (
@@ -47,7 +41,7 @@ export const Dropdown = ({
             key={option.value}
             onSelect={() => onChange(option.value)}
             className={cn(
-              "cursor-pointer px-3 py-2 text-sm rounded-md transition-colors",
+              "cursor-pointer px-2 py-2 text-sm rounded-md transition-colors",
               option.value === value
                 ? "bg-accent text-accent-foreground"
                 : "hover:bg-muted"

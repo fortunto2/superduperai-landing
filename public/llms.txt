@@ -1,21 +1,49 @@
-# SuperDuperAI LLMs Information
-Version: 0.1.0
-Last Updated: 2025-05-14T13:21:26.497Z
+# SuperDuperAI
 
-## Models
-- GPT-4 Turbo: Video content generation
-- DALL-E 3: Image creation
-- Stable Diffusion XL: Visual effects
-- Whisper: Audio transcription
+## General Description
 
-## Supported Languages
-- English (en)
-- Russian (ru)
+SuperDuperAI is a professional video creation platform powered by artificial intelligence. Our system combines cutting-edge neural rendering technology with intuitive creative tools, enabling anyone to produce broadcast-quality videos without specialized equipment or training.
 
-## Runtime Information
-- Next.js: 15.3.1
-- React: ^19.1.0
-- Node: v20.10.0
+## Main Sections
 
-## Contact
-For more information about our LLM implementations, contact support@superduperai.com
+### Tools
+- [Vibe Filmmaking](/tool/vibe-filmmaking.md): Create videos based on mood or aesthetic instead of detailed scripts.
+- [Agent Director](/tool/agent-director.md): A paradigm where AI agents handle different aspects of video creation.
+- [Image Generator](/tool/image-generator.md): Transform text into professional images and videos.
+
+### Use Cases
+- [Creators & Influencers](/case/creators-influencers.md): Content production for bloggers and influencers.
+- [Musicians & Artists](/case/musicians-artists.md): Create music videos based on the vibe of your tracks.
+- [Small Businesses](/case/small-businesses.md): Video advertising without agencies.
+- [Agencies & Teams](/case/agencies-teams.md): Rapid prototyping and collaborative workflows.
+- [Video Storytelling](/case/video-story.md): Telling stories through video.
+
+### Pages
+- [About](/about.md): Information about SuperDuperAI and the technologies behind the platform.
+- [Pricing](/pricing.md): Available subscription options and features.
+- [Privacy](/privacy.md): Information about data handling and privacy.
+- [Terms](/terms.md): Legal terms of service agreement.
+- [Creators](/creators.md): Special information for content creators.
+
+## Features
+
+- **Instant Video Generation**: Transform text into professional videos in 30 seconds or less.
+- **Character Consistency**: Our patented PersonaLock™ technology ensures perfect appearance continuity for characters.
+- **Broadcast-Quality Output**: Generate videos at up to 4K resolution (3840×2160) with 60fps and HDR10+ support.
+- **Advanced Style Customization**: Choose from 87 pre-built visual styles or create your own using our StyleLab interface.
+- **Precision Editing Suite**: Fine-tune every aspect of your video with frame-accurate controls.
+- **Accelerated Rendering**: Our distributed cloud rendering farm processes videos 5.3× faster than competing platforms.
+
+## How It Works
+
+1. **Describe Your Vision**: Begin with a text description, script, or prompt. Our natural language parser identifies key visual elements, characters, and scene transitions.
+2. **Watch AI Creation Unfold**: Behind the scenes, our multi-stage rendering pipeline builds your video frame-by-frame, with options to pause and redirect at any stage.
+3. **Refine and Distribute**: Review your video in our editor, make adjustments if needed, then export in any format with custom presets for YouTube, TikTok, Instagram, and LinkedIn.
+
+## About llms.txt
+
+This file follows the [llms.txt](https://llmstxt.org/) specification and is designed to optimize content for Large Language Models (LLMs).
+
+## Additional Information
+
+SuperDuperAI combines cutting-edge neural technology with intuitive creative tools, allowing anyone to create broadcast-quality videos.
