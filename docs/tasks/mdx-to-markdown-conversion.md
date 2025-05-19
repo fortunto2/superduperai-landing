@@ -37,12 +37,11 @@ MDX файлы содержат JSX компоненты, которые при 
 
 ## Техническая реализация
 
-### API маршрут
+### Функция преобразования
 
-API-маршрут расположен в `src/app/api/markdown/[...params]/route.ts` и обрабатывает запросы вида `/api/markdown/[type]/[locale]/[slug].md`.
+Основная функция преобразования MDX в Markdown расположена в `src/app/api/markdown/[...params]/route.ts`:
 
 ```typescript
-// Основная функция преобразования MDX в Markdown
 async function mdxToMarkdown(filePath: string): Promise<string> {
   // Читаем содержимое файла
   const content = fs.readFileSync(filePath, "utf8");
@@ -84,9 +83,9 @@ async function mdxToMarkdown(filePath: string): Promise<string> {
 }
 ```
 
-### Обработка запросов
+### API маршрут
 
-API-маршрут принимает параметры из URL и использует их для поиска соответствующего MDX файла:
+API-маршрут обрабатывает запросы вида `/api/markdown/[type]/[locale]/[slug].md`:
 
 ```typescript
 // Извлекаем параметры из пути
@@ -105,49 +104,72 @@ const filePath = path.join(
 );
 ```
 
-После нахождения файла, он преобразуется в Markdown и отправляется клиенту с соответствующими заголовками:
+## Предварительная генерация MD файлов
+
+Для оптимизации производительности реализована предварительная генерация MD файлов при сборке проекта. Это позволяет:
+
+1. **Снизить нагрузку на сервер** — не нужно выполнять преобразование при каждом запросе
+2. **Улучшить скорость ответа** — статические файлы отдаются быстрее
+3. **Эффективно кэшировать** — статические файлы хорошо кэшируются на CDN
+
+### Скрипт генерации
+
+Скрипт `scripts/generate-markdown.js` запускается автоматически после сборки проекта через `postbuild` хук в `package.json`:
+
+```json
+"scripts": {
+  "postbuild": "node scripts/generate-markdown.js"
+}
+```
+
+Скрипт рекурсивно обходит все MDX файлы в директории `src/content`, преобразует их в Markdown и сохраняет в соответствующих поддиректориях в `public/markdown/`:
+
+```javascript
+function generateMarkdownFiles() {
+  console.log("Generating Markdown files from MDX...");
+
+  const contentDir = path.join(process.cwd(), "src", "content");
+  const outputDir = path.join(process.cwd(), "public", "markdown");
+
+  // Создаем директорию для MD файлов, если она не существует
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
+
+  // Обрабатываем все MDX файлы
+  processDirectory(contentDir, outputDir);
+
+  console.log("Markdown generation completed!");
+}
+```
+
+### Интеграция с API
+
+API-маршрут модифицирован для проверки наличия предварительно сгенерированного файла:
 
 ```typescript
-// Преобразуем MDX в чистый Markdown
-const markdown = await mdxToMarkdown(filePath);
+// Сначала проверяем, есть ли предварительно сгенерированный MD файл
+const preGeneratedPath = path.join(
+  process.cwd(),
+  "public",
+  "markdown",
+  type,
+  locale,
+  `${slug}.md`
+);
 
-// Устанавливаем заголовки для plaintext
-const headers = new Headers();
-headers.set("Content-Type", "text/markdown; charset=utf-8");
-headers.set("Content-Disposition", `inline; filename="${slug}.md"`);
+let markdown;
 
-// Возвращаем содержимое файла
-return new NextResponse(markdown, {
-  status: 200,
-  headers,
-});
+if (fs.existsSync(preGeneratedPath)) {
+  // Если предварительно сгенерированный файл существует, используем его
+  markdown = fs.readFileSync(preGeneratedPath, "utf8");
+} else {
+  // Если нет, генерируем на лету
+  // ... код преобразования MDX в MD ...
+}
 ```
 
-## Альтернативные подходы
-
-### Использование библиотеки mdx-to-md
-
-Изначально была попытка использовать библиотеку `mdx-to-md`, которая специализируется на преобразовании MDX в Markdown:
-
-```typescript
-import { mdxToMd } from "mdx-to-md";
-
-// Преобразование MDX в Markdown
-const markdown = await mdxToMd(filePath);
-```
-
-Однако эта библиотека пыталась выполнить MDX код, что приводило к ошибкам при отсутствии определенных компонентов:
-
-```
-Error serving markdown file: [Error: Expected component `PricingSection` to be defined: you likely forgot to import, pass, or provide it.]
-```
-
-### Преимущества текущего решения
-
-1. **Независимость от компонентов** — не требует наличия определений компонентов
-2. **Простота** — использует только стандартные модули Node.js
-3. **Гибкость** — легко настраивается под конкретные компоненты проекта
-4. **Производительность** — обработка происходит быстро, без выполнения кода
+Это обеспечивает надежную работу системы даже при добавлении новых MDX файлов между деплоями.
 
 ## Примеры преобразования
 
@@ -216,5 +238,6 @@ Schedule a demo today!
 
 1. **Расширенная поддержка компонентов** — добавление обработки для других типов компонентов
 2. **Локализация заголовков** — адаптация заголовков под выбранный язык
-3. **Кеширование** — сохранение результатов преобразования для повышения производительности
+3. **Кеширование** — дополнительное кэширование для повышения производительности
 4. **Конфигурируемость** — вынесение правил преобразования в конфигурационный файл
+5. **Инкрементальная генерация** — обновление только изменившихся файлов при сборке

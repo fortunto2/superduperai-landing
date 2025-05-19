@@ -92,48 +92,69 @@ export async function GET(
       );
     }
 
-    // Строим путь к файлу
-    const filePath = path.join(
+    // Сначала проверяем, есть ли предварительно сгенерированный MD файл
+    const preGeneratedPath = path.join(
       process.cwd(),
-      "src",
-      "content",
+      "public",
+      "markdown",
       type,
       locale,
-      `${slug}.mdx`
+      `${slug}.md`
     );
 
-    // Проверяем существование файла
-    if (!fs.existsSync(filePath)) {
-      console.error(`File not found: ${filePath}`);
+    let markdown;
 
-      // Проверяем существование директории
-      const dirPath = path.join(process.cwd(), "src", "content", type, locale);
-      const dirExists = fs.existsSync(dirPath);
-      console.log(`Directory ${dirPath} exists: ${dirExists}`);
+    if (fs.existsSync(preGeneratedPath)) {
+      // Если предварительно сгенерированный файл существует, используем его
+      markdown = fs.readFileSync(preGeneratedPath, "utf8");
+    } else {
+      // Если нет, генерируем на лету
 
-      if (dirExists) {
-        // Показываем файлы в директории для отладки
-        const files = fs.readdirSync(dirPath);
-        console.log(`Files in directory: ${JSON.stringify(files)}`);
+      // Строим путь к MDX файлу
+      const filePath = path.join(
+        process.cwd(),
+        "src",
+        "content",
+        type,
+        locale,
+        `${slug}.mdx`
+      );
+
+      // Проверяем существование файла
+      if (!fs.existsSync(filePath)) {
+        console.error(`File not found: ${filePath}`);
+
+        // Проверяем существование директории
+        const dirPath = path.join(
+          process.cwd(),
+          "src",
+          "content",
+          type,
+          locale
+        );
+        const dirExists = fs.existsSync(dirPath);
+
+        if (dirExists) {
+          // Показываем файлы в директории для отладки
+          const files = fs.readdirSync(dirPath);
+          console.log(`Files in directory: ${JSON.stringify(files)}`);
+        }
+
+        return NextResponse.json(
+          {
+            error: "Markdown file not found",
+            path: filePath,
+            type,
+            locale,
+            slug,
+          },
+          { status: 404 }
+        );
       }
 
-      return NextResponse.json(
-        {
-          error: "Markdown file not found",
-          path: filePath,
-          type,
-          locale,
-          slug,
-        },
-        { status: 404 }
-      );
+      // Преобразуем MDX в чистый Markdown без выполнения кода
+      markdown = await mdxToMarkdown(filePath);
     }
-
-    // Преобразуем MDX в чистый Markdown без выполнения кода
-    const markdown = await mdxToMarkdown(filePath);
-    console.log(
-      `File converted successfully, content length: ${markdown.length}`
-    );
 
     // Устанавливаем заголовки для plaintext
     const headers = new Headers();
