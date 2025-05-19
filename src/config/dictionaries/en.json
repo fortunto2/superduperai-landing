@@ -1,0 +1,167 @@
+{
+  "price": {
+    "title": "Cheap, transparent prices!",
+    "pricing": "Pricing",
+    "slogan": "Start at full speed !",
+    "monthly_bill": "Monthly Billing",
+    "annual_bill": "Annual Billing",
+    "annual_info": "will be charged when annual",
+    "monthly_info": "when charged monthly",
+    "mo": "/mo",
+    "contact": "for to contact our support team.",
+    "contact_2": "You can test the subscriptions and won&apos;t be charged.",
+    "faq": "Frequently Asked Questions",
+    "faq_detail": "Explore our comprehensive FAQ to find quick answers to common inquiries. If you need further assistance, don&apos;t hesitate to contact us for personalized help.",
+    "signup": "Sign up",
+    "upgrade": "Upgrade",
+    "manage_subscription": "Manage Subscription",
+    "go_to_dashboard": "Go to dashboard",
+    "": ""
+  },
+  "marketing": {
+    "introducing": "Introducing SuperDuperAI",
+    "title": "Turn Vibes into Videos – Instantly.",
+    "sub_title": "AI filmmaking for creators, businesses, musicians, and teams.",
+    "get_started": "Start Creating for Free",
+    "view_on_github": "View on GitHub",
+    "explore_product": "Watch a Demo",
+    "features": "Features",
+    "sub_features": "Cloud-native: Simplifying technology and reducing costs for startups.",
+    "k8s_features": "Fast, simple development",
+    "devops_features": "Easy application deployment",
+    "price_features": "Economically efficient for production environments.",
+    "main_nav_features": "Features",
+    "main_nav_pricing": "Pricing",
+    "main_nav_products": "Products",
+    "main_nav_blog": "Blog",
+    "main_nav_documentation": "Documentation",
+    "login": "Login",
+    "signup": "Sign up",
+    "no_credit_card": "No credit card required",
+    "final_cta": "Ready to create your next video sensation? Join SuperDuperAI.",
+    "": "",
+    "contributors": {
+      "contributors_desc": "contributors made SuperDuperAI stronger",
+      "developers_first": "Help more than ",
+      "developers_second": " creators"
+    },
+    "right_side": {
+      "deploy_on_vercel_title": "Vibe Filmmaking",
+      "deploy_on_vercel_desc": "Get started in seconds, turn your vibe into stunning visuals instantly.",
+      "ship_on_cloudflare_title": "AI Video Making",
+      "ship_on_cloudflare_desc": "Create professional videos with AI. No budget, no crew needed.",
+      "showcase_title": "Agent-Director Model",
+      "showcase_desc": "You direct, AI executes. Multiple specialized agents working together to create your vision."
+    },
+    "features_grid": {
+      "monorepo_title": "Custom Characters",
+      "monorepo_desc": "Create and save your personalized AI actors with memory (LoRA) for consistent performance across videos.",
+      "i18n_title": "Cinematic Camera Controls",
+      "i18n_desc": "Professional camera movements - pans, zooms, bullet-time - all without physical equipment.",
+      "payments_title": "Multi-Agent AI Workflow",
+      "payments_desc": "Specialized AI agents working together: screenplay, visuals, characters, editing, all coordinated.",
+      "nextauth_title": "Fast & Cost Efficient",
+      "nextauth_desc": "From idea to finished video in minutes, at a fraction of traditional production costs."
+    },
+    "sponsor": {
+      "title": "Loved by our Community",
+      "donate": "Support the project"
+    },
+    "video": {
+      "first_text": "See it in action, then",
+      "second_text1": "create your video in ",
+      "second_text2": "",
+      "time_text": "minutes, not weeks"
+    },
+    "people_comment": {
+      "title": "What People Are Saying",
+      "desc": "Hear from creators who've transformed their visions into reality with SuperDuperAI."
+    },
+    "how_it_works": {
+      "title": "How It Works",
+      "subtitle": "Direct your video in 3 easy steps – AI agents handle the rest.",
+      "step1_title": "Define Your Vision",
+      "step1_desc": "Describe your idea, vibe, and story - the AI understands your creative intent.",
+      "step2_title": "AI Generates the Scene",
+      "step2_desc": "Multiple agents create the script, visuals, characters, and animations together.",
+      "step3_title": "Refine and Finalize",
+      "step3_desc": "Adjust styles, edit text, and export your finished video to any platform."
+    },
+    "use_cases": {
+      "title": "Made for Creators, Businesses, Musicians & Teams",
+      "creators_title": "Creators & Influencers",
+      "creators_desc": "Create more content, grow your audience, increase revenue.",
+      "business_title": "Small Businesses",
+      "business_desc": "Professional video ads without agencies or big budgets.",
+      "musicians_title": "Musicians & Artists",
+      "musicians_desc": "Music videos and visuals that match your track's vibe.",
+      "agencies_title": "Agencies & Teams",
+      "agencies_desc": "Rapid prototyping and collaborative storytelling."
+    },
+    "testimonials": {
+      "testimonial1": {
+        "quote": "We saved weeks. Now we scale faster.",
+        "author": "Alex J.",
+        "role": "Marketing Agency"
+      },
+      "testimonial2": {
+        "quote": "My music video, no budget, huge vibe.",
+        "author": "Jasmine K.",
+        "role": "Indie Musician"
+      },
+      "testimonial3": {
+        "quote": "Twice the content. More subs.",
+        "author": "Marco P.",
+        "role": "Content Creator"
+      }
+    }
+  },
+  "login": {
+    "back": "Back",
+    "welcome_back": "Welcome back",
+    "signin_title": "Enter your email to log into your account",
+    "singup_title": "Don't have an account? Sign up now.",
+    "signin_email": "Log in with Email",
+    "signin_others": "Or continue with",
+    "signup": "Sign up",
+    "privacy": "only your email and profile picture will be stored.",
+    "signup_github": "Sign Up with Github",
+    "": ""
+  },
+  "common": {
+    "copyright": "Copyright © ${currentYear} Nextify Limited. All rights reserved.",
+    "dashboard": {
+      "main_nav_documentation": "Documentation",
+      "main_nav_support": "Support",
+      "sidebar_nav_clusters": "Clusters",
+      "sidebar_nav_billing": "Billing",
+      "sidebar_nav_settings": "Settings",
+      "title_text": "Create and manage clusters."
+    },
+    "": ""
+  },
+  "business": {
+    "k8s": {
+      "new_cluster": "New Cluster",
+      "no_cluster_title": "No clusters created",
+      "no_cluster_content": "You don&apos;t have any clusters yet. Start creating cluster. ",
+      "": ""
+    },
+    "billing": {
+      "billing": "Billing",
+      "content": "Manage your subscription and billing details",
+      "noSubscription": "You are not subscribed to any plan. ",
+      "subscriptionInfo": "You are currently on the <strong>{plan}</strong> plan.Your subscription will renew on <strong>{date}</strong>.",
+      "manage_subscription": "Manage Subscription",
+      "upgrade": "upgrade",
+      "": ""
+    }
+  },
+  "dropdown": {
+    "dashboard": "Dashboard",
+    "billing": "Billing",
+    "settings": "Settings",
+    "sign_out": "Sign out",
+    "": ""
+  }
+}

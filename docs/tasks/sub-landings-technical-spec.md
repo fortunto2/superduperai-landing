@@ -9,12 +9,14 @@
 ## 2. Текущее состояние проекта
 
 ### 2.1. Структура проекта
+
 - Проект построен на Next.js 15 с использованием App Router
 - Компоненты лендинга размещены в `/src/components/landing/`
 - Основной лендинг находится в `/src/app/page.tsx`
 - В проекте отсутствует contentlayer2 для работы с MDX
 
 ### 2.2. Существующие страницы
+
 - Главная страница `/`
 - About `/about`
 - Pricing `/pricing`
@@ -36,13 +38,15 @@
 ### 4.1. Установка и настройка contentlayer2
 
 1. Установить необходимые пакеты:
+
 ```bash
 pnpm add contentlayer2 next-contentlayer2 date-fns rehype-autolink-headings rehype-pretty-code rehype-slug remark-gfm
 ```
 
 2. Добавить contentlayer2 в конфигурацию Next.js (`next.config.js`):
+
 ```javascript
-const { withcontentlayer2 } = require('next-contentlayer2');
+const { withcontentlayer2 } = require("next-contentlayer2");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -53,30 +57,31 @@ module.exports = withcontentlayer2(nextConfig);
 ```
 
 3. Создать файл конфигурации contentlayer2 (`contentlayer2.config.ts`):
+
 ```typescript
-import { defineDocumentType, makeSource } from 'contentlayer2/source-files';
-import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import rehypePrettyCode from 'rehype-pretty-code';
-import rehypeSlug from 'rehype-slug';
-import remarkGfm from 'remark-gfm';
+import { defineDocumentType, makeSource } from "contentlayer2/source-files";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypePrettyCode from "rehype-pretty-code";
+import rehypeSlug from "rehype-slug";
+import remarkGfm from "remark-gfm";
 
 // Определение типа документа для Tool
 export const Tool = defineDocumentType(() => ({
-  name: 'Tool',
-  filePathPattern: 'tool/**/*.mdx',
-  contentType: 'mdx',
+  name: "Tool",
+  filePathPattern: "tool/**/*.mdx",
+  contentType: "mdx",
   fields: {
-    title: { type: 'string', required: true },
-    description: { type: 'string', required: true },
-    date: { type: 'date', required: true },
-    slug: { type: 'string', required: true },
-    icon: { type: 'string', required: false },
-    featured: { type: 'boolean', required: false, default: false },
-    seo: { type: 'nested', of: SEO, required: false },
+    title: { type: "string", required: true },
+    description: { type: "string", required: true },
+    date: { type: "date", required: true },
+    slug: { type: "string", required: true },
+    icon: { type: "string", required: false },
+    featured: { type: "boolean", required: false, default: false },
+    seo: { type: "nested", of: SEO, required: false },
   },
   computedFields: {
     url: {
-      type: 'string',
+      type: "string",
       resolve: (doc) => `/tool/${doc.slug}`,
     },
   },
@@ -84,22 +89,22 @@ export const Tool = defineDocumentType(() => ({
 
 // Определение типа документа для Case
 export const Case = defineDocumentType(() => ({
-  name: 'Case',
-  filePathPattern: 'case/**/*.mdx',
-  contentType: 'mdx',
+  name: "Case",
+  filePathPattern: "case/**/*.mdx",
+  contentType: "mdx",
   fields: {
-    title: { type: 'string', required: true },
-    description: { type: 'string', required: true },
-    date: { type: 'date', required: true },
-    slug: { type: 'string', required: true },
-    category: { type: 'string', required: true },
-    image: { type: 'string', required: false },
-    featured: { type: 'boolean', required: false, default: false },
-    seo: { type: 'nested', of: SEO, required: false },
+    title: { type: "string", required: true },
+    description: { type: "string", required: true },
+    date: { type: "date", required: true },
+    slug: { type: "string", required: true },
+    category: { type: "string", required: true },
+    image: { type: "string", required: false },
+    featured: { type: "boolean", required: false, default: false },
+    seo: { type: "nested", of: SEO, required: false },
   },
   computedFields: {
     url: {
-      type: 'string',
+      type: "string",
       resolve: (doc) => `/case/${doc.slug}`,
     },
   },
@@ -107,17 +112,17 @@ export const Case = defineDocumentType(() => ({
 
 // SEO тип
 const SEO = defineDocumentType(() => ({
-  name: 'SEO',
+  name: "SEO",
   fields: {
-    title: { type: 'string', required: false },
-    description: { type: 'string', required: false },
-    keywords: { type: 'list', of: { type: 'string' }, required: false },
-    ogImage: { type: 'string', required: false },
+    title: { type: "string", required: false },
+    description: { type: "string", required: false },
+    keywords: { type: "list", of: { type: "string" }, required: false },
+    ogImage: { type: "string", required: false },
   },
 }));
 
 export default makeSource({
-  contentDirPath: 'src/content',
+  contentDirPath: "src/content",
   documentTypes: [Tool, Case],
   mdx: {
     remarkPlugins: [remarkGfm],
@@ -126,14 +131,14 @@ export default makeSource({
       [
         rehypePrettyCode,
         {
-          theme: 'one-dark-pro',
+          theme: "one-dark-pro",
         },
       ],
       [
         rehypeAutolinkHeadings,
         {
           properties: {
-            className: ['anchor'],
+            className: ["anchor"],
           },
         },
       ],
@@ -145,6 +150,7 @@ export default makeSource({
 ### 4.2. Структура контента
 
 1. Создать директорию для хранения MDX-контента:
+
 ```
 src/
   content/
@@ -159,6 +165,7 @@ src/
 ```
 
 2. Пример структуры MDX-файла для инструмента:
+
 ```mdx
 ---
 title: "AI Image Generator"
@@ -170,7 +177,10 @@ featured: true
 seo:
   title: "AI Image Generator | SuperDuperAI"
   description: "Create stunning images instantly with our AI-powered image generator"
-  keywords: ["AI", "image generator", "AI art"]
+  keywords:
+    - AI
+    - image generator
+    - AI art
 ---
 
 # AI Image Generator
@@ -178,9 +188,21 @@ seo:
 Create stunning images with our advanced AI technology.
 
 <FeatureGrid>
-  <Feature title="High Quality" description="Generate images in 4K resolution" icon="quality" />
-  <Feature title="Fast" description="Get results in seconds" icon="speed" />
-  <Feature title="Customizable" description="Fine-tune your results" icon="settings" />
+  <Feature
+    title="High Quality"
+    description="Generate images in 4K resolution"
+    icon="quality"
+  />
+  <Feature
+    title="Fast"
+    description="Get results in seconds"
+    icon="speed"
+  />
+  <Feature
+    title="Customizable"
+    description="Fine-tune your results"
+    icon="settings"
+  />
 </FeatureGrid>
 
 ## How It Works
@@ -188,13 +210,22 @@ Create stunning images with our advanced AI technology.
 Our image generator uses the latest AI models to create images from text descriptions.
 
 <Steps>
-  <Step number="1" title="Enter a prompt">
+  <Step
+    number="1"
+    title="Enter a prompt"
+  >
     Describe what you want to create
   </Step>
-  <Step number="2" title="Select style">
+  <Step
+    number="2"
+    title="Select style"
+  >
     Choose from various artistic styles
   </Step>
-  <Step number="3" title="Generate">
+  <Step
+    number="3"
+    title="Generate"
+  >
     Get your image in seconds
   </Step>
 </Steps>
@@ -203,6 +234,7 @@ Our image generator uses the latest AI models to create images from text descrip
 ### 4.3. Компоненты для MDX
 
 1. Создать компоненты для использования в MDX:
+
    - `src/components/content/mdx-components.tsx` - компоненты для рендеринга MDX
    - `src/components/content/feature-grid.tsx` - сетка фич
    - `src/components/content/feature.tsx` - компонент фичи
@@ -276,11 +308,11 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const tool = allTools.find((tool) => tool.slug === params.slug);
-  
+
   if (!tool) {
     return {};
   }
-  
+
   return {
     title: tool.seo?.title || tool.title,
     description: tool.seo?.description || tool.description,
@@ -296,11 +328,11 @@ export async function generateStaticParams() {
 
 export default function ToolPage({ params }: PageProps) {
   const tool = allTools.find((tool) => tool.slug === params.slug);
-  
+
   if (!tool) {
     notFound();
   }
-  
+
   return (
     <div className="container mx-auto py-10">
       <article className="prose dark:prose-invert max-w-none">
@@ -315,10 +347,10 @@ export default function ToolPage({ params }: PageProps) {
 
 ```typescript
 // src/app/case/[slug]/page.tsx
-import { allCases } from 'contentlayer2/generated';
-import { MDXContent } from '@/components/content/mdx-components';
-import { notFound } from 'next/navigation';
-import { Metadata } from 'next';
+import { allCases } from "contentlayer2/generated";
+import { MDXContent } from "@/components/content/mdx-components";
+import { notFound } from "next/navigation";
+import { Metadata } from "next";
 
 // ... аналогично ToolPage
 ```
@@ -347,9 +379,9 @@ export default function ToolsPage() {
       <h1 className="text-3xl font-bold mb-6">AI Tools</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {sortedTools.map((tool) => (
-          <Link 
-            href={tool.url} 
-            key={tool.slug}
+          <Link
+            href={tool.url}
+            key={`${tool.locale}-${tool.slug}`}
             className="card-block p-6 rounded-lg border border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
           >
             <h2 className="text-xl font-bold mb-2">{tool.title}</h2>
@@ -365,6 +397,7 @@ export default function ToolsPage() {
 ### 4.5. Интеграция с многоязычностью
 
 1. Расширить структуру контента для поддержки разных языков:
+
 ```
 src/
   content/
@@ -381,37 +414,38 @@ src/
 ```
 
 2. Обновить конфигурацию contentlayer2:
+
 ```typescript
 // contentlayer2.config.ts
 // ... существующие импорты
 
 export const Tool = defineDocumentType(() => ({
-  name: 'Tool',
-  filePathPattern: '{en,ru}/tool/**/*.mdx',
-  contentType: 'mdx',
+  name: "Tool",
+  filePathPattern: "{en,ru}/tool/**/*.mdx",
+  contentType: "mdx",
   fields: {
     // ... существующие поля
-    locale: { type: 'string', required: true },
+    locale: { type: "string", required: true },
   },
   computedFields: {
     url: {
-      type: 'string',
+      type: "string",
       resolve: (doc) => `/${doc.locale}/tool/${doc.slug}`,
     },
   },
 }));
 
 export const Case = defineDocumentType(() => ({
-  name: 'Case',
-  filePathPattern: '{en,ru}/case/**/*.mdx',
-  contentType: 'mdx',
+  name: "Case",
+  filePathPattern: "{en,ru}/case/**/*.mdx",
+  contentType: "mdx",
   fields: {
     // ... существующие поля
-    locale: { type: 'string', required: true },
+    locale: { type: "string", required: true },
   },
   computedFields: {
     url: {
-      type: 'string',
+      type: "string",
       resolve: (doc) => `/${doc.locale}/case/${doc.slug}`,
     },
   },
@@ -421,6 +455,7 @@ export const Case = defineDocumentType(() => ({
 ```
 
 3. Обновить роутинг для поддержки многоязычности:
+
 ```typescript
 // src/app/[lang]/tool/[slug]/page.tsx
 import { allTools } from 'contentlayer2/generated';
@@ -439,11 +474,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const tool = allTools.find(
     (tool) => tool.slug === params.slug && tool.locale === params.lang
   );
-  
+
   if (!tool) {
     return {};
   }
-  
+
   return {
     title: tool.seo?.title || tool.title,
     description: tool.seo?.description || tool.description,
@@ -453,14 +488,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export async function generateStaticParams() {
   const paths = [];
-  
+
   for (const tool of allTools) {
     paths.push({
       lang: tool.locale,
       slug: tool.slug,
     });
   }
-  
+
   return paths;
 }
 
@@ -468,11 +503,11 @@ export default function ToolPage({ params }: PageProps) {
   const tool = allTools.find(
     (tool) => tool.slug === params.slug && tool.locale === params.lang
   );
-  
+
   if (!tool) {
     notFound();
   }
-  
+
   return (
     <div className="container mx-auto py-10">
       <article className="prose dark:prose-invert max-w-none">
@@ -486,21 +521,25 @@ export default function ToolPage({ params }: PageProps) {
 ## 5. План реализации
 
 1. **Этап 1: Настройка contentlayer2 (2 дня)**
+
    - Установка и настройка contentlayer2
    - Создание базовой конфигурации для типов документов
    - Настройка преобразования MDX
 
 2. **Этап 2: Разработка компонентов для MDX (3 дня)**
+
    - Создание базовых MDX-компонентов
    - Разработка специальных компонентов (FeatureGrid, Steps, CTABox)
    - Стилизация компонентов
 
 3. **Этап 3: Создание роутинга и страниц (2 дня)**
+
    - Разработка страниц для отдельных инструментов и кейсов
    - Создание индексных страниц для категорий
    - Настройка SEO-метаданных
 
 4. **Этап 4: Интеграция многоязычности (2 дня)**
+
    - Обновление конфигурации contentlayer2 для поддержки локализации
    - Адаптация роутинга для многоязычности
    - Тестирование переключения между языками
@@ -524,4 +563,4 @@ export default function ToolPage({ params }: PageProps) {
 2. Роутинг работает для всех языков и типов подлендингов
 3. SEO-метаданные корректно генерируются для всех страниц
 4. Компоненты для MDX поддерживают все необходимые функции
-5. Система соответствует общему дизайну проекта 
+5. Система соответствует общему дизайну проекта

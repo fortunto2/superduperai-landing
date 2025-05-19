@@ -7,13 +7,11 @@ SuperDuperAI is a professional video creation platform powered by artificial int
 ## Main Sections
 
 ### Tools
-
 - [Vibe Filmmaking](/tool/vibe-filmmaking.md): Create videos based on mood or aesthetic instead of detailed scripts.
 - [Agent Director](/tool/agent-director.md): A paradigm where AI agents handle different aspects of video creation.
 - [Image Generator](/tool/image-generator.md): Transform text into professional images and videos.
 
 ### Use Cases
-
 - [Creators & Influencers](/case/creators-influencers.md): Content production for bloggers and influencers.
 - [Musicians & Artists](/case/musicians-artists.md): Create music videos based on the vibe of your tracks.
 - [Small Businesses](/case/small-businesses.md): Video advertising without agencies.
@@ -21,7 +19,6 @@ SuperDuperAI is a professional video creation platform powered by artificial int
 - [Video Storytelling](/case/video-story.md): Telling stories through video.
 
 ### Pages
-
 - [About](/about.md): Information about SuperDuperAI and the technologies behind the platform.
 - [Pricing](/pricing.md): Available subscription options and features.
 - [Privacy](/privacy.md): Information about data handling and privacy.
@@ -49,4 +46,4 @@ This file follows the [llms.txt](https://llmstxt.org/) specification and is desi
 
 ## Additional Information
 
-SuperDuperAI combines cutting-edge neural technology with intuitive creative tools, allowing anyone to create broadcast-quality videos. 
+SuperDuperAI combines cutting-edge neural technology with intuitive creative tools, allowing anyone to create broadcast-quality videos.
