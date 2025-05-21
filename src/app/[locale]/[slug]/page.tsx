@@ -1,22 +1,17 @@
-import { Metadata } from "next";
 import { allPages, type Page as PageType } from ".contentlayer/generated";
 import { notFound } from "next/navigation";
 import { MDXContent } from "@/components/content/mdx-components";
 import { PageWrapper } from "@/components/content/page-wrapper";
 import { generatePageMetadata, GRADIENTS } from "@/lib/metadata";
+import { useTranslation } from "@/hooks/use-translation";
 import { Locale } from "@/config/i18n-config";
-
-interface PageProps {
-  params: Promise<{
-    slug: string;
-    locale: Locale;
-  }>;
-}
 
 // Функция для получения метаданных страницы
 export async function generateMetadata({
   params,
-}: PageProps): Promise<Metadata> {
+}: {
+  params: Promise<{ slug: string; locale: string }>;
+}) {
   const { slug, locale } = await params;
 
   const page = allPages.find(
@@ -62,7 +57,11 @@ function checkForH1InMDX(code: string): boolean {
 }
 
 // Основной компонент страницы
-export default async function Page({ params }: PageProps) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string; locale: string }>;
+}) {
   const { slug, locale } = await params;
 
   // Ищем страницу с учетом локали для правильной локализации
@@ -79,25 +78,37 @@ export default async function Page({ params }: PageProps) {
     }
 
     // Используем доступную страницу, когда нет перевода для текущей локали
-    return PageContent({ page: fallbackPage, slug });
+    return PageContent({ page: fallbackPage, slug, locale });
   }
 
-  return PageContent({ page, slug });
+  return PageContent({ page, slug, locale });
 }
 
 // Выделяем рендеринг контента в отдельную функцию для повторного использования
-function PageContent({ page, slug }: { page: PageType; slug: string }) {
+function PageContent({
+  page,
+  slug,
+  locale,
+}: {
+  page: PageType;
+  slug: string;
+  locale: string;
+}) {
   // Проверяем наличие заголовка H1 в MDX
   const hasH1Heading = checkForH1InMDX(page.body.raw);
-
+  const { t } = useTranslation(locale as Locale);
   // Подготавливаем метку для хлебных крошек
   const breadcrumbLabel = page.title.split(" - ")[0];
 
   return (
     <PageWrapper
       title={page.title}
-      breadcrumbItems={[{ label: breadcrumbLabel, href: `/${slug}` }]}
+      breadcrumbItems={[
+        { label: t("navbar.home"), href: `/${locale}` },
+        { label: breadcrumbLabel, href: `/${locale}/${slug}` },
+      ]}
       hasH1Heading={hasH1Heading}
+      locale={locale}
     >
       <MDXContent code={page.body.code} />
     </PageWrapper>

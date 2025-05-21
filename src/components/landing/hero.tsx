@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -6,13 +6,15 @@ import { motion } from "framer-motion";
 import { APP_URLS } from "@/lib/constants";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
+import { useTranslation } from "@/hooks/use-translation";
+import { useParams } from "next/navigation";
+import { getValidLocale } from "@/lib/get-valid-locale";
 
-interface HeroProps {
-  title?: string;
-  description?: string;
-}
+export function Hero() {
+  const params = useParams();
+  const locale = getValidLocale(params.locale);
+  const { t } = useTranslation(locale);
 
-export function Hero({ title, description }: HeroProps) {
   // Состояние для слайдера
   const [currentSlide, setCurrentSlide] = useState(0);
   const slides = [
@@ -26,7 +28,7 @@ export function Hero({ title, description }: HeroProps) {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 5000);
-    
+
     return () => clearInterval(timer);
   }, [slides.length]);
 
@@ -34,18 +36,10 @@ export function Hero({ title, description }: HeroProps) {
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
-  
+
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
-
-  // Значения по умолчанию, если не переданы props
-  const defaultTitle = "Turn Vibes into Videos Instantly";
-  const defaultDescription = "Revolutionary AI platform for creating professional videos without skills, equipment, or budget. 10x faster and cheaper.";
-
-  // Используем переданные значения или значения по умолчанию
-  const displayTitle = title || defaultTitle;
-  const displayDescription = description || defaultDescription;
 
   return (
     <section className="relative w-full min-h-[90vh] flex flex-col items-center justify-center overflow-hidden py-20 animated-bg">
@@ -56,50 +50,62 @@ export function Hero({ title, description }: HeroProps) {
           <div className="absolute bottom-1/4 right-1/3 w-96 h-96 bg-accent/10 rounded-full filter blur-3xl"></div>
         </div>
       </div>
-      
+
       <div className="container relative z-10 flex flex-col items-center text-center gap-8">
         {/* Основной заголовок с анимацией */}
-        <motion.h1 
+        <motion.h1
           className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter max-w-3xl"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          {displayTitle}
+          {t("hero.title")}
         </motion.h1>
-        
+
         {/* Подзаголовок */}
-        <motion.p 
+        <motion.p
           className="text-xl md:text-2xl text-muted-foreground max-w-2xl"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
         >
-          {displayDescription}
+          {t("hero.description")}
         </motion.p>
-        
+
         {/* CTA кнопки */}
-        <motion.div 
+        <motion.div
           className="flex flex-col sm:flex-row gap-4 mt-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
         >
-          <Button size="lg" className="text-lg px-8 btn-accent" asChild>
-            <a href={APP_URLS.EDITOR_URL} target="_blank" rel="noopener noreferrer nofollow" title="Start creating videos with SuperDuperAI">
-              Start Creating for Free
+          <Button
+            size="lg"
+            className="text-lg px-8 btn-accent"
+            asChild
+          >
+            <a
+              href={APP_URLS.EDITOR_URL}
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              title={t("hero.cta")}
+            >
+              {t("hero.cta")}
             </a>
           </Button>
         </motion.div>
-        
+
         {/* Слайдер со скриншотами */}
-        <motion.div 
+        <motion.div
           className="relative w-full max-w-5xl mt-12 aspect-video rounded-lg overflow-hidden shadow-2xl border border-accent/20 gradient-border"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
         >
-          <div className="relative w-full h-full" style={{ backgroundColor: "#121113" }}>
+          <div
+            className="relative w-full h-full"
+            style={{ backgroundColor: "#121113" }}
+          >
             {slides.map((slide, index) => (
               <div
                 key={index}
@@ -117,9 +123,9 @@ export function Hero({ title, description }: HeroProps) {
                 />
               </div>
             ))}
-            
+
             {/* Кнопки навигации */}
-            <button 
+            <button
               onClick={prevSlide}
               className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-colors z-10"
               aria-label="Previous slide"
@@ -127,8 +133,8 @@ export function Hero({ title, description }: HeroProps) {
             >
               <ChevronLeft className="h-6 w-6" />
             </button>
-            
-            <button 
+
+            <button
               onClick={nextSlide}
               className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-colors z-10"
               aria-label="Next slide"
@@ -136,7 +142,7 @@ export function Hero({ title, description }: HeroProps) {
             >
               <ChevronRight className="h-6 w-6" />
             </button>
-            
+
             {/* Индикаторы слайдов */}
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
               {slides.map((_, index) => (
@@ -155,4 +161,4 @@ export function Hero({ title, description }: HeroProps) {
       </div>
     </section>
   );
-} 
+}

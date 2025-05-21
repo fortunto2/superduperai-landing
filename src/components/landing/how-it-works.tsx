@@ -1,27 +1,30 @@
-"use client"
+"use client";
 
 import { motion } from "framer-motion";
 import { LightbulbIcon, Bot, SlidersHorizontal } from "lucide-react";
+import { useTranslation } from "@/hooks/use-translation";
+import { useParams } from "next/navigation";
+import { getValidLocale } from "@/lib/get-valid-locale";
 
 // Animation for container
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: { 
+  visible: {
     opacity: 1,
-    transition: { 
-      staggerChildren: 0.3
-    }
-  }
+    transition: {
+      staggerChildren: 0.3,
+    },
+  },
 };
 
 // Animation for individual steps
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: "easeOut" }
-  }
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
 };
 
 interface Step {
@@ -29,32 +32,26 @@ interface Step {
   description: string;
 }
 
-interface HowItWorksProps {
-  steps?: Step[];
-}
-
-export function HowItWorks({ steps: propSteps }: HowItWorksProps) {
-  // Default steps if none are provided
-  const steps = propSteps || [
-    {
-      title: "Define Your Vision",
-      description: "Describe your idea, vibe, or plot — just a few phrases are enough",
-    },
-    {
-      title: "AI Generates the Scene",
-      description: "Multi-agent system creates script, frames, and characters",
-    },
-    {
-      title: "Refine and Finalize",
-      description: "Adjust the style, export your video, and share it with the world",
-    },
-  ];
+export function HowItWorks() {
+  const params = useParams();
+  const locale = getValidLocale(params.locale);
+  const { t } = useTranslation(locale);
+  const steps = t("howItWorks.steps") as Step[];
 
   // Default icons to use for each step
   const icons = [
-    <LightbulbIcon key="lightbulb" className="h-10 w-10" />,
-    <Bot key="bot" className="h-10 w-10" />,
-    <SlidersHorizontal key="sliders" className="h-10 w-10" />
+    <LightbulbIcon
+      key="lightbulb"
+      className="h-10 w-10"
+    />,
+    <Bot
+      key="bot"
+      className="h-10 w-10"
+    />,
+    <SlidersHorizontal
+      key="sliders"
+      className="h-10 w-10"
+    />,
   ];
 
   return (
@@ -62,14 +59,13 @@ export function HowItWorks({ steps: propSteps }: HowItWorksProps) {
       <div className="container">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tighter mb-4">
-            How It <span className="neon-text">Works</span>
+            {t("howItWorks.section_title")}
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Direct your video in 3 easy steps – AI agents handle the rest.
+            {t("howItWorks.section_description")}
           </p>
         </div>
-
-        <motion.div 
+        <motion.div
           className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto"
           variants={containerVariants}
           initial="hidden"
@@ -77,7 +73,7 @@ export function HowItWorks({ steps: propSteps }: HowItWorksProps) {
           viewport={{ once: true, margin: "-100px" }}
         >
           {steps.map((step, index) => (
-            <motion.div 
+            <motion.div
               key={index}
               className="relative card-enhanced p-8 flex flex-col items-center text-center hover:translate-y-[-5px]"
               variants={itemVariants}
@@ -96,4 +92,4 @@ export function HowItWorks({ steps: propSteps }: HowItWorksProps) {
       </div>
     </section>
   );
-} 
+}

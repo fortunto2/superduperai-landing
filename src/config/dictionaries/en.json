@@ -1,167 +1,147 @@
 {
-  "price": {
-    "title": "Cheap, transparent prices!",
-    "pricing": "Pricing",
-    "slogan": "Start at full speed !",
-    "monthly_bill": "Monthly Billing",
-    "annual_bill": "Annual Billing",
-    "annual_info": "will be charged when annual",
-    "monthly_info": "when charged monthly",
-    "mo": "/mo",
-    "contact": "for to contact our support team.",
-    "contact_2": "You can test the subscriptions and won&apos;t be charged.",
-    "faq": "Frequently Asked Questions",
-    "faq_detail": "Explore our comprehensive FAQ to find quick answers to common inquiries. If you need further assistance, don&apos;t hesitate to contact us for personalized help.",
-    "signup": "Sign up",
-    "upgrade": "Upgrade",
-    "manage_subscription": "Manage Subscription",
-    "go_to_dashboard": "Go to dashboard",
-    "": ""
+  "footer": {
+    "pages": {
+      "about": "About",
+      "pricing": "Pricing",
+      "terms": "Terms and Conditions",
+      "privacy": "Privacy",
+      "demo": "Book a Demo"
+    },
+    "company": "SuperDuperAI",
+    "corp": "SuperDuperAi, Corp.",
+    "address1": "57 Saulsbury Rd, Unit E #1333",
+    "address2": "Dover, DE 19904",
+    "phone": "+1 818 619 0966",
+    "email": "info@superduperai.co",
+    "copyright": "© {year} SuperDuperAi Corp. All rights reserved.",
+    "social": {
+      "instagram": "Follow SuperDuperAI on Instagram",
+      "youtube": "Subscribe to SuperDuperAI on YouTube",
+      "telegram": "Join SuperDuperAI on Telegram",
+      "tiktok": "Follow SuperDuperAI on TikTok",
+      "discord": "Join SuperDuperAI Discord server",
+      "linkedin": "Connect with SuperDuperAI on LinkedIn"
+    }
   },
   "marketing": {
-    "introducing": "Introducing SuperDuperAI",
-    "title": "Turn Vibes into Videos – Instantly.",
-    "sub_title": "AI filmmaking for creators, businesses, musicians, and teams.",
-    "get_started": "Start Creating for Free",
-    "view_on_github": "View on GitHub",
-    "explore_product": "Watch a Demo",
-    "features": "Features",
-    "sub_features": "Cloud-native: Simplifying technology and reducing costs for startups.",
-    "k8s_features": "Fast, simple development",
-    "devops_features": "Easy application deployment",
-    "price_features": "Economically efficient for production environments.",
-    "main_nav_features": "Features",
-    "main_nav_pricing": "Pricing",
-    "main_nav_products": "Products",
-    "main_nav_blog": "Blog",
-    "main_nav_documentation": "Documentation",
-    "login": "Login",
-    "signup": "Sign up",
-    "no_credit_card": "No credit card required",
-    "final_cta": "Ready to create your next video sensation? Join SuperDuperAI.",
-    "": "",
-    "contributors": {
-      "contributors_desc": "contributors made SuperDuperAI stronger",
-      "developers_first": "Help more than ",
-      "developers_second": " creators"
-    },
-    "right_side": {
-      "deploy_on_vercel_title": "Vibe Filmmaking",
-      "deploy_on_vercel_desc": "Get started in seconds, turn your vibe into stunning visuals instantly.",
-      "ship_on_cloudflare_title": "AI Video Making",
-      "ship_on_cloudflare_desc": "Create professional videos with AI. No budget, no crew needed.",
-      "showcase_title": "Agent-Director Model",
-      "showcase_desc": "You direct, AI executes. Multiple specialized agents working together to create your vision."
-    },
-    "features_grid": {
-      "monorepo_title": "Custom Characters",
-      "monorepo_desc": "Create and save your personalized AI actors with memory (LoRA) for consistent performance across videos.",
-      "i18n_title": "Cinematic Camera Controls",
-      "i18n_desc": "Professional camera movements - pans, zooms, bullet-time - all without physical equipment.",
-      "payments_title": "Multi-Agent AI Workflow",
-      "payments_desc": "Specialized AI agents working together: screenplay, visuals, characters, editing, all coordinated.",
-      "nextauth_title": "Fast & Cost Efficient",
-      "nextauth_desc": "From idea to finished video in minutes, at a fraction of traditional production costs."
-    },
-    "sponsor": {
-      "title": "Loved by our Community",
-      "donate": "Support the project"
-    },
-    "video": {
-      "first_text": "See it in action, then",
-      "second_text1": "create your video in ",
-      "second_text2": "",
-      "time_text": "minutes, not weeks"
-    },
-    "people_comment": {
-      "title": "What People Are Saying",
-      "desc": "Hear from creators who've transformed their visions into reality with SuperDuperAI."
-    },
-    "how_it_works": {
-      "title": "How It Works",
-      "subtitle": "Direct your video in 3 easy steps – AI agents handle the rest.",
-      "step1_title": "Define Your Vision",
-      "step1_desc": "Describe your idea, vibe, and story - the AI understands your creative intent.",
-      "step2_title": "AI Generates the Scene",
-      "step2_desc": "Multiple agents create the script, visuals, characters, and animations together.",
-      "step3_title": "Refine and Finalize",
-      "step3_desc": "Adjust styles, edit text, and export your finished video to any platform."
-    },
-    "use_cases": {
-      "title": "Made for Creators, Businesses, Musicians & Teams",
-      "creators_title": "Creators & Influencers",
-      "creators_desc": "Create more content, grow your audience, increase revenue.",
-      "business_title": "Small Businesses",
-      "business_desc": "Professional video ads without agencies or big budgets.",
-      "musicians_title": "Musicians & Artists",
-      "musicians_desc": "Music videos and visuals that match your track's vibe.",
-      "agencies_title": "Agencies & Teams",
-      "agencies_desc": "Rapid prototyping and collaborative storytelling."
-    },
-    "testimonials": {
-      "testimonial1": {
-        "quote": "We saved weeks. Now we scale faster.",
-        "author": "Alex J.",
-        "role": "Marketing Agency"
-      },
-      "testimonial2": {
-        "quote": "My music video, no budget, huge vibe.",
-        "author": "Jasmine K.",
-        "role": "Indie Musician"
-      },
-      "testimonial3": {
-        "quote": "Twice the content. More subs.",
-        "author": "Marco P.",
-        "role": "Content Creator"
-      }
+    "pages": "Pages",
+    "tools": "AI Tools",
+    "cases": "Use Cases",
+    "ai_tool_title": "AI tool by SuperDuperAI",
+    "ai_case_title": "Case Study by SuperDuperAI",
+    "view_all_tools": "View All Tools →",
+    "view_all_cases": "View All Use Cases →"
+  },
+  "hero": {
+    "title": "Turn Vibes into Videos Instantly",
+    "description": "Revolutionary AI platform for creating professional videos without skills, equipment, or budget. 10x faster and cheaper.",
+    "cta": "Start Creating for Free"
+  },
+  "features": {
+    "section_title": "What Makes SuperDuperAI Super",
+    "section_description": "Advanced features and technologies for creating stunning videos",
+    "list": [
+      {"icon": "users", "title": "Custom Characters with AI Memory", "description": "Your AI actor database using LoRA technology. Create and save unique characters for your videos."},
+      {"icon": "image", "title": "Cinematic Camera Controls", "description": "Pans, zooms, bullet-time — without physical cameras. Add professional camera movements with one click."},
+      {"icon": "settings", "title": "Multi-Agent AI Workflow", "description": "A model where each agent does its job. Specialized AI for scripting, filming, editing, and sound."},
+      {"icon": "speed", "title": "Fast & Efficient", "description": "Idea → video in minutes, not hours or days. Speed up your workflow and create more content."},
+      {"icon": "chart", "title": "Cost Saving", "description": "Cinematography on a budget. Get professional video without spending on crew and equipment."},
+      {"icon": "edit", "title": "Easy Editing & Integration", "description": "Storyboard, drag-drop, export to TikTok / YouTube. Intuitive interface for quick finalization of your video."}
+    ]
+  },
+  "howItWorks": {
+    "section_title": "How It Works",
+    "section_description": "Direct your video in 3 easy steps – AI agents handle the rest.",
+    "steps": [
+      {"title": "Define Your Vision", "description": "Describe your idea, vibe, or plot — just a few phrases are enough"},
+      {"title": "AI Generates the Scene", "description": "Multi-agent system creates script, frames, and characters"},
+      {"title": "Refine and Finalize", "description": "Adjust the style, export your video, and share it with the world"}
+    ]
+  },
+  "useCases": {
+    "section_title": "Made for Creators, Businesses, Musicians & Teams",
+    "section_description": "Find the perfect use case for SuperDuperAI to meet your needs.",
+    "categories": {
+      "ai-video": "Content Creators",
+      "business": "Small Businesses",
+      "creative": "Musicians & Artists",
+      "teams": "Agencies & Teams",
+      "social": "Social Media"
     }
   },
-  "login": {
-    "back": "Back",
-    "welcome_back": "Welcome back",
-    "signin_title": "Enter your email to log into your account",
-    "singup_title": "Don't have an account? Sign up now.",
-    "signin_email": "Log in with Email",
-    "signin_others": "Or continue with",
-    "signup": "Sign up",
-    "privacy": "only your email and profile picture will be stored.",
-    "signup_github": "Sign Up with Github",
-    "": ""
+  "cta": {
+    "title": "Ready to create your next video sensation?",
+    "description": "Join SuperDuperAI and start creating amazing videos right now.",
+    "button": "Start Creating for Free",
+    "note": "No credit card required"
   },
-  "common": {
-    "copyright": "Copyright © ${currentYear} Nextify Limited. All rights reserved.",
-    "dashboard": {
-      "main_nav_documentation": "Documentation",
-      "main_nav_support": "Support",
-      "sidebar_nav_clusters": "Clusters",
-      "sidebar_nav_billing": "Billing",
-      "sidebar_nav_settings": "Settings",
-      "title_text": "Create and manage clusters."
-    },
-    "": ""
+  "navbar": {
+    "home": "Home",
+    "about": "About",
+    "pricing": "Pricing",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "discord": "Discord",
+    "start": "Start For Free",
+    "menu": "Menu",
+    "close_menu": "Close menu",
+    "open_menu": "Open menu"
   },
-  "business": {
-    "k8s": {
-      "new_cluster": "New Cluster",
-      "no_cluster_title": "No clusters created",
-      "no_cluster_content": "You don&apos;t have any clusters yet. Start creating cluster. ",
-      "": ""
-    },
-    "billing": {
-      "billing": "Billing",
-      "content": "Manage your subscription and billing details",
-      "noSubscription": "You are not subscribed to any plan. ",
-      "subscriptionInfo": "You are currently on the <strong>{plan}</strong> plan.Your subscription will renew on <strong>{date}</strong>.",
-      "manage_subscription": "Manage Subscription",
-      "upgrade": "upgrade",
-      "": ""
-    }
+  "ui": {
+    "faq": "FAQ",
+    "approved_by": "Approved by",
+    "look": "Look!",
+    "show_more": "Show more",
+    "collapse": "Collapse",
+    "no_results": "No results",
+    "loading": "Loading...",
+    "success": "Success!",
+    "error": "Error",
+    "try_again": "Try again",
+    "empty": "Empty",
+    "nothing_found": "Nothing found",
+    "get_started": "Get Started"
   },
-  "dropdown": {
-    "dashboard": "Dashboard",
-    "billing": "Billing",
-    "settings": "Settings",
-    "sign_out": "Sign out",
-    "": ""
-  }
+  "pricing": {
+    "banner_title": "Try SuperDuperAI with 100 Free Credits!",
+    "banner_desc": "New users get 100 credits completely free - enough to create multiple projects and explore almost all our features. Test the power of AI creativity with no commitment.",
+    "banner_cta": "Start Creating Now",
+    "without_package": "Without a Package",
+    "with_power_package": "With a Power Package",
+    "base_name": "BASE - 100 credits",
+    "pro_name": "PRO - 1000 credits",
+    "base_projects": "5-10 projects",
+    "pro_projects": "20-50 projects",
+    "save_50": "save 50%",
+    "free_features": [
+      "100 free credits per month",
+      "Access to basic editing tools only",
+      "Limited animation and voiceover options",
+      "Videos with watermarks"
+    ],
+    "base_features": [
+      "Full access to all editing tools",
+      "Unlimited creation",
+      "Download finished videos without watermarks",
+      "Personal manager to assist with your projects",
+      "Exclusive training sessions to boost your skills"
+    ],
+    "pro_features": [
+      "Full access to all editing tools",
+      "Unlimited creation",
+      "Download finished videos without watermarks",
+      "Personal manager to assist with your projects",
+      "Exclusive training sessions to boost your skills"
+    ],
+    "start": "Start Creating",
+    "buy": "Buy"
+  },
+  "creative": {
+    "title": "SuperDuperAI Creative Partnership Program",
+    "desc": "We're looking for passionate content creators and artists! Join our program and receive 1000+ free credits, 1-on-1 support, and early access to new features. Perfect for creators with socially meaningful projects and innovative ideas.",
+    "learn_more": "Learn More",
+    "or": "or",
+    "apply_email": "Apply via Email"
+  },
+  "privacy_policy": "Privacy policy"
 }
