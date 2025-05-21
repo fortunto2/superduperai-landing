@@ -6,7 +6,7 @@ slug: "video-story"
 category: "ai-video"
 image: "/images/cases/ai-story-generator-hero.jpg"
 featured: true
-locale: "en"
+locale: en
 seo:
   title: "Free AI Video Story Generator | Create Stunning Stories in Minutes | SuperDuperAI"
   description: "Use SuperDuperAI's free AI video story generator to turn text prompts into captivating videos fast. Perfect for YouTube, TikTok, Instagram."

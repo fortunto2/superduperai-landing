@@ -10,10 +10,16 @@ import { APP_URLS } from "@/lib/constants";
 import { Dropdown } from "../ui/dropdown-menu";
 import { i18n } from "@/config/i18n-config";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/hooks/use-translation";
+import { getValidLocale } from "@/lib/get-valid-locale";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const params = useParams();
+  const locale = getValidLocale(params.locale);
+  const { t } = useTranslation(locale);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,7 +45,7 @@ export function Navbar() {
         <Link
           href="/"
           className="font-bold text-xl md:text-2xl flex items-center"
-          title="SuperDuperAI - Home"
+          title={t("navbar.home") + " - SuperDuperAI"}
         >
           <Logo className="" />
           <span className="text-accent">Super</span>DuperAI
@@ -50,23 +56,23 @@ export function Navbar() {
           <Link
             href="/"
             className="text-muted-foreground hover:text-accent transition-colors"
-            title="SuperDuperAI - Home"
+            title={t("navbar.home") + " - SuperDuperAI"}
           >
-            Home
+            {t("navbar.home")}
           </Link>
           <Link
             href="/about"
             className="text-muted-foreground hover:text-accent transition-colors"
-            title="About SuperDuperAI"
+            title={t("navbar.about") + " - SuperDuperAI"}
           >
-            About
+            {t("navbar.about")}
           </Link>
           <Link
             href="/pricing"
             className="text-muted-foreground hover:text-accent transition-colors"
-            title="SuperDuperAI Pricing Plans"
+            title={t("navbar.pricing") + " - SuperDuperAI"}
           >
-            Pricing
+            {t("navbar.pricing")}
           </Link>
         </nav>
 
@@ -83,9 +89,9 @@ export function Navbar() {
               href={APP_URLS.DISCORD_URL}
               target="_blank"
               rel="noopener noreferrer nofollow"
-              title="Join SuperDuperAI Discord Community"
+              title={t("navbar.discord")}
             >
-              Discord
+              {t("navbar.discord")}
             </a>
           </Button>
           <Button
@@ -97,9 +103,9 @@ export function Navbar() {
               href={APP_URLS.EDITOR_URL}
               target="_blank"
               rel="noopener noreferrer nofollow"
-              title="Start Creating with SuperDuperAI"
+              title={t("navbar.start")}
             >
-              Start For Free
+              {t("navbar.start")}
             </a>
           </Button>
         </div>
@@ -108,7 +114,9 @@ export function Navbar() {
         <button
           className="block md:hidden text-foreground hover:text-accent transition-colors"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+          aria-label={
+            isMobileMenuOpen ? t("navbar.close_menu") : t("navbar.open_menu")
+          }
         >
           {isMobileMenuOpen ? (
             <X className="h-6 w-6" />
@@ -133,41 +141,41 @@ export function Navbar() {
                 href="/"
                 className="text-muted-foreground hover:text-accent transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
-                title="SuperDuperAI - Home"
+                title={t("navbar.home") + " - SuperDuperAI"}
               >
-                Home
+                {t("navbar.home")}
               </Link>
               <Link
                 href="/about"
                 className="text-muted-foreground hover:text-accent transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
-                title="About SuperDuperAI"
+                title={t("navbar.about") + " - SuperDuperAI"}
               >
-                About
+                {t("navbar.about")}
               </Link>
               <Link
                 href="/pricing"
                 className="text-muted-foreground hover:text-accent transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
-                title="SuperDuperAI Pricing Plans"
+                title={t("navbar.pricing") + " - SuperDuperAI"}
               >
-                Pricing
+                {t("navbar.pricing")}
               </Link>
               <Link
                 href="/terms"
                 className="text-muted-foreground hover:text-accent transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
-                title="Terms and Conditions - SuperDuperAI"
+                title={t("navbar.terms") + " - SuperDuperAI"}
               >
-                Terms
+                {t("navbar.terms")}
               </Link>
               <Link
                 href="/privacy"
                 className="text-muted-foreground hover:text-accent transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
-                title="Privacy Policy - SuperDuperAI"
+                title={t("navbar.privacy") + " - SuperDuperAI"}
               >
-                Privacy
+                {t("navbar.privacy")}
               </Link>
             </nav>
             <div className="flex flex-col gap-3 mt-2">
@@ -182,9 +190,9 @@ export function Navbar() {
                   href="https://discord.gg/superduperai"
                   target="_blank"
                   rel="noopener noreferrer nofollow"
-                  title="Join SuperDuperAI Discord Community"
+                  title={t("navbar.discord")}
                 >
-                  Discord123
+                  {t("navbar.discord")}
                 </a>
               </Button>
               <Button
@@ -197,9 +205,9 @@ export function Navbar() {
                   href="https://discord.gg/superduperai"
                   target="_blank"
                   rel="noopener noreferrer nofollow"
-                  title="Join SuperDuperAI Discord Community"
+                  title={t("navbar.discord")}
                 >
-                  Discord
+                  {t("navbar.discord")}
                 </a>
               </Button>
               <Button
@@ -211,9 +219,9 @@ export function Navbar() {
                   href={APP_URLS.EDITOR_URL}
                   target="_blank"
                   rel="noopener noreferrer nofollow"
-                  title="Start Creating with SuperDuperAI"
+                  title={t("navbar.start")}
                 >
-                  Start For Free
+                  {t("navbar.start")}
                 </a>
               </Button>
             </div>

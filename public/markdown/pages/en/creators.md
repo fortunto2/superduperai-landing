@@ -3,7 +3,7 @@ title: "Creative Partnership Program - SuperDuperAI"
 description: "Join the SuperDuperAI Creative Partnership Program for content creators and artists. Get free credits, 1-on-1 support, and early access to AI video creation tools."
 date: "2023-10-15"
 slug: "creators"
-locale: "en"
+locale: en
 seo:
   title: "Creative Partnership Program - SuperDuperAI"
   description: "Join the SuperDuperAI Creative Partnership Program for content creators and artists. Get free credits, 1-on-1 support, and early access to AI video creation tools."

@@ -5,6 +5,7 @@ date: 2023-10-15
 slug: "image-generator"
 icon: "image"
 featured: true
+locale: ru
 seo:
   title: "AI‑генератор изображений | SuperDuperAI"
   description: "Создавайте потрясающие изображения за секунды с помощью AI‑генератора SuperDuperAI."
@@ -12,7 +13,6 @@ seo:
     - AI
     - генератор изображений
     - AI art
-locale: ru
 ---
 
 # AI‑генератор изображений

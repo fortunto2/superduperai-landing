@@ -6,9 +6,7 @@ import { CaseUseCases } from "@/components/landing/case-use-cases";
 import { CTA } from "@/components/landing/cta";
 import { Footer } from "@/components/landing/footer";
 import { ApprovedBy } from "@/components/landing/approved-by";
-import { VideoShowcase } from "@/components/landing/video-showcase";
 import { FAQ } from "@/components/landing/faq";
-import { Metadata } from "next";
 import { allHomes } from ".contentlayer/generated";
 import {
   generatePageMetadata,
@@ -16,16 +14,14 @@ import {
   HOME_BANNER_PATH,
 } from "@/lib/metadata";
 import { notFound } from "next/navigation";
-
-interface PageProps {
-  params: Promise<{ locale: string }>;
-}
+import { VideoShowcase } from "@/components/landing/video-showcase";
 
 export async function generateMetadata({
   params,
-}: PageProps): Promise<Metadata> {
+}: {
+  params: Promise<{ locale: string }>;
+}) {
   try {
-    // Получение локали из параметров маршрута
     const { locale } = await params;
 
     const home = allHomes.find((home) => home.locale === locale);
@@ -60,9 +56,12 @@ export async function generateMetadata({
   }
 }
 
-export default async function Home({ params }: PageProps) {
+export default async function Home({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
   try {
-    // Получение локали из параметров маршрута
     const { locale } = await params;
 
     // Получение данных из ContentLayer для главной страницы
@@ -76,19 +75,19 @@ export default async function Home({ params }: PageProps) {
       <div className="flex flex-col min-h-screen bg-gradient-to-b from-background to-background/90">
         <Navbar />
         <main className="flex-1">
-          <Hero
-            title={homeData.title}
-            description={homeData.description}
-          />
-          <HowItWorks steps={homeData.howItWorks} />
-          <Features items={homeData.features} />
+          <Hero />
+          <HowItWorks />
+          <Features />
           <CaseUseCases />
           <VideoShowcase />
-          <ApprovedBy />
-          <FAQ items={homeData.faq} />
+          <ApprovedBy locale={locale} />
+          <FAQ
+            items={homeData.faq}
+            locale={locale}
+          />
           <CTA />
         </main>
-        <Footer />
+        <Footer locale={locale} />
       </div>
     );
   } catch (error) {

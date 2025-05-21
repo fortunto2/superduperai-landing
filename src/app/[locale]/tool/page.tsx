@@ -16,12 +16,19 @@ export const metadata: Metadata = generatePageMetadata({
   },
 });
 
-export default function ToolsPage() {
-  const sortedTools = allTools.sort((a, b) => {
-    if (a.featured && !b.featured) return -1;
-    if (!a.featured && b.featured) return 1;
-    return new Date(b.date).getTime() - new Date(a.date).getTime();
-  });
+export default async function ToolsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const sortedTools = allTools
+    .filter((t) => t.locale === locale)
+    .sort((a, b) => {
+      if (a.featured && !b.featured) return -1;
+      if (!a.featured && b.featured) return 1;
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -45,7 +52,7 @@ export default function ToolsPage() {
           </div>
         </div>
       </main>
-      <Footer />
+      <Footer locale={locale} />
     </div>
   );
 }

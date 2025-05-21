@@ -6,7 +6,7 @@ slug: "video-story"
 category: "ai-video"
 image: "/images/cases/ai-story-generator-hero.jpg"
 featured: true
-locale: "ru"
+locale: ru
 seo:
   title: "Бесплатный AI‑генератор видеоисторий | Создайте историю за минуты | SuperDuperAI"
   description: "Используйте бесплатный AI‑генератор видеоисторий SuperDuperAI, чтобы быстро превратить текст в видео. Идеально для YouTube, TikTok, Instagram."
