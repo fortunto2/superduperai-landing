@@ -250,6 +250,9 @@ export function Navbar() {
 const LANGUAGES = [
   { value: "en", label: "English" },
   { value: "ru", label: "Русский" },
+  { value: "tr", label: "Türkçe" },
+  { value: "es", label: "Español" },
+  { value: "hi", label: "हिन्दी" },
 ];
 
 export const LanguageSwitcher = () => {
