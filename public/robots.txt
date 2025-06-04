@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+Disallow: /llms.txt
+Disallow: /api/llms-txt
+Disallow: /api/markdown/
+
+Sitemap: https://superduperai.com/sitemap.xml
+
+# LLMs.txt reference
+LLMsHost: https://superduperai.com/llms.txt 

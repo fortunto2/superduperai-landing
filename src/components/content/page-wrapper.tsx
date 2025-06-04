@@ -11,13 +11,15 @@ interface PageWrapperProps {
     href: string;
   }[];
   hasH1Heading?: boolean;
+  locale: string;
 }
 
-export function PageWrapper({ 
-  children, 
-  title, 
-  breadcrumbItems, 
-  hasH1Heading = false 
+export function PageWrapper({
+  children,
+  title,
+  breadcrumbItems,
+  hasH1Heading = false,
+  locale,
 }: PageWrapperProps) {
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -27,16 +29,16 @@ export function PageWrapper({
           items={breadcrumbItems}
           className="mb-8"
         />
-        
-        {!hasH1Heading && (
-          <h1 className="text-4xl font-bold mb-8">{title}</h1>
-        )}
-        
-        <div className={`prose prose-invert max-w-none w-full ${hasH1Heading ? 'mt-0' : 'mt-6'}`}>
+
+        {!hasH1Heading && <h1 className="text-4xl font-bold mb-8">{title}</h1>}
+
+        <div
+          className={`prose prose-invert max-w-none w-full ${hasH1Heading ? "mt-0" : "mt-6"}`}
+        >
           {children}
         </div>
       </main>
-      <Footer />
+      <Footer locale={locale} />
     </div>
   );
-} 
+}
