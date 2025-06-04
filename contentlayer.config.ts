@@ -112,9 +112,30 @@ export const Home = defineDocumentType(() => ({
   },
 }));
 
+// Определение типа документа для блога
+export const Blog = defineDocumentType(() => ({
+  name: "Blog",
+  filePathPattern: "blog/**/*.mdx",
+  contentType: "mdx",
+  fields: {
+    title: { type: "string", required: true },
+    description: { type: "string", required: true },
+    date: { type: "date", required: true },
+    slug: { type: "string", required: true },
+    seo: { type: "nested", of: SEO, required: false },
+    locale: { type: "string", required: true },
+  },
+  computedFields: {
+    url: {
+      type: "string",
+      resolve: (doc) => `/blog/${doc.slug}`,
+    },
+  },
+}));
+
 export default makeSource({
   contentDirPath: "src/content",
-  documentTypes: [Tool, Case, Page, Home],
+  documentTypes: [Tool, Case, Page, Home, Blog],
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [

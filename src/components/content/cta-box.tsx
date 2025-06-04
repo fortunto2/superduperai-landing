@@ -21,13 +21,10 @@ export function CTABox({
   buttonHref = "https://editor.superduperai.co",
   className,
 }: CTABoxProps) {
-  let text = "Get Started";
-  if (!buttonText) {
-    const params = useParams();
-    const locale = getValidLocale(params.locale);
-    const { t } = useTranslation(locale as Locale);
-    text = t("ui.get_started");
-  }
+  const params = useParams();
+  const locale = getValidLocale(params.locale);
+  const { t } = useTranslation(locale as Locale);
+  const text = buttonText ?? t("ui.get_started");
 
   return (
     <div

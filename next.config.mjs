@@ -1,3 +1,4 @@
+/* eslint-env node */
 import { withContentlayer } from 'next-contentlayer2';
 import path from 'path';
 
@@ -12,8 +13,8 @@ const nextConfig = {
   images: {
     unoptimized: true
   },
-  // Отключаем standalone для Windows, чтобы избежать проблем с символическими ссылками
-  // output: 'standalone',
+  // Use standalone output for optimized builds unless NEXT_STANDALONE is "false"
+  output: process.env.NEXT_STANDALONE === 'false' ? undefined : 'standalone',
   // Настройки экспериментальных функций
   experimental: {
     // Оптимизация импортов пакетов

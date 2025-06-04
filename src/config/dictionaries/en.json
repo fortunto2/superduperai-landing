@@ -5,6 +5,7 @@
       "pricing": "Pricing",
       "terms": "Terms and Conditions",
       "privacy": "Privacy",
+      "blog": "Blog",
       "demo": "Book a Demo"
     },
     "company": "SuperDuperAI",
@@ -82,6 +83,7 @@
     "terms": "Terms",
     "privacy": "Privacy",
     "discord": "Discord",
+    "blog": "Blog",
     "start": "Start For Free",
     "menu": "Menu",
     "close_menu": "Close menu",

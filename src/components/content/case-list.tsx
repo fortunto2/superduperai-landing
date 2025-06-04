@@ -3,7 +3,7 @@ import { allCases } from ".contentlayer/generated";
 import { useTranslation } from "@/hooks/use-translation";
 import { Locale } from "@/config/i18n-config";
 
-export async function CaseList({ locale }: { locale: string }) {
+export function CaseList({ locale }: { locale: string }) {
   // Получаем только избранные или первые 5 кейсов для текущей локали
   const featuredCases = [...allCases]
     .filter((caseItem) => caseItem.locale === locale)
