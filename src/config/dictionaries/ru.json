@@ -2,11 +2,12 @@
     
     "footer": {
       "pages": {
-        "about": "О нас",
-        "pricing": "Цены",
-        "terms": "Условия использования",
-        "privacy": "Конфиденциальность",
-        "demo": "Записаться на демо"
+      "about": "О нас",
+      "pricing": "Цены",
+      "terms": "Условия использования",
+      "privacy": "Конфиденциальность",
+      "blog": "Блог",
+      "demo": "Записаться на демо"
       },
       "company": "SuperDuperAI",
       "corp": "SuperDuperAi, Corp.",
@@ -83,6 +84,7 @@
       "terms": "Условия",
       "privacy": "Конфиденциальность",
       "discord": "Discord",
+      "blog": "Блог",
       "start": "Начать бесплатно",
       "menu": "Меню",
       "close_menu": "Закрыть меню",

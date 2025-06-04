@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
     "prebuild": "node scripts/generate-llms.js",
-    "prebuild-windows": "node scripts/generate-llms.js",
-    "build": "npm run prebuild-windows && cross-env NEXT_TELEMETRY_DISABLED=1 next build",
+    "build": "pnpm run prebuild && cross-env NEXT_TELEMETRY_DISABLED=1 next build",
     "postbuild": "node scripts/generate-markdown.js",
     "start": "next start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
@@ -69,7 +68,7 @@
     "eslint-plugin-next": "^0.0.0",
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-react": "^7.37.1",
-    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.12",
     "eslint-plugin-storybook": "^0.9.0",
     "eslint-plugin-tailwindcss": "^3.17.4",

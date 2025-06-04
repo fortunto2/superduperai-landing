@@ -3,7 +3,7 @@ import { allTools } from ".contentlayer/generated";
 import { useTranslation } from "@/hooks/use-translation";
 import type { Locale } from "@/config/i18n-config";
 
-export async function ToolList({ locale }: { locale: string }) {
+export function ToolList({ locale }: { locale: string }) {
   // Получаем только избранные или первые 5 инструментов для текущей локали
   const featuredTools = [...allTools]
     .filter((tool) => tool.locale === locale)
