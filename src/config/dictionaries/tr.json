@@ -1,0 +1,182 @@
+{
+  "footer": {
+    "pages": {
+      "about": "Hakkında",
+      "pricing": "Fiyatlandırma",
+      "terms": "Şartlar ve koşullar",
+      "privacy": "Mahremiyet",
+      "blog": "Blog",
+      "demo": "Bir Demo Rezervasyonu"
+    },
+    "company": "Süper",
+    "corp": "Superduperai, Corp.",
+    "address1": "57 Saulsbury Rd, Birim E #1333",
+    "address2": "Dover, De 19904",
+    "phone": "+1 818 619 0966",
+    "email": "info@superduperai.co",
+    "copyright": "© {year} Superduperai Corp. Tüm hakları saklıdır.",
+    "social": {
+      "instagram": "Instagram'da Superduperai'yi takip edin",
+      "youtube": "YouTube'da Superduperai'ye abone olun",
+      "telegram": "Telegram'da Superduperai'ye katılın",
+      "tiktok": "Tiktok'ta Superduperai'yi takip edin",
+      "discord": "Superduperai Discord Server'a katılın",
+      "linkedin": "LinkedIn'de Superduperai ile bağlantı kurun"
+    }
+  },
+  "marketing": {
+    "pages": "Sayfa",
+    "tools": "AI Araçları",
+    "cases": "Kullanım Koşulları",
+    "ai_tool_title": "Superduperai'den AI Tool",
+    "ai_case_title": "Superduperai tarafından vaka çalışması",
+    "view_all_tools": "Tüm Araçları Görüntüle →",
+    "view_all_cases": "Tüm kullanım durumlarını görüntüle →"
+  },
+  "hero": {
+    "title": "Vibes'i anında videolara dönüştürün",
+    "description": "Beceri, ekipman veya bütçe olmadan profesyonel videolar oluşturmak için devrimci AI platformu. 10x daha hızlı ve daha ucuz.",
+    "cta": "ÜCRETSİZ Oluşturmaya Başlayın"
+  },
+  "features": {
+    "section_title": "Superdupai'yi süper yapan şey",
+    "section_description": "Çarpıcı videolar oluşturmak için gelişmiş özellikler ve teknolojiler",
+    "list": [
+      {
+        "icon": "kullanıcılar",
+        "title": "AI belleğe sahip özel karakterler",
+        "description": "Lora teknolojisini kullanarak AI oyuncusu veritabanınız. Videolarınız için benzersiz karakterler oluşturun ve kaydedin."
+      },
+      {
+        "icon": "imaj",
+        "title": "Sinematik kamera kontrolleri",
+        "description": "Tavalar, yakınlaştırma, kurşun zamanı-fiziksel kameralar olmadan. Tek tıklamayla profesyonel kamera hareketleri ekleyin."
+      },
+      {
+        "icon": "Ayarlar",
+        "title": "Çok Ajan AI iş akışı",
+        "description": "Her ajanın işini yaptığı bir model. Komut dosyası yazma, çekim, düzenleme ve ses için uzmanlaşmış yapay zeka."
+      },
+      {
+        "icon": "hız",
+        "title": "Hızlı ve Verimli",
+        "description": "Fikir → Saatler veya günler değil, dakikalar halinde video. İş akışınızı hızlandırın ve daha fazla içerik oluşturun."
+      },
+      {
+        "icon": "çizelge",
+        "title": "Maliyet tasarrufu",
+        "description": "Bütçede sinematografi. Mürettebat ve ekipman harcamadan profesyonel video alın."
+      },
+      {
+        "icon": "düzenlemek",
+        "title": "Kolay Düzenleme ve Entegrasyon",
+        "description": "Film şeridi, sürükleme, Tiktok / YouTube'a ihracat. Videonuzun hızlı bir şekilde sonlandırılması için sezgisel arayüz."
+      }
+    ]
+  },
+  "howItWorks": {
+    "section_title": "Nasıl Çalışır",
+    "section_description": "Videonuzu 3 kolay adımda yönlendirin - AI ajanı gerisini halleder.",
+    "steps": [
+      {
+        "title": "Vizyonunuzu tanımlayın",
+        "description": "Fikrinizi, vibe veya planınızı açıklayın - sadece birkaç kelime öbeği yeterlidir"
+      },
+      {
+        "title": "AI sahneyi üretir",
+        "description": "Çok ajan sistem komut dosyası, çerçeveler ve karakterler oluşturur"
+      },
+      {
+        "title": "Rafine ve Sonlandırın",
+        "description": "Stili ayarlayın, videonuzu dışa aktarın ve dünyayla paylaşın"
+      }
+    ]
+  },
+  "useCases": {
+    "section_title": "Yaratıcılar, işletmeler, müzisyenler ve takımlar için yapılmış",
+    "section_description": "Superduperai için ihtiyaçlarınızı karşılamak için mükemmel kullanım durumunu bulun.",
+    "categories": {
+      "ai-video": "İçerik Yaratıcıları",
+      "business": "Küçük işletmeler",
+      "creative": "Müzisyenler ve Sanatçılar",
+      "teams": "Ajanslar ve Takımlar",
+      "social": "Sosyal medya"
+    }
+  },
+  "cta": {
+    "title": "Bir sonraki video hissinizi oluşturmaya hazır mısınız?",
+    "description": "Superdupai'ye katılın ve hemen şaşırtıcı videolar oluşturmaya başlayın.",
+    "button": "ÜCRETSİZ Oluşturmaya Başlayın",
+    "note": "Kredi kartı gerekmez"
+  },
+  "navbar": {
+    "home": "Ev",
+    "about": "Hakkında",
+    "pricing": "Fiyatlandırma",
+    "terms": "Şartlar",
+    "privacy": "Mahremiyet",
+    "discord": "Anlaşmazlık",
+    "blog": "Blog",
+    "start": "Ücretsiz başla",
+    "menu": "Menü",
+    "close_menu": "Kapat Menüsü",
+    "open_menu": "Açık Menü"
+  },
+  "ui": {
+    "faq": "SSS",
+    "approved_by": "Onaylandı",
+    "look": "Bakmak!",
+    "show_more": "Daha Fazla Göster",
+    "collapse": "Yıkılmak",
+    "no_results": "Sonuç yok",
+    "loading": "Yükleme ...",
+    "success": "Başarı!",
+    "error": "Hata",
+    "try_again": "Tekrar deneyin",
+    "empty": "Boş",
+    "nothing_found": "Hiçbir şey bulunamadı",
+    "get_started": "Başlamak"
+  },
+  "pricing": {
+    "banner_title": "100 ücretsiz kredi ile Superduperai'yi deneyin!",
+    "banner_desc": "Yeni kullanıcılar 100 krediyi tamamen ücretsiz alır - birden fazla proje oluşturmak ve neredeyse tüm özelliklerimizi keşfetmek için yeterli. AI yaratıcılığının gücünü hiçbir bağlılık olmadan test edin.",
+    "banner_cta": "Şimdi oluşturmaya başlayın",
+    "without_package": "Paket olmadan",
+    "with_power_package": "Bir güç paketi ile",
+    "base_name": "Temel - 100 Kredi",
+    "pro_name": "Pro - 1000 Kredi",
+    "base_projects": "5-10 Projeler",
+    "pro_projects": "20-50 proje",
+    "save_50": "% 50 tasarruf edin",
+    "free_features": [
+      "Ayda 100 Ücretsiz Kredi",
+      "Yalnızca Temel Düzenleme Araçlarına Erişim",
+      "Sınırlı animasyon ve seslendirme seçenekleri",
+      "Filigranlı videolar"
+    ],
+    "base_features": [
+      "Tüm düzenleme araçlarına tam erişim",
+      "Sınırsız Yaratılış",
+      "Filigransız bitmiş videoları indirin",
+      "Projelerinize yardımcı olacak kişisel yönetici",
+      "Becerilerinizi artırmak için özel eğitim oturumları"
+    ],
+    "pro_features": [
+      "Tüm düzenleme araçlarına tam erişim",
+      "Sınırsız Yaratılış",
+      "Filigransız bitmiş videoları indirin",
+      "Projelerinize yardımcı olacak kişisel yönetici",
+      "Becerilerinizi artırmak için özel eğitim oturumları"
+    ],
+    "start": "Yaratmaya başlayın",
+    "buy": "Satın almak"
+  },
+  "creative": {
+    "title": "Superduperai Yaratıcı Ortaklık Programı",
+    "desc": "Tutkulu içerik oluşturucular ve sanatçılar arıyoruz! Programımıza katılın ve 1000'den fazla ücretsiz kredi, 1'e 1 destek ve yeni özelliklere erken erişim alın. Sosyal açıdan anlamlı projeler ve yenilikçi fikirleri olan içerik oluşturucular için mükemmeldir.",
+    "learn_more": "Daha fazla bilgi edin",
+    "or": "veya",
+    "apply_email": "E -posta yoluyla uygulayın"
+  },
+  "privacy_policy": "Gizlilik Politikası"
+}
