@@ -1,4 +1,10 @@
 {
+  "blog": {
+    "page_title": "Blog"
+  },
+  "site": {
+    "name": "SuperDuperAI"
+  },
   "footer": {
     "pages": {
       "about": "Hakkında",

@@ -1,4 +1,10 @@
 {
+  "blog": {
+    "page_title": "ब्लॉग"
+  },
+  "site": {
+    "name": "SuperDuperAI"
+  },
   "footer": {
     "pages": {
       "about": "के बारे में",
