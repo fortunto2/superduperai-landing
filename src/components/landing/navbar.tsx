@@ -96,9 +96,9 @@ export function Navbar() {
               href={APP_URLS.DISCORD_URL}
               target="_blank"
               rel="noopener noreferrer nofollow"
-              title={t("navbar.discord")}
+              title="discord"
             >
-              {t("navbar.discord")}
+              Discord
             </a>
           </Button>
           <Button
@@ -205,9 +205,9 @@ export function Navbar() {
                   href="https://discord.gg/superduperai"
                   target="_blank"
                   rel="noopener noreferrer nofollow"
-                  title={t("navbar.discord")}
+                  title="Discord"
                 >
-                  {t("navbar.discord")}
+                  Discord
                 </a>
               </Button>
               <Button
@@ -220,9 +220,9 @@ export function Navbar() {
                   href="https://discord.gg/superduperai"
                   target="_blank"
                   rel="noopener noreferrer nofollow"
-                  title={t("navbar.discord")}
+                  title="Discord"
                 >
-                  {t("navbar.discord")}
+                  Discord
                 </a>
               </Button>
               <Button
