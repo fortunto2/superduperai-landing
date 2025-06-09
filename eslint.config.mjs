@@ -44,7 +44,7 @@ export default [
     ]
   },
   {
-    files: ['**/*.{js,jsx,ts,tsx}'],
+    files: ['**/*.{js,mjs,jsx,ts,tsx}'],
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'module',
@@ -52,6 +52,9 @@ export default [
         ecmaFeatures: {
           jsx: true
         }
+      },
+      globals: {
+        process: 'readonly'
       }
     },
     // Настройки для React дублируем здесь для надежности

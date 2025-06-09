@@ -74,6 +74,13 @@ export function Navbar() {
           >
             {t("navbar.pricing")}
           </Link>
+          <Link
+            href="/blog"
+            className="text-muted-foreground hover:text-accent transition-colors"
+            title={t("navbar.blog") + " - SuperDuperAI"}
+          >
+            {t("navbar.blog")}
+          </Link>
         </nav>
 
         {/* Кнопки действий - скрыты на мобильных */}
@@ -162,6 +169,14 @@ export function Navbar() {
                 {t("navbar.pricing")}
               </Link>
               <Link
+                href="/blog"
+                className="text-muted-foreground hover:text-accent transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+                title={t("navbar.blog") + " - SuperDuperAI"}
+              >
+                {t("navbar.blog")}
+              </Link>
+              <Link
                 href="/terms"
                 className="text-muted-foreground hover:text-accent transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
@@ -235,6 +250,9 @@ export function Navbar() {
 const LANGUAGES = [
   { value: "en", label: "English" },
   { value: "ru", label: "Русский" },
+  { value: "tr", label: "Türkçe" },
+  { value: "es", label: "Español" },
+  { value: "hi", label: "हिन्दी" },
 ];
 
 export const LanguageSwitcher = () => {

@@ -1,0 +1,188 @@
+{
+  "blog": {
+    "page_title": "Blog"
+  },
+  "site": {
+    "name": "SuperDuperAI"
+  },
+  "footer": {
+    "pages": {
+      "about": "Acerca de",
+      "pricing": "Fijación de precios",
+      "terms": "Términos y condiciones",
+      "privacy": "Privacidad",
+      "blog": "Blog",
+      "demo": "Reservar una demostración"
+    },
+    "company": "Superduperai",
+    "corp": "Superduperai, Corp.",
+    "address1": "57 Saulsbury Rd, Unidad E #1333",
+    "address2": "Dover, de 19904",
+    "phone": "+1 818 619 0966",
+    "email": "info@superduperai.co",
+    "copyright": "© {year} Superduperai Corp. Todos los derechos reservados.",
+    "social": {
+      "instagram": "Sigue a Superduperai en Instagram",
+      "youtube": "Suscríbase a SuperduPerai en YouTube",
+      "telegram": "Únete a Superduperai en Telegram",
+      "tiktok": "Sigue a Superduperai en Tiktok",
+      "discord": "Únete al servidor de discordias de Superduperai",
+      "linkedin": "Conéctese con Superduperai en LinkedIn"
+    }
+  },
+  "marketing": {
+    "pages": "Páginas",
+    "tools": "Herramientas AI",
+    "cases": "Casos de uso",
+    "ai_tool_title": "Herramienta de IA de SuperduPerai",
+    "ai_case_title": "Estudio de caso por Superduperai",
+    "view_all_tools": "Ver todas las herramientas →",
+    "view_all_cases": "Ver todos los casos de uso →"
+  },
+  "hero": {
+    "title": "Convierte las vibraciones en videos al instante",
+    "description": "Plataforma de IA revolucionaria para crear videos profesionales sin habilidades, equipos o presupuesto. 10 veces más rápido y más barato.",
+    "cta": "Empiece a crear gratis"
+  },
+  "features": {
+    "section_title": "¿Qué hace que Superduperai Super",
+    "section_description": "Características avanzadas y tecnologías para crear videos impresionantes",
+    "list": [
+      {
+        "icon": "users",
+        "title": "Caracteres personalizados con memoria AI",
+        "description": "Su base de datos de actores de IA utilizando la tecnología Lora. Crea y guarda caracteres únicos para tus videos."
+      },
+      {
+        "icon": "image",
+        "title": "Controles de cámara cinematográfica",
+        "description": "Sartenes, zooms, bala, sin cámaras físicas. Agregue movimientos profesionales de la cámara con un solo clic."
+      },
+      {
+        "icon": "settings",
+        "title": "Flujo de trabajo de IA de múltiples agentes",
+        "description": "Un modelo donde cada agente hace su trabajo. AI especializada para secuencias de comandos, filmación, edición y sonido."
+      },
+      {
+        "icon": "speed",
+        "title": "Rápido y eficiente",
+        "description": "Idea → Video en minutos, no horas o días. Acelere su flujo de trabajo y cree más contenido."
+      },
+      {
+        "icon": "chart",
+        "title": "Ahorro de costos",
+        "description": "Cinematografía con un presupuesto. Obtenga un video profesional sin gastar en tripulación y equipo."
+      },
+      {
+        "icon": "edit",
+        "title": "Fácil edición e integración",
+        "description": "Storyboard, Drag-Drop, Export a Tiktok / YouTube. Interfaz intuitiva para la finalización rápida de su video."
+      }
+    ]
+  },
+  "howItWorks": {
+    "section_title": "Cómo funciona",
+    "section_description": "Dirija su video en 3 sencillos pasos: los agentes de IA manejan el resto.",
+    "steps": [
+      {
+        "title": "Defina tu visión",
+        "description": "Describe tu idea, ambiente o trama, solo unas pocas frases son suficientes"
+      },
+      {
+        "title": "Ai genera la escena",
+        "description": "El sistema de múltiples agentes crea script, marcos y personajes"
+      },
+      {
+        "title": "Refinar y finalizar",
+        "description": "Ajuste el estilo, exporte su video y compártelo con el mundo"
+      }
+    ]
+  },
+  "useCases": {
+    "section_title": "Hecho para creadores, negocios, músicos y equipos",
+    "section_description": "Encuentre el caso de uso perfecto para SuperduPerai para satisfacer sus necesidades.",
+    "categories": {
+      "ai-video": "Creadores de contenido",
+      "business": "Pequeñas empresas",
+      "creative": "Músicos y artistas",
+      "teams": "Agencias y equipos",
+      "social": "Redes sociales"
+    }
+  },
+  "cta": {
+    "title": "¿Listo para crear su próxima sensación de video?",
+    "description": "Únase a SuperduPerai y comience a crear videos increíbles en este momento.",
+    "button": "Empiece a crear gratis",
+    "note": "No se requiere tarjeta de crédito"
+  },
+  "navbar": {
+    "home": "Hogar",
+    "about": "Acerca de",
+    "pricing": "Fijación de precios",
+    "terms": "Términos",
+    "privacy": "Privacidad",
+    "discord": "Discordia",
+    "blog": "Blog",
+    "start": "Empiece gratis",
+    "menu": "Menú",
+    "close_menu": "Menú cerrado",
+    "open_menu": "Menú abierto"
+  },
+  "ui": {
+    "faq": "Preguntas frecuentes",
+    "approved_by": "Aprobado por",
+    "look": "¡Mirar!",
+    "show_more": "Mostrar más",
+    "collapse": "Colapsar",
+    "no_results": "Sin resultados",
+    "loading": "Cargando...",
+    "success": "¡Éxito!",
+    "error": "Error",
+    "try_again": "Intentar otra vez",
+    "empty": "Vacío",
+    "nothing_found": "Nada encontrado",
+    "get_started": "Empezar"
+  },
+  "pricing": {
+    "banner_title": "¡Prueba superduperai con 100 créditos gratis!",
+    "banner_desc": "Los nuevos usuarios obtienen 100 créditos completamente gratis, lo suficiente como para crear múltiples proyectos y explorar casi todas nuestras características. Pruebe el poder de la creatividad de IA sin compromiso.",
+    "banner_cta": "Empiece a crear ahora",
+    "without_package": "Sin un paquete",
+    "with_power_package": "Con un paquete de energía",
+    "base_name": "Base - 100 créditos",
+    "pro_name": "Pro - 1000 créditos",
+    "base_projects": "5-10 proyectos",
+    "pro_projects": "20-50 proyectos",
+    "save_50": "ahorrar 50%",
+    "free_features": [
+      "100 créditos gratis por mes",
+      "Acceso a herramientas de edición básicas solamente",
+      "Opciones limitadas de animación y voz en off",
+      "Videos con marcas de agua"
+    ],
+    "base_features": [
+      "Acceso completo a todas las herramientas de edición",
+      "Creación ilimitada",
+      "Descargar videos terminados sin marcas de agua",
+      "Gerente personal para ayudarlo con sus proyectos",
+      "Sesiones de capacitación exclusivas para aumentar sus habilidades"
+    ],
+    "pro_features": [
+      "Acceso completo a todas las herramientas de edición",
+      "Creación ilimitada",
+      "Descargar videos terminados sin marcas de agua",
+      "Gerente personal para ayudarlo con sus proyectos",
+      "Sesiones de capacitación exclusivas para aumentar sus habilidades"
+    ],
+    "start": "Empezar a crear",
+    "buy": "Comprar"
+  },
+  "creative": {
+    "title": "Programa de asociación creativa de Superduperai",
+    "desc": "¡Estamos buscando creadores y artistas apasionados de contenido! Únase a nuestro programa y reciba más de 1000 créditos gratuitos, soporte 1 a 1 y acceso temprano a nuevas funciones. Perfecto para creadores con proyectos socialmente significativos e ideas innovadoras.",
+    "learn_more": "Obtenga más información",
+    "or": "o",
+    "apply_email": "Aplicar por correo electrónico"
+  },
+  "privacy_policy": "Política de privacidad"
+}

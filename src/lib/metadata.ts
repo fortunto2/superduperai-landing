@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { OG_IMAGE_SIZE } from './generate-og-image';
 
 // Определение типов данных для каждого типа страницы
-export type PageType = 'home' | 'page' | 'tool' | 'case';
+export type PageType = 'home' | 'page' | 'tool' | 'case' | 'blog';
 
 // Интерфейс для метаданных страницы
 export interface PageMeta {
@@ -25,7 +25,8 @@ export const GRADIENTS: Record<PageType, [string, string]> = {
   home: ['#f43f5e', '#8b5cf6'],   // Красно-пурпурный для главной
   page: ['#4f46e5', '#ec4899'],   // Сине-розовый для статических страниц
   tool: ['#3b82f6', '#8b5cf6'],   // Сине-фиолетовый для инструментов
-  case: ['#10b981', '#3b82f6']    // Зелено-синий для кейсов
+  case: ['#10b981', '#3b82f6'],   // Зелено-синий для кейсов
+  blog: ['#8b5cf6', '#f43f5e']    // Фиолетово-красный для блога
 };
 
 // Статический баннер для главной страницы
