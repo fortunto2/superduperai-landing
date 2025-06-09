@@ -2,6 +2,8 @@
 // Run scripts/generate-translation-types.ts to update.
 
 export interface TranslationDictionary {
+  blog?: BlogDict;
+  site?: SiteDict;
   footer?: FooterDict;
   marketing?: MarketingDict;
   hero?: HeroDict;
@@ -16,11 +18,20 @@ export interface TranslationDictionary {
   privacy_policy?: string;
 }
 
+export interface BlogDict {
+  page_title?: string;
+}
+
+export interface SiteDict {
+  name?: string;
+}
+
 export interface PagesDict {
   about?: string;
   pricing?: string;
   terms?: string;
   privacy?: string;
+  blog?: string;
   demo?: string;
 }
 
@@ -98,6 +109,7 @@ export interface NavbarDict {
   terms?: string;
   privacy?: string;
   discord?: string;
+  blog?: string;
   start?: string;
   menu?: string;
   close_menu?: string;
@@ -144,10 +156,13 @@ export interface CreativeDict {
 }
 
 export type TranslationKey =
+  | 'blog.page_title'
+  | 'site.name'
   | 'footer.pages.about'
   | 'footer.pages.pricing'
   | 'footer.pages.terms'
   | 'footer.pages.privacy'
+  | 'footer.pages.blog'
   | 'footer.pages.demo'
   | 'footer.company'
   | 'footer.corp'
@@ -182,6 +197,7 @@ export type TranslationKey =
   | 'useCases.categories.business'
   | 'useCases.categories.creative'
   | 'useCases.categories.teams'
+  | 'useCases.categories.social'
   | 'cta.title'
   | 'cta.description'
   | 'cta.button'
@@ -192,6 +208,7 @@ export type TranslationKey =
   | 'navbar.terms'
   | 'navbar.privacy'
   | 'navbar.discord'
+  | 'navbar.blog'
   | 'navbar.start'
   | 'navbar.menu'
   | 'navbar.close_menu'

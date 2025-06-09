@@ -1,5 +1,10 @@
 {
-    
+    "blog": {
+        "page_title": "Блог"
+    },
+    "site": {
+        "name": "SuperDuperAI"
+    },
     "footer": {
       "pages": {
       "about": "О нас",

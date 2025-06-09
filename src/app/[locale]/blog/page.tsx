@@ -1,27 +1,44 @@
 import { allBlogs, type Blog } from ".contentlayer/generated";
-import { default as Link } from "@/components/ui/optimized-link";
+import Link from "@/components/ui/optimized-link";
 import { Metadata } from "next";
 import { Navbar } from "@/components/landing/navbar";
 import { Footer } from "@/components/landing/footer";
 import { generatePageMetadata, GRADIENTS } from "@/lib/metadata";
+import { getDictionary } from "@/lib/get-dictionary"; // New import
+import { Locale } from "@/config/i18n-config"; // New import
 
-export const metadata: Metadata = generatePageMetadata({
-  title: "Blog | SuperDuperAI",
-  description: "Learn about the latest AI models and updates",
-  url: "/blog",
-  meta: {
-    pageType: "blog",
-    category: "Blog",
-    gradient: GRADIENTS.tool,
-  },
-});
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: Locale }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const dictionary = await getDictionary(locale);
+
+  const pageTitle = dictionary.blog?.page_title || "Blog";
+  const siteName = dictionary.site?.name || "SuperDuperAI";
+  // Default description for blog page
+  const pageDescription = "Learn about the latest AI models and updates";
+
+  return generatePageMetadata({
+    title: `${pageTitle} | ${siteName}`,
+    description: pageDescription,
+    url: "/blog",
+    meta: {
+      pageType: "blog",
+      category: "Blog", // This could also be from dictionary
+      gradient: GRADIENTS.tool,
+    },
+  });
+}
 
 export default async function BlogPage({
   params,
 }: {
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
+  const dictionary = await getDictionary(locale);
   const sortedBlogs = allBlogs
     .filter((p) => p.locale === locale)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
@@ -31,7 +48,9 @@ export default async function BlogPage({
       <Navbar />
       <main className="flex-1">
         <div className="container mx-auto py-10">
-          <h1 className="text-3xl font-bold mb-6">Blog</h1>
+          <h1 className="text-3xl font-bold mb-6">
+            {dictionary.blog?.page_title || "Blog"}
+          </h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {sortedBlogs.map((post: Blog) => (
               <Link
