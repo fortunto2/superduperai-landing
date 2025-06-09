@@ -85,6 +85,44 @@ const pagesData = [
   }
 ];
 
+const blogsData = [
+  {
+    title: 'AI Model Overview',
+    slug: 'model-overview',
+    description: 'Comparison of image and video models in SuperDuperAI.'
+  },
+  {
+    title: 'OpenAI Sora',
+    slug: 'sora',
+    description: 'Everything about OpenAI Sora text-to-video model.'
+  },
+  {
+    title: 'Google VEO2',
+    slug: 'veo2',
+    description: 'Google VEO2 image-to-video generation capabilities.'
+  },
+  {
+    title: 'Flux Kontext',
+    slug: 'flux-kontext',
+    description: 'In-context image editing with Flux Kontext model.'
+  },
+  {
+    title: 'Google Imagen 4',
+    slug: 'google-imagen-4',
+    description: 'High-quality image generation with Google Imagen 4.'
+  },
+  {
+    title: 'GPT-Image-1',
+    slug: 'gpt-image-1',
+    description: 'Conversational image generation with OpenAI GPT-Image-1.'
+  },
+  {
+    title: 'Kling 2.1',
+    slug: 'kling-2-1',
+    description: 'Fast text-to-video and image animation with Kling 2.1.'
+  }
+];
+
 // Создаем директорию public, если её нет
 const publicDir = path.join(__dirname, '../public');
 if (!fs.existsSync(publicDir)) {
@@ -106,6 +144,11 @@ const pageLinks = pagesData
   .map(page => `- [${page.title}](/${page.slug}.md): ${page.description}`)
   .join('\n');
 
+// Генерируем ссылки на блоги
+const blogLinks = blogsData
+  .map(blog => `- [${blog.title}](/blog/${blog.slug}.md): ${blog.description}`)
+  .join('\n');
+
 // Создаем содержимое файла
 const content = `# SuperDuperAI
 
@@ -123,6 +166,9 @@ ${caseLinks}
 
 ### Pages
 ${pageLinks}
+
+### Blog
+${blogLinks}
 
 ## Features
 
