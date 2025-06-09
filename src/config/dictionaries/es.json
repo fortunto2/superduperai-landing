@@ -49,32 +49,32 @@
     "section_description": "Características avanzadas y tecnologías para crear videos impresionantes",
     "list": [
       {
-        "icon": "usuarios",
+        "icon": "users",
         "title": "Caracteres personalizados con memoria AI",
         "description": "Su base de datos de actores de IA utilizando la tecnología Lora. Crea y guarda caracteres únicos para tus videos."
       },
       {
-        "icon": "imagen",
+        "icon": "image",
         "title": "Controles de cámara cinematográfica",
         "description": "Sartenes, zooms, bala, sin cámaras físicas. Agregue movimientos profesionales de la cámara con un solo clic."
       },
       {
-        "icon": "ajustes",
+        "icon": "settings",
         "title": "Flujo de trabajo de IA de múltiples agentes",
         "description": "Un modelo donde cada agente hace su trabajo. AI especializada para secuencias de comandos, filmación, edición y sonido."
       },
       {
-        "icon": "velocidad",
+        "icon": "speed",
         "title": "Rápido y eficiente",
         "description": "Idea → Video en minutos, no horas o días. Acelere su flujo de trabajo y cree más contenido."
       },
       {
-        "icon": "cuadro",
+        "icon": "chart",
         "title": "Ahorro de costos",
         "description": "Cinematografía con un presupuesto. Obtenga un video profesional sin gastar en tripulación y equipo."
       },
       {
-        "icon": "editar",
+        "icon": "edit",
         "title": "Fácil edición e integración",
         "description": "Storyboard, Drag-Drop, Export a Tiktok / YouTube. Interfaz intuitiva para la finalización rápida de su video."
       }

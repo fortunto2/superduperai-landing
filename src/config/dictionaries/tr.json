@@ -49,32 +49,32 @@
     "section_description": "Çarpıcı videolar oluşturmak için gelişmiş özellikler ve teknolojiler",
     "list": [
       {
-        "icon": "kullanıcılar",
+        "icon": "users",
         "title": "AI belleğe sahip özel karakterler",
         "description": "Lora teknolojisini kullanarak AI oyuncusu veritabanınız. Videolarınız için benzersiz karakterler oluşturun ve kaydedin."
       },
       {
-        "icon": "imaj",
+        "icon": "image",
         "title": "Sinematik kamera kontrolleri",
         "description": "Tavalar, yakınlaştırma, kurşun zamanı-fiziksel kameralar olmadan. Tek tıklamayla profesyonel kamera hareketleri ekleyin."
       },
       {
-        "icon": "Ayarlar",
+        "icon": "settings",
         "title": "Çok Ajan AI iş akışı",
         "description": "Her ajanın işini yaptığı bir model. Komut dosyası yazma, çekim, düzenleme ve ses için uzmanlaşmış yapay zeka."
       },
       {
-        "icon": "hız",
+        "icon": "speed",
         "title": "Hızlı ve Verimli",
         "description": "Fikir → Saatler veya günler değil, dakikalar halinde video. İş akışınızı hızlandırın ve daha fazla içerik oluşturun."
       },
       {
-        "icon": "çizelge",
+        "icon": "chart",
         "title": "Maliyet tasarrufu",
         "description": "Bütçede sinematografi. Mürettebat ve ekipman harcamadan profesyonel video alın."
       },
       {
-        "icon": "düzenlemek",
+        "icon": "edit",
         "title": "Kolay Düzenleme ve Entegrasyon",
         "description": "Film şeridi, sürükleme, Tiktok / YouTube'a ihracat. Videonuzun hızlı bir şekilde sonlandırılması için sezgisel arayüz."
       }

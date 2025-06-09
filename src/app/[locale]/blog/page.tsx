@@ -10,16 +10,15 @@ import { Locale } from "@/config/i18n-config"; // New import
 export async function generateMetadata({
   params,
 }: {
-  params: { locale: Locale };
+  params: Promise<{ locale: Locale }>;
 }): Promise<Metadata> {
-  const locale = params.locale;
+  const { locale } = await params;
   const dictionary = await getDictionary(locale);
 
   const pageTitle = dictionary.blog?.page_title || "Blog";
   const siteName = dictionary.site?.name || "SuperDuperAI";
-  // Assuming a default description if not found in dictionary for simplicity here
-  const pageDescription = (dictionary.blog as any)?.page_description || "Learn about the latest AI models and updates";
-
+  // Default description for blog page
+  const pageDescription = "Learn about the latest AI models and updates";
 
   return generatePageMetadata({
     title: `${pageTitle} | ${siteName}`,
@@ -36,9 +35,9 @@ export async function generateMetadata({
 export default async function BlogPage({
   params,
 }: {
-  params: { locale: Locale };
+  params: Promise<{ locale: Locale }>;
 }) {
-  const locale = params.locale;
+  const { locale } = await params;
   const dictionary = await getDictionary(locale);
   const sortedBlogs = allBlogs
     .filter((p) => p.locale === locale)

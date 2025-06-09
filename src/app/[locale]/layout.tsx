@@ -1,20 +1,18 @@
 "use client";
 
-import { useEffect } from "react";
-import { useParams } from "next/navigation";
+import { use, useEffect } from "react";
 import { getValidLocale } from "@/lib/get-valid-locale";
-import { i18n, type Locale } from "@/config/i18n-config";
 
 export default function LocaleLayout({
   children,
   params: routeParams, // Next.js passes route params directly to layouts
 }: {
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
-  // Use the locale from routeParams passed by Next.js
-  // This is available server-side and for initial client render
-  const currentLocale = getValidLocale(routeParams.locale);
+  // Use React.use() to unwrap the params Promise as required in Next.js 15
+  const params = use(routeParams);
+  const currentLocale = getValidLocale(params.locale);
 
   useEffect(() => {
     // This effect will run on the client after hydration
