@@ -1,4 +1,10 @@
 {
+  "blog": {
+    "page_title": "Blog"
+  },
+  "site": {
+    "name": "SuperDuperAI"
+  },
   "footer": {
     "pages": {
       "about": "About",
@@ -82,7 +88,6 @@
     "pricing": "Pricing",
     "terms": "Terms",
     "privacy": "Privacy",
-    "discord": "Discord",
     "blog": "Blog",
     "start": "Start For Free",
     "menu": "Menu",

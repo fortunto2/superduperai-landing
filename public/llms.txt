@@ -25,6 +25,15 @@ SuperDuperAI is a professional video creation platform powered by artificial int
 - [Terms](/terms.md): Legal terms of service agreement.
 - [Creators](/creators.md): Special information for content creators.
 
+### Blog
+- [AI Model Overview](/blog/model-overview.md): Comparison of image and video models in SuperDuperAI.
+- [OpenAI Sora](/blog/sora.md): Everything about OpenAI Sora text-to-video model.
+- [Google VEO2](/blog/veo2.md): Google VEO2 image-to-video generation capabilities.
+- [Flux Kontext](/blog/flux-kontext.md): In-context image editing with Flux Kontext model.
+- [Google Imagen 4](/blog/google-imagen-4.md): High-quality image generation with Google Imagen 4.
+- [GPT-Image-1](/blog/gpt-image-1.md): Conversational image generation with OpenAI GPT-Image-1.
+- [Kling 2.1](/blog/kling-2-1.md): Fast text-to-video and image animation with Kling 2.1.
+
 ## Features
 
 - **Instant Video Generation**: Transform text into professional videos in 30 seconds or less.
