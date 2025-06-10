@@ -211,21 +211,6 @@ export function Navbar() {
                 </a>
               </Button>
               <Button
-                variant="outline"
-                size="sm"
-                className="w-full border-accent/50 hover:border-accent/80 hover:text-accent"
-                asChild
-              >
-                <a
-                  href="https://discord.gg/superduperai"
-                  target="_blank"
-                  rel="noopener noreferrer nofollow"
-                  title="Discord"
-                >
-                  Discord
-                </a>
-              </Button>
-              <Button
                 size="sm"
                 className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
                 asChild
