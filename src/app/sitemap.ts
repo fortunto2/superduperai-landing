@@ -69,7 +69,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   const blogUrls = allBlogs.map((blog) => ({
-    url: `${baseUrlWithProtocol}/${blog.locale}${blog.url}`,
+    url: `${baseUrlWithProtocol}/${blog.locale}/blog/${blog.slug}`,
     lastModified: new Date(blog.date),
     changeFrequency: "weekly" as const,
     priority: 0.8,
