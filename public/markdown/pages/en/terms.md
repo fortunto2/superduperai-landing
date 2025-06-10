@@ -14,16 +14,29 @@ seo:
     - service agreement
 ---
 
+---
+title: "Terms and Conditions - SuperDuperAI"
+description: "Terms and conditions for using SuperDuperAI's video generation platform and services."
+date: "2023-05-01"
+slug: "terms"
+locale: "en"
+seo:
+  title: "Terms and Conditions - SuperDuperAI"
+  description: "Legal terms and conditions governing your use of SuperDuperAI's video generation platform and services."
+  keywords:
+    - terms and conditions
+    - legal terms
+    - SuperDuperAI terms
+    - service agreement
+---
+
 # Terms and Conditions
 
-
   Last Updated: May 1, 2023
-
 
 Welcome to SuperDuperAI. By accessing or using our services, you agree to be bound by these Terms and Conditions. Please read them carefully.
 
 ## Acceptance of Terms
-
 
   
     Important Notice
@@ -35,11 +48,9 @@ Welcome to SuperDuperAI. By accessing or using our services, you agree to be bou
     these terms, please do not use our Services.
   
 
-
 ## Services Description
 
 SuperDuperAI provides AI-powered video generation services that allow users to create, edit, and share digital content. Our Services may include, but are not limited to:
-
 
   
     
@@ -62,11 +73,9 @@ SuperDuperAI provides AI-powered video generation services that allow users to c
     
   
 
-
 ## Account Registration
 
 You may need to create an account to use some of our Services. You are responsible for:
-
 
   
     Providing accurate and complete information when creating your account
@@ -78,7 +87,6 @@ You may need to create an account to use some of our Services. You are responsib
     All activities that occur under your account
   
 
-
 ## User Content
 
 ### Content Ownership
@@ -88,7 +96,6 @@ You retain ownership of the content you create using our Services. By uploading 
 ### Content Restrictions
 
 You agree not to use our Services to create, upload, or share content that:
-
 
   
     Prohibited Content
@@ -101,7 +108,6 @@ You agree not to use our Services to create, upload, or share content that:
     Promotes illegal activities or harmful behaviors
     Contains malware, viruses, or other malicious code
   
-
 
 ## Payment Terms
 
@@ -119,7 +125,6 @@ We reserve the right to suspend or terminate your access to our Services at any 
 
 ## Limitation of Liability
 
-
   
     TO THE MAXIMUM EXTENT PERMITTED BY LAW, SUPERDUPERAI SHALL NOT BE LIABLE FOR
     ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR
@@ -128,16 +133,12 @@ We reserve the right to suspend or terminate your access to our Services at any 
     YOUR ACCESS TO OR USE OF OR INABILITY TO ACCESS OR USE THE SERVICES.
   
 
-
 ## Changes to Terms
 
 We may update these Terms and Conditions from time to time. We will notify you of any significant changes by posting the new Terms on this page and updating the "Last Updated" date.
 
 ## Contact Us
 
-
   **Have questions about our Terms and Conditions?** If you have any questions
   or concerns about these Terms, please contact us.
-
-
 
