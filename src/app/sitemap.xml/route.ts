@@ -1,6 +1,9 @@
 import { allTools, allCases, allPages, allBlogs, allHomes } from '.contentlayer/generated';
 import { i18n } from '@/config/i18n-config';
 
+export const dynamic = 'force-static';
+export const revalidate = false;
+
 export async function GET() {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'superduperai.co';
   const site = `https://${baseUrl}`;
