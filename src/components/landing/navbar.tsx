@@ -96,9 +96,9 @@ export function Navbar() {
               href={APP_URLS.DISCORD_URL}
               target="_blank"
               rel="noopener noreferrer nofollow"
-              title={t("navbar.discord")}
+              title="discord"
             >
-              {t("navbar.discord")}
+              Discord
             </a>
           </Button>
           <Button
@@ -137,12 +137,6 @@ export function Navbar() {
       {isMobileMenuOpen && (
         <div className="absolute top-full left-0 w-full bg-background/95 backdrop-blur-md border-b border-accent/10 shadow-md md:hidden">
           <div className="container py-4 flex flex-col gap-4">
-            <div className="flex items-center mb-4">
-              <Logo className="h-0 w-11 mr-2" />
-              <span className="font-semibold">
-                <span className="text-accent">Super</span>DuperAI
-              </span>
-            </div>
             <nav className="flex flex-col gap-4">
               <Link
                 href="/"
@@ -205,24 +199,9 @@ export function Navbar() {
                   href="https://discord.gg/superduperai"
                   target="_blank"
                   rel="noopener noreferrer nofollow"
-                  title={t("navbar.discord")}
+                  title="Discord"
                 >
-                  {t("navbar.discord")}
-                </a>
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="w-full border-accent/50 hover:border-accent/80 hover:text-accent"
-                asChild
-              >
-                <a
-                  href="https://discord.gg/superduperai"
-                  target="_blank"
-                  rel="noopener noreferrer nofollow"
-                  title={t("navbar.discord")}
-                >
-                  {t("navbar.discord")}
+                  Discord
                 </a>
               </Button>
               <Button

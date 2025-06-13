@@ -14,16 +14,29 @@ seo:
     - personal information
 ---
 
+---
+title: "Privacy Policy - SuperDuperAI"
+description: "Our privacy policy outlines how we collect, use, and protect your personal information."
+date: "2023-05-01"
+locale: "en"
+slug: "privacy"
+seo:
+  title: "Privacy Policy - SuperDuperAI"
+  description: "Learn how SuperDuperAI collects, uses, and protects your personal information."
+  keywords:
+    - privacy policy
+    - data protection
+    - SuperDuperAI privacy
+    - personal information
+---
+
 # Privacy Policy
 
-
   Last Updated: May 1, 2023
-
 
 At SuperDuperAI, we are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, share, and protect your data when you use our website and services.
 
 ## Information We Collect
-
 
   
     Personal Information
@@ -45,7 +58,6 @@ At SuperDuperAI, we are committed to protecting your privacy and ensuring the se
     
   
 
-
 ## How We Use Your Information
 
 We use your information to:
@@ -59,7 +71,6 @@ We use your information to:
 
 ## Data Security
 
-
   
     Our Commitment to Security
   
@@ -69,7 +80,6 @@ We use your information to:
     alteration, unauthorized disclosure, or access. All data is encrypted in
     transit and at rest using industry-standard protocols.
   
-
 
 ## Data Sharing and Disclosure
 
@@ -86,7 +96,6 @@ We do not sell your personal information to third parties.
 
 You have the right to:
 
-
   
     Request access to your personal information
   
@@ -100,7 +109,6 @@ You have the right to:
     Object to processing of your personal information
   
 
-
 ## Cookie Policy
 
 Our website uses cookies to enhance your browsing experience. You can manage your cookie preferences through your browser settings.
@@ -111,15 +119,10 @@ We may update this Privacy Policy from time to time. We will notify you of any s
 
 ## Contact Us
 
-
   **Have questions about our Privacy Policy?** If you have any questions or
   concerns about our Privacy Policy, please contact us.
 
-
-
-
 ## Limitation of Liability
-
 
   
     TO THE MAXIMUM EXTENT PERMITTED BY LAW, SUPERDUPERAI SHALL NOT BE LIABLE FOR

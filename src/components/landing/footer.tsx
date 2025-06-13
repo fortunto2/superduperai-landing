@@ -89,6 +89,15 @@ export function Footer({ locale }: { locale: string }) {
                 </Link>
               </li>
               <li>
+                <Link
+                  href="/blog"
+                  className="hover:text-primary transition-colors duration-300"
+                  title={t("footer.pages.blog")}
+                >
+                  {t("footer.pages.blog")}
+                </Link>
+              </li>
+              <li>
                 <a
                   href={APP_URLS.CALENDLY_URL}
                   target="_blank"
