@@ -1,87 +1,52 @@
-import { MetadataRoute } from "next";
-import {
-  allTools,
-  allCases,
-  allPages,
-  allBlogs,
-} from ".contentlayer/generated";
+import { allTools, allCases, allPages, allBlogs, allHomes } from '.contentlayer/generated';
+import { i18n } from '@/config/i18n-config';
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "superduperai.co";
-  const baseUrlWithProtocol = `https://${baseUrl}`;
+export async function GET() {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'superduperai.co';
+  const site = `https://${baseUrl}`;
 
-  // Поддерживаемые локали
-  // const locales = Object.keys(localeMap) || ["en", "ru", "tr", "hi", "es"];
-  const locales = ["en", "ru", "tr", "hi", "es"];
+  type Entry = { path: string; locale: string; lastMod: Date };
+  const entries: Entry[] = [];
 
-  // Главная страница для всех локалей
-  const homeUrls = [
-    {
-      url: baseUrlWithProtocol,
-      lastModified: new Date(),
-      changeFrequency: "weekly" as const,
-      priority: 1.0,
+  const push = (path: string, locale: string, date: Date) => {
+    entries.push({ path, locale, lastMod: date });
+  };
+
+  allHomes.forEach(home => push('/', home.locale, new Date(home.date)));
+  allPages.forEach(p => push(p.url, p.locale, new Date(p.date)));
+  allTools.forEach(t => push(t.url, t.locale, new Date(t.date)));
+  allCases.forEach(c => push(c.url, c.locale, new Date(c.date)));
+  allBlogs.forEach(b => push(`/blog/${b.slug}`, b.locale, new Date(b.date)));
+
+  const groups = new Map<string, Entry[]>();
+  for (const entry of entries) {
+    const key = entry.path;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key)!.push(entry);
+  }
+
+  let xml = '<?xml version="1.0" encoding="UTF-8"?>';
+  xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">';
+
+  for (const [path, list] of groups.entries()) {
+    const canonical = `${site}${path}`;
+    const lastmod = list.reduce((latest, cur) => cur.lastMod > latest ? cur.lastMod : latest, list[0].lastMod);
+    xml += '<url>';
+    xml += `<loc>${canonical}</loc>`;
+    for (const locale of i18n.locales) {
+      const suffix = path === '/' ? '' : path;
+      xml += `<xhtml:link rel="alternate" hreflang="${locale}" href="${site}/${locale}${suffix}"/>`;
+    }
+    xml += `<xhtml:link rel="alternate" hreflang="x-default" href="${canonical}"/>`;
+    xml += `<lastmod>${lastmod.toISOString()}</lastmod>`;
+    xml += '</url>';
+  }
+
+  xml += '</urlset>';
+
+  return new Response(xml, {
+    headers: {
+      'Content-Type': 'application/xml',
     },
-    ...locales.map((locale) => ({
-      url: `${baseUrlWithProtocol}/${locale}`,
-      lastModified: new Date(),
-      changeFrequency: "weekly" as const,
-      priority: 1.0,
-    })),
-  ];
-
-  // Статические страницы для всех локалей
-  const staticPages = locales.flatMap((locale) => [
-    {
-      url: `${baseUrlWithProtocol}/${locale}/pricing`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrlWithProtocol}/${locale}/about`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    },
-  ]);
-
-  // Маппинг всех страниц из ContentLayer с учетом локали
-  const toolUrls = allTools.map((tool) => ({
-    url: `${baseUrlWithProtocol}/${tool.locale}${tool.url}`,
-    lastModified: new Date(tool.date),
-    changeFrequency: "monthly" as const,
-    priority: 0.7,
-  }));
-
-  const caseUrls = allCases.map((caseItem) => ({
-    url: `${baseUrlWithProtocol}/${caseItem.locale}${caseItem.url}`,
-    lastModified: new Date(caseItem.date),
-    changeFrequency: "monthly" as const,
-    priority: 0.7,
-  }));
-
-  const pageUrls = allPages.map((page) => ({
-    url: `${baseUrlWithProtocol}/${page.locale}${page.url}`,
-    lastModified: new Date(page.date),
-    changeFrequency: "monthly" as const,
-    priority: 0.6,
-  }));
-
-  const blogUrls = allBlogs.map((blog) => ({
-    url: `${baseUrlWithProtocol}/${blog.locale}/blog/${blog.slug}`,
-    lastModified: new Date(blog.date),
-    changeFrequency: "weekly" as const,
-    priority: 0.8,
-  }));
-
-  // Объединяем все URL
-  return [
-    ...homeUrls,
-    ...staticPages,
-    ...toolUrls,
-    ...caseUrls,
-    ...pageUrls,
-    ...blogUrls,
-  ];
+  });
 }

@@ -1,5 +1,7 @@
 import { Metadata } from 'next';
 import { OG_IMAGE_SIZE } from './generate-og-image';
+import { i18n } from '@/config/i18n-config';
+import { siteConfig } from '@/config/site';
 
 // Определение типов данных для каждого типа страницы
 export type PageType = 'home' | 'page' | 'tool' | 'case' | 'blog';
@@ -59,6 +61,19 @@ function generateOGImageUrl(
   return `/api/og?${params.toString()}`;
 }
 
+function generateAlternates(url: string) {
+  const languages: Record<string, string> = {};
+  for (const locale of i18n.locales) {
+    const suffix = url === '/' ? '' : url;
+    languages[locale] = `${siteConfig.url}/${locale}${suffix}`;
+  }
+  languages['x-default'] = `${siteConfig.url}${url}`;
+  return {
+    canonical: `${siteConfig.url}${url}`,
+    languages,
+  };
+}
+
 /**
  * Генерирует метаданные для страницы
  */
@@ -100,7 +115,8 @@ export function generatePageMetadata({
     title,
     description,
     keywords,
-    metadataBase: new URL('https://superduperai.co'),
+    metadataBase: new URL(siteConfig.url),
+    alternates: generateAlternates(url),
     openGraph: {
       type,
       title,
