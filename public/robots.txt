@@ -6,7 +6,7 @@ Disallow: /llms.txt
 Disallow: /api/llms-txt
 Disallow: /api/markdown/
 
-Sitemap: https://superduperai.com/sitemap.xml
+Sitemap: https://superduperai.co/sitemap.xml
 
 # LLMs.txt reference
-LLMsHost: https://superduperai.com/llms.txt 
+LLMsHost: https://superduperai.co/llms.txt 
