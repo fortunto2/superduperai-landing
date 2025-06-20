@@ -5,12 +5,7 @@ import { match as matchLocale } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
 
 // Список специальных файлов и путей, которые должны быть доступны без локали
-const PUBLIC_FILES = [
-  "/sitemap.xml",
-  "/llms.txt",
-  "/favicon.ico",
-  "/robots.txt",
-];
+const PUBLIC_FILES = ["/llms.txt", "/favicon.ico", "/robots.txt"];
 
 // Регулярное выражение для обнаружения Markdown-расширения в конце URL
 const MD_EXTENSION_REGEX = /\.md$/;
@@ -20,6 +15,11 @@ export function middleware(request: NextRequest) {
 
   // Пропускаем API маршруты без изменений
   if (pathname.startsWith("/api/")) {
+    return NextResponse.next();
+  }
+
+  // Специальная обработка для sitemap.xml - полностью пропускаем через middleware
+  if (pathname === "/sitemap.xml") {
     return NextResponse.next();
   }
 
