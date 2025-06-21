@@ -10,16 +10,22 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Copy, Shuffle, Sparkles, Loader2, Trash2, Settings, ChevronDown, ChevronUp, BookOpen, ExternalLink } from "lucide-react";
 import Link from "next/link";
 
+interface Character {
+  id: string;
+  name: string;
+  description: string;
+  speech: string;
+}
+
 interface PromptData {
   scene: string;
   style: string;
   camera: string;
   duration: string;
-  character: string;
+  characters: Character[];
   action: string;
   lighting: string;
   mood: string;
-  speech: string;
   language: string;
 }
 
@@ -35,9 +41,13 @@ const PRESET_OPTIONS = {
 const EXAMPLE_PROMPTS: PromptData[] = [
   {
     scene: "A quiet park in autumn",
-    character: "A child taking photos",
+    characters: [{
+      id: "1",
+      name: "Child",
+      description: "A child taking photos",
+      speech: "Look at this beautiful tree!"
+    }],
     action: "walking around and capturing leaves",
-    speech: "Look at this beautiful tree!",
     language: "English",
     style: "Cinematic",
     camera: "Wide shot",
@@ -47,9 +57,13 @@ const EXAMPLE_PROMPTS: PromptData[] = [
   },
   {
     scene: "A busy street market",
-    character: "An elderly vendor",
+    characters: [{
+      id: "1",
+      name: "Vendor",
+      description: "An elderly vendor",
+      speech: "¡Frutas frescas!"
+    }],
     action: "selling fresh fruits",
-    speech: "¡Frutas frescas!",
     language: "Spanish",
     style: "Documentary",
     camera: "Close-up",
@@ -59,9 +73,13 @@ const EXAMPLE_PROMPTS: PromptData[] = [
   },
   {
     scene: "A cozy coffee shop",
-    character: "A young woman",
+    characters: [{
+      id: "1",
+      name: "Woman",
+      description: "A young woman",
+      speech: "This is my favorite spot"
+    }],
     action: "reading a book while sipping coffee",
-    speech: "This is my favorite spot",
     language: "English",
     style: "Realistic",
     camera: "Over-the-shoulder",
@@ -74,8 +92,13 @@ const EXAMPLE_PROMPTS: PromptData[] = [
 export function SimpleVeo3Generator() {
   const [promptData, setPromptData] = useState<PromptData>({
     scene: "", style: "", camera: "", duration: "",
-    character: "", action: "", lighting: "", mood: "",
-    speech: "", language: "English" // Default fallback
+    characters: [{
+      id: "default",
+      name: "",
+      description: "",
+      speech: ""
+    }], action: "", lighting: "", mood: "",
+    language: "English" // Default fallback
   });
 
   const [generatedPrompt, setGeneratedPrompt] = useState("");
@@ -155,7 +178,8 @@ export function SimpleVeo3Generator() {
 
   // Auto-generate prompt when key fields change
   useEffect(() => {
-    if (promptData.scene && promptData.character && promptData.action) {
+    const hasValidCharacter = promptData.characters.some(char => char.name || char.description);
+    if (promptData.scene && hasValidCharacter && promptData.action) {
       const prompt = generatePrompt(promptData);
       setGeneratedPrompt(prompt);
     }
@@ -197,15 +221,52 @@ export function SimpleVeo3Generator() {
     setPromptData(prev => ({ ...prev, [field]: value }));
   };
 
+  const addCharacter = () => {
+    const newCharacter: Character = {
+      id: Date.now().toString(),
+      name: "",
+      description: "",
+      speech: ""
+    };
+    setPromptData(prev => ({
+      ...prev,
+      characters: [...prev.characters, newCharacter]
+    }));
+  };
+
+  const updateCharacter = (id: string, field: keyof Character, value: string) => {
+    setPromptData(prev => ({
+      ...prev,
+      characters: prev.characters.map(char => 
+        char.id === id ? { ...char, [field]: value } : char
+      )
+    }));
+  };
+
+  const removeCharacter = (id: string) => {
+    setPromptData(prev => ({
+      ...prev,
+      characters: prev.characters.filter(char => char.id !== id)
+    }));
+  };
+
   const generatePrompt = (data: PromptData) => {
-    const parts = [];
+    const parts: string[] = [];
     
     if (data.scene) parts.push(data.scene);
-    if (data.character) parts.push(`featuring ${data.character}`);
-    if (data.action) parts.push(`who is ${data.action}`);
-    if (data.speech && data.language) {
-      parts.push(`says in ${data.language.toLowerCase()}: "${data.speech}"`);
+    
+    if (data.characters.length > 0) {
+      const characterDescriptions = data.characters.map(char => {
+        let desc = char.description || char.name || "a character";
+        if (char.speech && data.language) {
+          desc += ` who says in ${data.language.toLowerCase()}: "${char.speech}"`;
+        }
+        return desc;
+      });
+      parts.push(`featuring ${characterDescriptions.join(', ')}`);
     }
+    
+    if (data.action) parts.push(`${data.action}`);
     if (data.camera) parts.push(`Shot with ${data.camera.toLowerCase()}`);
     if (data.style) parts.push(`${data.style.toLowerCase()} style`);
     if (data.lighting) parts.push(`${data.lighting.toLowerCase()} lighting`);
@@ -268,9 +329,13 @@ export function SimpleVeo3Generator() {
   const randomizePrompt = () => {
     const randomData: PromptData = {
       scene: "A serene lakeside at sunset",
-      character: "A person in casual clothes",
+      characters: [{
+        id: "1",
+        name: "Person",
+        description: "A person in casual clothes",
+        speech: Math.random() > 0.5 ? "Perfect evening for this!" : ""
+      }],
       action: "skipping stones across the water",
-      speech: Math.random() > 0.5 ? "Perfect evening for this!" : "",
       language: PRESET_OPTIONS.languages[Math.floor(Math.random() * PRESET_OPTIONS.languages.length)],
       style: PRESET_OPTIONS.styles[Math.floor(Math.random() * PRESET_OPTIONS.styles.length)],
       camera: PRESET_OPTIONS.cameras[Math.floor(Math.random() * PRESET_OPTIONS.cameras.length)],
@@ -290,8 +355,8 @@ export function SimpleVeo3Generator() {
   const clearAll = () => {
     const emptyData: PromptData = {
       scene: "", style: "", camera: "", duration: "",
-      character: "", action: "", lighting: "", mood: "",
-      speech: "", language: "English"
+      characters: [], action: "", lighting: "", mood: "",
+      language: "English"
     };
     setPromptData(emptyData);
     setGeneratedPrompt("");
@@ -365,15 +430,81 @@ export function SimpleVeo3Generator() {
                   />
                 </div>
 
-                {/* Character */}
-                <div className="space-y-2">
-                  <Label htmlFor="character">Character/Subject</Label>
-                  <Textarea
-                    id="character"
-                    placeholder="Who is in the scene? (e.g., A young woman reading a book)"
-                    value={promptData.character}
-                    onChange={(e) => updateField("character", e.target.value)}
-                  />
+                {/* Characters */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <Label>Characters ({promptData.characters.length})</Label>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={addCharacter}
+                      className="text-xs"
+                    >
+                      + Add Character
+                    </Button>
+                  </div>
+                  
+                  {promptData.characters.length === 0 && (
+                    <div className="text-sm text-muted-foreground p-4 border border-dashed rounded-lg text-center">
+                      No characters added yet. Click &ldquo;Add Character&rdquo; to start.
+                    </div>
+                  )}
+                  
+                  {promptData.characters.map((character, index) => (
+                    <div key={character.id} className="p-4 border rounded-lg space-y-3">
+                      <div className="flex items-center justify-between">
+                        <Label className="text-sm font-medium">Character {index + 1}</Label>
+                        {promptData.characters.length > 1 && (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => removeCharacter(character.id)}
+                            className="text-red-500 hover:text-red-700 h-6 w-6 p-0"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </Button>
+                        )}
+                      </div>
+                      
+                      <div className="grid grid-cols-1 gap-3">
+                        <div>
+                          <Label htmlFor={`char-name-${character.id}`} className="text-xs">Name</Label>
+                          <input
+                            id={`char-name-${character.id}`}
+                            type="text"
+                            placeholder="Character name (e.g., Sarah, Vendor)"
+                            value={character.name}
+                            onChange={(e) => updateCharacter(character.id, "name", e.target.value)}
+                            className="w-full px-3 py-2 border border-input bg-background rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
+                          />
+                        </div>
+                        
+                        <div>
+                          <Label htmlFor={`char-desc-${character.id}`} className="text-xs">Description</Label>
+                          <Textarea
+                            id={`char-desc-${character.id}`}
+                            placeholder="Describe the character (e.g., A young woman with wavy brown hair)"
+                            value={character.description}
+                            onChange={(e) => updateCharacter(character.id, "description", e.target.value)}
+                            className="min-h-[60px] text-sm"
+                          />
+                        </div>
+                        
+                        <div>
+                          <Label htmlFor={`char-speech-${character.id}`} className="text-xs">Speech (Optional)</Label>
+                          <Textarea
+                            id={`char-speech-${character.id}`}
+                            placeholder="What they say (e.g., Hello there! or Привет!)"
+                            value={character.speech}
+                            onChange={(e) => updateCharacter(character.id, "speech", e.target.value)}
+                            className="min-h-[50px] text-sm"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
 
                 {/* Action */}
@@ -384,17 +515,6 @@ export function SimpleVeo3Generator() {
                     placeholder="What are they doing? (e.g., slowly sipping coffee while turning pages)"
                     value={promptData.action}
                     onChange={(e) => updateField("action", e.target.value)}
-                  />
-                </div>
-
-                {/* Speech */}
-                <div className="space-y-2">
-                  <Label htmlFor="speech">Character Speech (Optional)</Label>
-                  <Textarea
-                    id="speech"
-                    placeholder="What does the character say? (e.g., Hello there! or Привет!)"
-                    value={promptData.speech}
-                    onChange={(e) => updateField("speech", e.target.value)}
                   />
                 </div>
 
