@@ -1,12 +1,12 @@
 User-agent: *
 Allow: /
+Allow: /llms.txt
 Disallow: /api/
 Disallow: /_next/
-Disallow: /llms.txt
 Disallow: /api/llms-txt
 Disallow: /api/markdown/
 
 Sitemap: https://superduperai.co/sitemap.xml
 
-# LLMs.txt reference
-LLMsHost: https://superduperai.co/llms.txt 
+# LLMs.txt available for AI agents
+# See: https://llmstxt.org/ 
