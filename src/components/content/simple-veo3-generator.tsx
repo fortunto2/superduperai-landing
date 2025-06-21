@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Copy, Shuffle, Sparkles, Wand2, Loader2 } from "lucide-react";
+import { Copy, Shuffle, Sparkles, Wand2, Loader2, Trash2 } from "lucide-react";
 
 interface PromptData {
   scene: string;
@@ -109,6 +109,76 @@ export function SimpleVeo3Generator() {
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [enhanceError, setEnhanceError] = useState("");
   const [promptLength, setPromptLength] = useState<'short' | 'medium' | 'long'>('medium');
+  const [promptHistory, setPromptHistory] = useState<Array<{
+    id: string;
+    timestamp: Date;
+    basicPrompt: string;
+    enhancedPrompt: string;
+    length: string;
+    promptData: PromptData;
+  }>>([]);
+
+  // Load history from localStorage on component mount
+  useEffect(() => {
+    const savedHistory = localStorage.getItem('veo3-prompt-history');
+    if (savedHistory) {
+      try {
+        const parsed = JSON.parse(savedHistory);
+        // Convert timestamp strings back to Date objects
+        const historyWithDates = parsed.map((item: {
+          id: string;
+          timestamp: string;
+          basicPrompt: string;
+          enhancedPrompt: string;
+          length: string;
+          promptData: PromptData;
+        }) => ({
+          ...item,
+          timestamp: new Date(item.timestamp)
+        }));
+        setPromptHistory(historyWithDates);
+      } catch (error) {
+        console.error('Failed to load prompt history:', error);
+      }
+    }
+  }, []);
+
+  // Save to localStorage
+  const saveToHistory = (basicPrompt: string, enhancedPrompt: string, length: string, promptData: PromptData) => {
+    const historyItem = {
+      id: Date.now().toString(),
+      timestamp: new Date(),
+      basicPrompt,
+      enhancedPrompt,
+      length,
+      promptData
+    };
+
+    const newHistory = [historyItem, ...promptHistory].slice(0, 10); // Keep only last 10
+    setPromptHistory(newHistory);
+    
+    // Save to localStorage
+    try {
+      localStorage.setItem('veo3-prompt-history', JSON.stringify(newHistory));
+    } catch (error) {
+      console.error('Failed to save prompt history:', error);
+    }
+  };
+
+  // Load from history
+  const loadFromHistory = (historyItem: typeof promptHistory[0]) => {
+    setPromptData(historyItem.promptData);
+    setGeneratedPrompt(historyItem.basicPrompt);
+    setEnhancedPrompt(historyItem.enhancedPrompt);
+    setPromptLength(historyItem.length as 'short' | 'medium' | 'long');
+    setEnhancementInfo(null); // Clear enhancement info as it might be outdated
+  };
+
+  // Clear history
+  const clearHistory = () => {
+    setPromptHistory([]);
+    localStorage.removeItem('veo3-prompt-history');
+  };
 
   const updateField = (field: keyof PromptData, value: string) => {
     const newData = { ...promptData, [field]: value };
@@ -174,6 +244,9 @@ export function SimpleVeo3Generator() {
         targetCharacters: data.targetCharacters,
         actualCharacters: data.actualCharacters
       });
+
+      // Save to history when AI enhancement is successful
+      saveToHistory(generatedPrompt, data.enhancedPrompt, data.length, promptData);
     } catch (error) {
       console.error('Error enhancing prompt:', error);
       setEnhanceError(error instanceof Error ? error.message : 'Failed to enhance prompt');
@@ -508,6 +581,59 @@ export function SimpleVeo3Generator() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Prompt History Section */}
+      {promptHistory.length > 0 && (
+        <div className="max-w-4xl mx-auto">
+          <Card>
+                         <CardHeader>
+               <div className="flex items-center justify-between">
+                 <CardTitle className="flex items-center gap-2">
+                   <Copy className="w-5 h-5" />
+                   Recent Prompts History
+                 </CardTitle>
+                 <Button
+                   onClick={clearHistory}
+                   variant="ghost"
+                   size="sm"
+                   className="text-muted-foreground hover:text-destructive"
+                 >
+                   <Trash2 className="w-4 h-4" />
+                 </Button>
+               </div>
+             </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {promptHistory.map((historyItem) => (
+                  <div key={historyItem.id} className="p-3 border rounded-lg">
+                    <div className="flex justify-between items-start mb-2">
+                      <p className="text-sm text-muted-foreground">
+                        {historyItem.timestamp.toLocaleString()}
+                      </p>
+                      <Badge variant="secondary" className="text-xs">
+                        {historyItem.length}
+                      </Badge>
+                    </div>
+                    <p className="text-sm mb-2 max-h-10 overflow-hidden">
+                      {historyItem.basicPrompt.length > 100 
+                        ? historyItem.basicPrompt.substring(0, 100) + '...' 
+                        : historyItem.basicPrompt}
+                    </p>
+                    <Button
+                      onClick={() => loadFromHistory(historyItem)}
+                      variant="outline"
+                      size="sm"
+                      className="w-full"
+                    >
+                      Load This Version
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
 
       {/* Example Prompts Section */}
       <div className="max-w-4xl mx-auto">
