@@ -1,0 +1,445 @@
+{
+    "site": {
+        "name": "SuperDuperAI",
+        "domain": "superduperai.co",
+        "description": "Professional VEO3 Prompt Generator - Create AI videos with perfect prompts"
+    },
+    "wizard": {
+        "title": "VEO3 Prompt Generator",
+        "description": "Create professional video prompts for Google's VEO3 neural network",
+        "totalSteps": 7,
+        "maxCharacters": 500,
+        "steps": [
+            {
+                "id": 1,
+                "title": "Video Trend",
+                "description": "Choose your video style and trend",
+                "required": true,
+                "type": "select",
+                "options": [
+                    {
+                        "value": "cinematic",
+                        "label": "Cinematic",
+                        "description": "Film-like quality with dramatic lighting"
+                    },
+                    {
+                        "value": "documentary",
+                        "label": "Documentary",
+                        "description": "Realistic, natural documentary style"
+                    },
+                    {
+                        "value": "commercial",
+                        "label": "Commercial",
+                        "description": "Professional advertising style"
+                    },
+                    {
+                        "value": "viral",
+                        "label": "Viral Content",
+                        "description": "Engaging social media style"
+                    },
+                    {
+                        "value": "artistic",
+                        "label": "Artistic",
+                        "description": "Creative, experimental visual style"
+                    },
+                    {
+                        "value": "educational",
+                        "label": "Educational",
+                        "description": "Clear, informative presentation style"
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "title": "Genre",
+                "description": "Select video genre",
+                "required": true,
+                "type": "select",
+                "options": [
+                    {
+                        "value": "drama",
+                        "label": "Drama",
+                        "description": "Emotional storytelling"
+                    },
+                    {
+                        "value": "comedy",
+                        "label": "Comedy",
+                        "description": "Humorous content"
+                    },
+                    {
+                        "value": "action",
+                        "label": "Action",
+                        "description": "Dynamic, fast-paced scenes"
+                    },
+                    {
+                        "value": "horror",
+                        "label": "Horror",
+                        "description": "Suspenseful, scary atmosphere"
+                    },
+                    {
+                        "value": "romance",
+                        "label": "Romance",
+                        "description": "Love-themed content"
+                    },
+                    {
+                        "value": "thriller",
+                        "label": "Thriller",
+                        "description": "Tense, suspenseful content"
+                    },
+                    {
+                        "value": "fantasy",
+                        "label": "Fantasy",
+                        "description": "Magical, imaginative scenes"
+                    },
+                    {
+                        "value": "sci-fi",
+                        "label": "Sci-Fi",
+                        "description": "Futuristic technology themes"
+                    }
+                ]
+            },
+            {
+                "id": 3,
+                "title": "Speech Style",
+                "description": "Choose dialogue and narration style",
+                "required": false,
+                "type": "select",
+                "options": [
+                    {
+                        "value": "none",
+                        "label": "No Speech",
+                        "description": "Silent video content"
+                    },
+                    {
+                        "value": "narration",
+                        "label": "Narration",
+                        "description": "Voice-over narration"
+                    },
+                    {
+                        "value": "dialogue",
+                        "label": "Dialogue",
+                        "description": "Character conversations"
+                    },
+                    {
+                        "value": "monologue",
+                        "label": "Monologue",
+                        "description": "Single character speaking"
+                    },
+                    {
+                        "value": "interview",
+                        "label": "Interview",
+                        "description": "Q&A format"
+                    },
+                    {
+                        "value": "presentation",
+                        "label": "Presentation",
+                        "description": "Educational speaking"
+                    }
+                ]
+            },
+            {
+                "id": 4,
+                "title": "Camera Movement",
+                "description": "Select camera movement and shots",
+                "required": false,
+                "type": "multiselect",
+                "options": [
+                    {
+                        "value": "static",
+                        "label": "Static Shot",
+                        "description": "Fixed camera position"
+                    },
+                    {
+                        "value": "pan",
+                        "label": "Pan",
+                        "description": "Horizontal camera movement"
+                    },
+                    {
+                        "value": "tilt",
+                        "label": "Tilt",
+                        "description": "Vertical camera movement"
+                    },
+                    {
+                        "value": "zoom",
+                        "label": "Zoom",
+                        "description": "Zoom in/out movement"
+                    },
+                    {
+                        "value": "dolly",
+                        "label": "Dolly",
+                        "description": "Forward/backward movement"
+                    },
+                    {
+                        "value": "crane",
+                        "label": "Crane",
+                        "description": "Vertical crane movement"
+                    },
+                    {
+                        "value": "handheld",
+                        "label": "Handheld",
+                        "description": "Shaky, natural movement"
+                    },
+                    {
+                        "value": "steadicam",
+                        "label": "Steadicam",
+                        "description": "Smooth tracking shots"
+                    }
+                ]
+            },
+            {
+                "id": 5,
+                "title": "Lighting",
+                "description": "Choose lighting setup",
+                "required": false,
+                "type": "select",
+                "options": [
+                    {
+                        "value": "natural",
+                        "label": "Natural Light",
+                        "description": "Sunlight or ambient lighting"
+                    },
+                    {
+                        "value": "studio",
+                        "label": "Studio Light",
+                        "description": "Professional studio setup"
+                    },
+                    {
+                        "value": "dramatic",
+                        "label": "Dramatic Light",
+                        "description": "High contrast, moody lighting"
+                    },
+                    {
+                        "value": "soft",
+                        "label": "Soft Light",
+                        "description": "Even, diffused lighting"
+                    },
+                    {
+                        "value": "neon",
+                        "label": "Neon Light",
+                        "description": "Colorful neon illumination"
+                    },
+                    {
+                        "value": "candlelight",
+                        "label": "Candlelight",
+                        "description": "Warm, flickering light"
+                    },
+                    {
+                        "value": "moonlight",
+                        "label": "Moonlight",
+                        "description": "Cool, blue-tinted lighting"
+                    }
+                ]
+            },
+            {
+                "id": 6,
+                "title": "Duration",
+                "description": "Video length preference",
+                "required": false,
+                "type": "select",
+                "options": [
+                    {
+                        "value": "short",
+                        "label": "Short (5-15s)",
+                        "description": "Quick, punchy content"
+                    },
+                    {
+                        "value": "medium",
+                        "label": "Medium (15-30s)",
+                        "description": "Standard social media length"
+                    },
+                    {
+                        "value": "long",
+                        "label": "Long (30-60s)",
+                        "description": "Detailed storytelling"
+                    },
+                    {
+                        "value": "extended",
+                        "label": "Extended (60s+)",
+                        "description": "Full narrative content"
+                    }
+                ]
+            },
+            {
+                "id": 7,
+                "title": "Custom Elements",
+                "description": "Add specific details to your prompt",
+                "required": false,
+                "type": "textarea",
+                "placeholder": "Describe specific objects, characters, locations, or artistic elements you want to include..."
+            }
+        ]
+    },
+    "templates": {
+        "base": "Create a {trend} {genre} video",
+        "withSpeech": "Create a {trend} {genre} video with {speech}",
+        "withCamera": "Create a {trend} {genre} video using {camera} camera movement",
+        "withLighting": "Create a {trend} {genre} video with {lighting} lighting",
+        "full": "Create a {trend} {genre} video with {speech}, using {camera} camera movement and {lighting} lighting, duration: {duration}"
+    },
+    "prompts": {
+        "examples": [
+            "Create a cinematic drama video with dialogue, using dolly camera movement and dramatic lighting, duration: medium (15-30s)",
+            "Create a viral comedy video with no speech, using handheld camera movement and natural lighting, duration: short (5-15s)",
+            "Create a commercial action video with narration, using crane camera movement and studio lighting, duration: long (30-60s)"
+        ]
+    },
+    "cta": {
+        "primary": "Generate VEO3 Prompts",
+        "secondary": "View Examples"
+    }
+}
+},
+{
+"value": "monologue",
+"label": "Monologue",
+"description": "Single character speaking"
+},
+{
+"value": "interview",
+"label": "Interview",
+"description": "Q&A format"
+},
+{
+"value": "presentation",
+"label": "Presentation",
+"description": "Educational speaking"
+}
+]
+},
+{
+"id": 4,
+"title": "Camera Movement",
+"description": "Select camera movement and shots",
+"required": false,
+"type": "multiselect",
+"options": [
+{
+"value": "static",
+"label": "Static Shot",
+"description": "Fixed camera position"
+},
+{
+"value": "pan",
+"label": "Pan",
+"description": "Horizontal camera movement"
+},
+{
+"value": "tilt",
+"label": "Tilt",
+"description": "Vertical camera movement"
+},
+{
+"value": "zoom",
+"label": "Zoom",
+"description": "Zoom in/out movement"
+},
+{
+"value": "dolly",
+"label": "Dolly",
+"description": "Forward/backward movement"
+},
+{
+"value": "crane",
+"label": "Crane",
+"description": "Vertical crane movement"
+},
+{
+"value": "handheld",
+"label": "Handheld",
+"description": "Shaky, natural movement"
+},
+{
+"value": "steadicam",
+"label": "Steadicam",
+"description": "Smooth tracking shots"
+}
+]
+},
+{
+"id": 5,
+"title": "Lighting",
+"description": "Choose lighting setup",
+"required": false,
+"type": "select",
+"options": [
+{
+"value": "natural",
+"label": "Natural Light",
+"description": "Sunlight or ambient lighting"
+},
+{
+"value": "studio",
+"label": "Studio Light",
+"description": "Professional studio setup"
+},
+{
+"value": "dramatic",
+"label": "Dramatic Light",
+"description": "High contrast, moody lighting"
+},
+{
+"value": "soft",
+"label": "Soft Light",
+"description": "Even, diffused lighting"
+},
+{
+"value": "neon",
+"label": "Neon Light",
+"description": "Colorful neon illumination"
+},
+{
+"value": "candlelight",
+"label": "Candlelight",
+"description": "Warm, flickering light"
+},
+{
+"value": "moonlight",
+"label": "Moonlight",
+"description": "Cool, blue-tinted lighting"
+}
+]
+},
+{
+"id": 6,
+"title": "Duration",
+"description": "Video length preference",
+"required": false,
+"type": "select",
+"options": [
+{
+"value": "short",
+"label": "Short (5-15s)",
+"description": "Quick, punchy content"
+},
+{
+"value": "medium",
+"label": "Medium (15-30s)",
+"description": "Standard social media length"
+},
+{
+"value": "long",
+"label": "Long (30-60s)",
+"description": "Detailed storytelling"
+},
+{
+"value": "extended",
+"label": "Extended (60s+)",
+"description": "Full narrative content"
+}
+]
+},
+{
+"id": 7,
+"title": "Custom Elements",
+"description": "Add specific details to your prompt",
+"required": false,
+"type": "textarea",
+"placeholder": "Describe specific objects, characters, locations, or artistic elements you want to include...""title": "VEO3 Prompt Wizard",
+"subtitle": "Create professional video prompts step by step",
+"steps": 7
+},
+"cta": {
+"primary": "Generate VEO3 Prompts",
+"secondary": "View Examples"
+}
+}

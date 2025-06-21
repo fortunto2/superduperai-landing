@@ -1,0 +1,697 @@
+{
+    "wizardConfig": {
+        "maxCharacters": 500,
+        "minCharacters": 50,
+        "totalSteps": 7,
+        "requiredSteps": [
+            1,
+            2
+        ]
+    },
+    "steps": {
+        "1": {
+            "id": "trend",
+            "title": "Video Trends",
+            "description": "Choose a popular video trend or reference",
+            "icon": "TrendingUp",
+            "config": {
+                "videoTrends": [
+                    {
+                        "id": "1",
+                        "name": "Я — промпт",
+                        "description": "Trend where person speaks directly to camera as if they are a prompt",
+                        "thumbnail": "/placeholder.svg?height=180&width=320&text=Я+—+промпт",
+                        "videoUrl": "https://www.youtube.com/watch?v=BLfV4sidcJM"
+                    },
+                    {
+                        "id": "2",
+                        "name": "Cinematic Portrait",
+                        "description": "Dramatic lighting with smooth camera movements",
+                        "thumbnail": "/placeholder.svg?height=180&width=320&text=Cinematic+Portrait",
+                        "videoUrl": "https://www.youtube.com/watch?v=example1"
+                    },
+                    {
+                        "id": "3",
+                        "name": "Handheld Documentary",
+                        "description": "Raw, authentic footage with natural lighting",
+                        "thumbnail": "/placeholder.svg?height=180&width=320&text=Handheld+Documentary",
+                        "videoUrl": "https://www.youtube.com/watch?v=example2"
+                    },
+                    {
+                        "id": "4",
+                        "name": "Neon Nightlife",
+                        "description": "Vibrant neon colors in urban night settings",
+                        "thumbnail": "/placeholder.svg?height=180&width=320&text=Neon+Nightlife",
+                        "videoUrl": "https://www.youtube.com/watch?v=example3"
+                    },
+                    {
+                        "id": "5",
+                        "name": "Vintage Film Look",
+                        "description": "Retro film grain with warm color grading",
+                        "thumbnail": "/placeholder.svg?height=180&width=320&text=Vintage+Film",
+                        "videoUrl": "https://www.youtube.com/watch?v=example4"
+                    },
+                    {
+                        "id": "6",
+                        "name": "Slow Motion Emotion",
+                        "description": "Dramatic slow-motion captures of emotional moments",
+                        "thumbnail": "/placeholder.svg?height=180&width=320&text=Slow+Motion",
+                        "videoUrl": "https://www.youtube.com/watch?v=example5"
+                    }
+                ]
+            }
+        },
+        "2": {
+            "id": "genre",
+            "title": "Genre & Style",
+            "description": "Select visual genre and style tags",
+            "icon": "Palette",
+            "config": {
+                "genres": [
+                    {
+                        "name": "Prompt Theory",
+                        "description": "Conceptual, meta approach to video creation",
+                        "image": "/placeholder.svg?height=120&width=200&text=Prompt+Theory"
+                    },
+                    {
+                        "name": "Cyberpunk Noir",
+                        "description": "Dark futuristic aesthetic with neon elements",
+                        "image": "/placeholder.svg?height=120&width=200&text=Cyberpunk+Noir"
+                    },
+                    {
+                        "name": "80s Horror",
+                        "description": "Retro horror with vintage effects and grain",
+                        "image": "/placeholder.svg?height=120&width=200&text=80s+Horror"
+                    },
+                    {
+                        "name": "Surreal Dream",
+                        "description": "Dreamlike, abstract visuals with fluid transitions",
+                        "image": "/placeholder.svg?height=120&width=200&text=Surreal+Dream"
+                    },
+                    {
+                        "name": "Documentary Style",
+                        "description": "Authentic, journalistic approach with natural lighting",
+                        "image": "/placeholder.svg?height=120&width=200&text=Documentary"
+                    },
+                    {
+                        "name": "Fashion Editorial",
+                        "description": "High-end fashion photography aesthetic",
+                        "image": "/placeholder.svg?height=120&width=200&text=Fashion"
+                    },
+                    {
+                        "name": "Cinematic Drama",
+                        "description": "Film-like quality with dramatic lighting and composition",
+                        "image": "/placeholder.svg?height=120&width=200&text=Cinematic"
+                    },
+                    {
+                        "name": "Abstract Art",
+                        "description": "Non-representational, artistic expression",
+                        "image": "/placeholder.svg?height=120&width=200&text=Abstract"
+                    },
+                    {
+                        "name": "Vintage Film",
+                        "description": "Classic film look with grain and color grading",
+                        "image": "/placeholder.svg?height=120&width=200&text=Vintage"
+                    },
+                    {
+                        "name": "Modern Minimalist",
+                        "description": "Clean, simple aesthetic with negative space",
+                        "image": "/placeholder.svg?height=120&width=200&text=Minimalist"
+                    },
+                    {
+                        "name": "Anime Inspired",
+                        "description": "Japanese animation aesthetic with bold colors",
+                        "image": "/placeholder.svg?height=120&width=200&text=Anime"
+                    },
+                    {
+                        "name": "Vaporwave",
+                        "description": "Retro-futuristic aesthetic with glitch effects",
+                        "image": "/placeholder.svg?height=120&width=200&text=Vaporwave"
+                    }
+                ],
+                "styleTags": [
+                    "Hyperrealistic",
+                    "Film Grain",
+                    "Neon Aesthetic",
+                    "Chiaroscuro",
+                    "Bokeh Effect",
+                    "Vintage Filter",
+                    "High Contrast",
+                    "Soft Focus",
+                    "Dynamic Lighting",
+                    "Atmospheric",
+                    "Desaturated",
+                    "Vibrant Colors",
+                    "Monochromatic",
+                    "Sepia Tone",
+                    "Glitch Effect",
+                    "Double Exposure",
+                    "Lens Flare",
+                    "Silhouette",
+                    "Grainy Texture",
+                    "Matte Finish",
+                    "Cinematic Bars",
+                    "Anamorphic",
+                    "Tilt-Shift",
+                    "Vignette",
+                    "HDR Look",
+                    "Low-Fi",
+                    "Retro VHS",
+                    "8mm Film",
+                    "35mm Film",
+                    "IMAX Style"
+                ]
+            }
+        },
+        "3": {
+            "id": "camera",
+            "title": "Camera Setup",
+            "description": "Choose shot type and point of view",
+            "icon": "Camera",
+            "config": {
+                "shotTypes": [
+                    {
+                        "value": "close-up",
+                        "label": "Close-up",
+                        "description": "Tight framing on subject",
+                        "image": "/placeholder.svg?height=120&width=200&text=Close-up"
+                    },
+                    {
+                        "value": "medium-shot",
+                        "label": "Medium Shot",
+                        "description": "Waist up framing",
+                        "image": "/placeholder.svg?height=120&width=200&text=Medium+Shot"
+                    },
+                    {
+                        "value": "wide-shot",
+                        "label": "Wide Shot",
+                        "description": "Full body and environment",
+                        "image": "/placeholder.svg?height=120&width=200&text=Wide+Shot"
+                    },
+                    {
+                        "value": "panoramic",
+                        "label": "Wide Angle Panoramic",
+                        "description": "Ultra-wide environmental view",
+                        "image": "/placeholder.svg?height=120&width=200&text=Panoramic"
+                    },
+                    {
+                        "value": "extreme-close-up",
+                        "label": "Extreme Close-up",
+                        "description": "Very tight detail shot",
+                        "image": "/placeholder.svg?height=120&width=200&text=Extreme+Close-up"
+                    },
+                    {
+                        "value": "establishing",
+                        "label": "Establishing Shot",
+                        "description": "Scene-setting wide view",
+                        "image": "/placeholder.svg?height=120&width=200&text=Establishing+Shot"
+                    },
+                    {
+                        "value": "dutch-angle",
+                        "label": "Dutch Angle",
+                        "description": "Tilted frame creating tension",
+                        "image": "/placeholder.svg?height=120&width=200&text=Dutch+Angle"
+                    },
+                    {
+                        "value": "two-shot",
+                        "label": "Two Shot",
+                        "description": "Framing two subjects together",
+                        "image": "/placeholder.svg?height=120&width=200&text=Two+Shot"
+                    }
+                ],
+                "povTypes": [
+                    {
+                        "value": "first-person",
+                        "label": "First Person",
+                        "description": "Through character's eyes",
+                        "image": "/placeholder.svg?height=120&width=200&text=First+Person"
+                    },
+                    {
+                        "value": "third-person",
+                        "label": "Third Person",
+                        "description": "External observer view",
+                        "image": "/placeholder.svg?height=120&width=200&text=Third+Person"
+                    },
+                    {
+                        "value": "over-shoulder",
+                        "label": "Over-the-Shoulder",
+                        "description": "Behind character looking forward",
+                        "image": "/placeholder.svg?height=120&width=200&text=Over+Shoulder"
+                    },
+                    {
+                        "value": "fixed-static",
+                        "label": "Fixed Static",
+                        "description": "Stationary camera position",
+                        "image": "/placeholder.svg?height=120&width=200&text=Fixed+Static"
+                    },
+                    {
+                        "value": "bird-eye",
+                        "label": "Bird's Eye",
+                        "description": "High angle looking down",
+                        "image": "/placeholder.svg?height=120&width=200&text=Bird's+Eye"
+                    },
+                    {
+                        "value": "worm-eye",
+                        "label": "Worm's Eye",
+                        "description": "Low angle looking up",
+                        "image": "/placeholder.svg?height=120&width=200&text=Worm's+Eye"
+                    },
+                    {
+                        "value": "orbital",
+                        "label": "Orbital",
+                        "description": "Camera circles around subject",
+                        "image": "/placeholder.svg?height=120&width=200&text=Orbital"
+                    },
+                    {
+                        "value": "drone",
+                        "label": "Drone Shot",
+                        "description": "Aerial perspective",
+                        "image": "/placeholder.svg?height=120&width=200&text=Drone+Shot"
+                    }
+                ]
+            }
+        },
+        "4": {
+            "id": "motion",
+            "title": "Camera Movement",
+            "description": "Add dynamic camera movements",
+            "icon": "Video",
+            "config": {
+                "movementTypes": [
+                    {
+                        "value": "Pan Left",
+                        "description": "Camera moves horizontally from right to left",
+                        "image": "/placeholder.svg?height=120&width=200&text=Pan+Left"
+                    },
+                    {
+                        "value": "Pan Right",
+                        "description": "Camera moves horizontally from left to right",
+                        "image": "/placeholder.svg?height=120&width=200&text=Pan+Right"
+                    },
+                    {
+                        "value": "Tilt Up",
+                        "description": "Camera pivots upward vertically",
+                        "image": "/placeholder.svg?height=120&width=200&text=Tilt+Up"
+                    },
+                    {
+                        "value": "Tilt Down",
+                        "description": "Camera pivots downward vertically",
+                        "image": "/placeholder.svg?height=120&width=200&text=Tilt+Down"
+                    },
+                    {
+                        "value": "Dolly Forward",
+                        "description": "Camera moves forward toward subject",
+                        "image": "/placeholder.svg?height=120&width=200&text=Dolly+Forward"
+                    },
+                    {
+                        "value": "Dolly Backward",
+                        "description": "Camera moves backward away from subject",
+                        "image": "/placeholder.svg?height=120&width=200&text=Dolly+Backward"
+                    },
+                    {
+                        "value": "Zoom In",
+                        "description": "Lens zooms in, narrowing field of view",
+                        "image": "/placeholder.svg?height=120&width=200&text=Zoom+In"
+                    },
+                    {
+                        "value": "Zoom Out",
+                        "description": "Lens zooms out, widening field of view",
+                        "image": "/placeholder.svg?height=120&width=200&text=Zoom+Out"
+                    },
+                    {
+                        "value": "Handheld Style",
+                        "description": "Slightly shaky, documentary-like movement",
+                        "image": "/placeholder.svg?height=120&width=200&text=Handheld"
+                    },
+                    {
+                        "value": "Smooth Tracking",
+                        "description": "Steady movement following subject",
+                        "image": "/placeholder.svg?height=120&width=200&text=Tracking"
+                    },
+                    {
+                        "value": "Orbital Movement",
+                        "description": "Camera circles around the subject",
+                        "image": "/placeholder.svg?height=120&width=200&text=Orbital"
+                    },
+                    {
+                        "value": "Crane Shot",
+                        "description": "Sweeping vertical movement",
+                        "image": "/placeholder.svg?height=120&width=200&text=Crane+Shot"
+                    }
+                ]
+            }
+        },
+        "5": {
+            "id": "scene",
+            "title": "Scene Details",
+            "description": "Describe the scene, lighting, and atmosphere",
+            "icon": "Image",
+            "config": {
+                "emotionExamples": [
+                    "Panic",
+                    "Joy",
+                    "Sorrow",
+                    "Anger",
+                    "Surprise",
+                    "Disgust",
+                    "Fear",
+                    "Anticipation",
+                    "Trust",
+                    "Controlled theatricality",
+                    "Subtle tension",
+                    "Overwhelming happiness",
+                    "Quiet contemplation",
+                    "Nervous excitement",
+                    "Stoic determination",
+                    "Playful mischief",
+                    "Deep melancholy"
+                ],
+                "expressionExamples": [
+                    "Lips tremble",
+                    "Arms spread wide",
+                    "Eyes widen in shock",
+                    "Furrowed brow",
+                    "Gentle smile",
+                    "Clenched fists",
+                    "Shoulders slumped",
+                    "Head tilted curiously",
+                    "Pacing nervously",
+                    "Hands gesturing emphatically",
+                    "Tears welling up",
+                    "Confident stance"
+                ],
+                "lightingExamples": [
+                    "Cinematic lighting",
+                    "Harsh shadows",
+                    "Soft diffused light",
+                    "Greenish tint",
+                    "Golden hour glow",
+                    "Blue moonlight",
+                    "Neon reflections",
+                    "Dramatic backlighting",
+                    "High-key lighting",
+                    "Low-key lighting with deep shadows",
+                    "Split lighting on face",
+                    "Rim lighting with silhouette effect",
+                    "Moody and soft with candlelight reflections",
+                    "Natural sunlight through windows",
+                    "Fluorescent office lighting",
+                    "Warm tungsten lighting"
+                ],
+                "audioExamples": [
+                    "Distant thunder",
+                    "Soft rain patter",
+                    "Heartbeat",
+                    "Muffled voices",
+                    "City ambience",
+                    "Wind through trees",
+                    "Electronic hum",
+                    "Vinyl record crackle",
+                    "Ticking clock",
+                    "Children laughing in distance",
+                    "Footsteps on wet pavement",
+                    "Synthesizer drone",
+                    "Orchestral swells",
+                    "Slow ambient electronic music",
+                    "Water ripple sounds",
+                    "Traffic noise",
+                    "Birds chirping",
+                    "Crowd murmur"
+                ],
+                "colorPalettes": [
+                    "Bold and bright",
+                    "Pastel tones",
+                    "Muted earth tones",
+                    "Monochrome",
+                    "Deep slate gray and ocean blue",
+                    "Warm gold tones",
+                    "Cool blue and silver",
+                    "Vintage sepia",
+                    "High contrast black and white",
+                    "Neon colors",
+                    "Desaturated",
+                    "Vibrant rainbow",
+                    "Sunset oranges and reds",
+                    "Forest greens",
+                    "Purple and pink gradient"
+                ],
+                "backgroundSettings": [
+                    "City street at night",
+                    "Forest during sunrise",
+                    "Futuristic laboratory",
+                    "Traditional village",
+                    "Luxurious outdoor pool area",
+                    "Modern office building",
+                    "Abandoned warehouse",
+                    "Cozy coffee shop",
+                    "Mountain peak",
+                    "Beach at sunset",
+                    "Underground tunnel",
+                    "Rooftop garden",
+                    "Library interior",
+                    "Hospital corridor",
+                    "Art gallery",
+                    "Concert hall",
+                    "Kitchen",
+                    "Bedroom"
+                ],
+                "visualStyles": [
+                    "Cinematic",
+                    "Realistic",
+                    "Animated",
+                    "Stylized",
+                    "Surreal",
+                    "Documentary",
+                    "Film noir",
+                    "Vintage",
+                    "Modern",
+                    "Abstract",
+                    "Hyperrealistic",
+                    "Cartoon",
+                    "Anime",
+                    "Stop motion",
+                    "Time-lapse"
+                ]
+            }
+        },
+        "6": {
+            "id": "speech",
+            "title": "Characters & Speech",
+            "description": "Define characters, dialogue, and emotions",
+            "icon": "Users",
+            "config": {
+                "languages": [
+                    "English",
+                    "Russian",
+                    "Spanish",
+                    "French",
+                    "German",
+                    "Italian",
+                    "Japanese",
+                    "Chinese",
+                    "Portuguese",
+                    "Arabic",
+                    "Hindi",
+                    "Korean"
+                ],
+                "voiceEmotions": [
+                    "Neutral",
+                    "Happy",
+                    "Sad",
+                    "Angry",
+                    "Excited",
+                    "Calm",
+                    "Mysterious",
+                    "Dramatic",
+                    "Whispered",
+                    "Shouting",
+                    "Confident",
+                    "Nervous",
+                    "Seductive",
+                    "Authoritative",
+                    "Pleading",
+                    "Mocking",
+                    "Tender",
+                    "Harsh",
+                    "Breathless",
+                    "Trembling"
+                ],
+                "characterTypes": [
+                    "Young man",
+                    "Young woman",
+                    "Middle-aged man",
+                    "Middle-aged woman",
+                    "Elderly man",
+                    "Elderly woman",
+                    "Teenager",
+                    "Child",
+                    "Professional",
+                    "Artist",
+                    "Worker",
+                    "Student",
+                    "Businessman",
+                    "Casual person"
+                ],
+                "facialExpressions": [
+                    "Eyes scanning the ground",
+                    "Looking off into distance",
+                    "Direct eye contact with camera",
+                    "Eyes darting nervously",
+                    "Squinting",
+                    "Wide-eyed",
+                    "Half-closed eyes",
+                    "Rolling eyes",
+                    "Lips tremble",
+                    "Slight smile",
+                    "Frown",
+                    "Pursed lips",
+                    "Open mouth",
+                    "Biting lip",
+                    "Raised eyebrows",
+                    "Furrowed brow",
+                    "Tilted head",
+                    "Nodding",
+                    "Shaking head"
+                ],
+                "bodyLanguage": [
+                    "Spreads both arms wide",
+                    "Hands to chest",
+                    "Points outward",
+                    "Arms crossed",
+                    "Hands in pockets",
+                    "Fidgeting with hands",
+                    "Gesturing emphatically",
+                    "Still and composed",
+                    "Leaning forward",
+                    "Leaning back",
+                    "Shoulders slumped",
+                    "Straight posture",
+                    "Pacing",
+                    "Standing still",
+                    "Sitting relaxed",
+                    "Tense body position"
+                ],
+                "emotionalStates": [
+                    "Swallowing emotion",
+                    "Controlled theatricality",
+                    "Barely contained anger",
+                    "Overwhelming joy",
+                    "Deep contemplation",
+                    "Nervous energy",
+                    "Quiet confidence",
+                    "Hidden vulnerability",
+                    "Suppressed laughter",
+                    "Fighting back tears",
+                    "Internal struggle",
+                    "Peaceful acceptance",
+                    "Mounting tension",
+                    "Relief washing over",
+                    "Anticipation building",
+                    "Disappointment settling in"
+                ],
+                "sequenceExamples": [
+                    "First looks down, then makes eye contact",
+                    "Starts speaking confidently, then voice breaks",
+                    "Begins with small gestures, then becomes more animated",
+                    "Initially calm, then emotion builds",
+                    "Tries to speak but just inhales instead",
+                    "Opens mouth to speak, then closes it and looks away"
+                ],
+                "speechExamples": [
+                    "Hello, my name is...",
+                    "I can't believe this is happening",
+                    "Wait, let me explain",
+                    "This is exactly what I was talking about",
+                    "You don't understand",
+                    "I've been waiting for this moment",
+                    "Something's not right here",
+                    "Listen to me carefully",
+                    "I have something important to tell you",
+                    "This changes everything"
+                ]
+            }
+        },
+        "7": {
+            "id": "examples",
+            "title": "Example Prompts",
+            "description": "Load pre-built example prompts",
+            "icon": "Lightbulb",
+            "config": {
+                "examplePrompts": [
+                    {
+                        "id": "1",
+                        "title": "Cyberpunk Street Scene",
+                        "genre": "Cyberpunk Noir",
+                        "thumbnail": "/placeholder.svg?height=120&width=200",
+                        "promptSnippet": "Neon-lit alley, rain-soaked streets, close-up shot...",
+                        "fullData": {
+                            "genre": "Cyberpunk Noir",
+                            "trend": "Neon Aesthetic",
+                            "shotType": "close-up",
+                            "povType": "third-person",
+                            "sceneDescription": "Neon-lit alley with rain-soaked streets, flickering holographic advertisements",
+                            "lighting": "Cinematic lighting with blue and pink neon reflections",
+                            "audioDesign": "Ambient city sounds, distant traffic, rain drops"
+                        }
+                    },
+                    {
+                        "id": "2",
+                        "title": "Vintage Portrait",
+                        "genre": "Vintage Film",
+                        "thumbnail": "/placeholder.svg?height=120&width=200",
+                        "promptSnippet": "Film grain aesthetic, soft lighting, medium shot...",
+                        "fullData": {
+                            "genre": "Vintage Film",
+                            "trend": "Film Grain",
+                            "shotType": "medium-shot",
+                            "povType": "fixed-static",
+                            "sceneDescription": "Classic portrait setup with vintage furniture and warm lighting",
+                            "lighting": "Soft warm lighting with film grain texture",
+                            "expression": "Gentle smile, relaxed posture"
+                        }
+                    },
+                    {
+                        "id": "3",
+                        "title": "Horror Atmosphere",
+                        "genre": "80s Horror",
+                        "thumbnail": "/placeholder.svg?height=120&width=200",
+                        "promptSnippet": "Dark corridors, dramatic shadows, handheld camera...",
+                        "fullData": {
+                            "genre": "80s Horror",
+                            "trend": "High Contrast",
+                            "shotType": "wide-shot",
+                            "povType": "first-person",
+                            "cameraMovement": true,
+                            "movementType": "Handheld Style",
+                            "sceneDescription": "Dark corridor with flickering lights and long shadows",
+                            "lighting": "Dramatic chiaroscuro lighting",
+                            "audioDesign": "Creaking sounds, distant whispers, footsteps"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "promptTemplates": {
+        "base": "Create a {trend} {genre} video",
+        "withSpeech": "Create a {trend} {genre} video {speech}",
+        "withCamera": "Create a {trend} {genre} video {camera}",
+        "withLighting": "Create a {trend} {genre} video {lighting}",
+        "withDuration": "Create a {trend} {genre} video, {duration}",
+        "full": "Create a {trend} {genre} video{speech}{camera}{lighting}, {duration}{custom}"
+    },
+    "examples": [
+        {
+            "title": "Cinematic Drama",
+            "prompt": "Create a cinematic drama video with dialogue, using dolly tracking camera movement with dramatic chiaroscuro lighting, duration: medium 15-30 seconds, featuring two characters having an emotional conversation in a dimly lit cafe"
+        },
+        {
+            "title": "Viral Comedy",
+            "prompt": "Create a viral comedy video with no speech, using handheld camera movement with natural daylight lighting, duration: short 5-15 seconds, a cat wearing sunglasses walking in slow motion"
+        },
+        {
+            "title": "Commercial Product",
+            "prompt": "Create a commercial product video with presentation style narration, using smooth pan and zoom in/out camera movement with professional studio lighting, duration: long 30-60 seconds, showcasing a sleek smartphone with premium materials"
+        }
+    ]
+}

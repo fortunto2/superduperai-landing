@@ -47,10 +47,25 @@ const nextConfig = {
   // Отключаем source maps в production
   productionBrowserSourceMaps: false,
   // Настройки для Cloudflare
-  webpack: (config, { isServer }) => {
+  webpack: (config, { isServer, webpack }) => {
     // Помогает с совместимостью MDX в Cloudflare
     if (isServer) {
       config.externals = [...config.externals, 'esbuild'];
+    }
+    
+    // Добавляем polyfill для process в браузере
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        process: 'process/browser',
+      };
+      
+      // Добавляем ProvidePlugin для глобального доступа к process
+      config.plugins.push(
+        new webpack.ProvidePlugin({
+          process: 'process/browser',
+        })
+      );
     }
     
     // Игнорируем предупреждения ContentLayer

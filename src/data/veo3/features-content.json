@@ -1,0 +1,242 @@
+{
+    "section": {
+        "title": "Advanced VEO3 Prompt Generator Features",
+        "subtitle": "Everything you need to create professional VEO3 video prompts with perfect structure and detail."
+    },
+    "features": [
+        {
+            "icon": "users",
+            "title": "Multi-Character Support",
+            "description": "Create prompts with up to 3 characters, each with unique speech, emotions, and appearance details."
+        },
+        {
+            "icon": "camera",
+            "title": "Professional Camera Controls",
+            "description": "Define shot types, camera movements, and POV settings for cinematic VEO3 video generation."
+        },
+        {
+            "icon": "volume2",
+            "title": "Audio & Speech Integration",
+            "description": "Add dialogue, sound effects, and ambient audio instructions to your VEO3 prompts."
+        },
+        {
+            "icon": "palette",
+            "title": "Visual Style Customization",
+            "description": "Control lighting, color palettes, and visual aesthetics for perfect VEO3 video style."
+        },
+        {
+            "icon": "zap",
+            "title": "Instant Prompt Generation",
+            "description": "Generate optimized VEO3 prompts instantly with our advanced AI prompt builder."
+        },
+        {
+            "icon": "copy",
+            "title": "Copy & Export Ready",
+            "description": "Get perfectly formatted VEO3 prompts ready to copy and paste into your video generator."
+        }
+    ],
+    "veo3Features": {
+        "title": "VEO3 Neural Network Capabilities",
+        "description": "Advanced video generation with unprecedented quality and control",
+        "capabilities": [
+            {
+                "id": "resolution",
+                "title": "4K Resolution",
+                "description": "Generate videos up to 4K resolution with crystal clear quality",
+                "icon": "video",
+                "technical": "Up to 3840×2160 pixels"
+            },
+            {
+                "id": "duration",
+                "title": "Extended Duration",
+                "description": "Create videos up to 2 minutes long with consistent quality",
+                "icon": "clock",
+                "technical": "Up to 120 seconds"
+            },
+            {
+                "id": "physics",
+                "title": "Realistic Physics",
+                "description": "Advanced understanding of real-world physics and motion",
+                "icon": "physics",
+                "technical": "Gravity, momentum, fluid dynamics"
+            },
+            {
+                "id": "consistency",
+                "title": "Temporal Consistency",
+                "description": "Maintains character and object consistency across frames",
+                "icon": "consistency",
+                "technical": "Identity preservation"
+            },
+            {
+                "id": "lighting",
+                "title": "Dynamic Lighting",
+                "description": "Realistic lighting effects and shadows throughout the video",
+                "icon": "sun",
+                "technical": "Ray tracing simulation"
+            },
+            {
+                "id": "motion",
+                "title": "Complex Motion",
+                "description": "Handles complex camera movements and object interactions",
+                "icon": "move",
+                "technical": "Multi-object tracking"
+            }
+        ]
+    },
+    "promptTips": {
+        "title": "VEO3 Prompting Best Practices",
+        "tips": [
+            {
+                "category": "Structure",
+                "title": "Clear Scene Description",
+                "description": "Start with the main subject and action, then add environmental details",
+                "example": "A woman walking through a bustling Tokyo street at night, neon signs reflecting on wet pavement"
+            },
+            {
+                "category": "Camera",
+                "title": "Specify Camera Work",
+                "description": "Include camera angles, movements, and shot types for better control",
+                "example": "Medium shot, tracking the subject with smooth dolly movement"
+            },
+            {
+                "category": "Lighting",
+                "title": "Lighting Details",
+                "description": "Describe lighting conditions for mood and atmosphere",
+                "example": "Dramatic chiaroscuro lighting with strong shadows"
+            },
+            {
+                "category": "Style",
+                "title": "Visual Style",
+                "description": "Reference specific visual styles or cinematographic techniques",
+                "example": "Shot in the style of a Wes Anderson film with symmetrical framing"
+            },
+            {
+                "category": "Motion",
+                "title": "Motion Description",
+                "description": "Be specific about how objects and characters should move",
+                "example": "Slow motion as the dancer leaps through falling autumn leaves"
+            },
+            {
+                "category": "Duration",
+                "title": "Timing Cues",
+                "description": "Include timing references for better pacing control",
+                "example": "The camera slowly zooms in over 5 seconds to reveal the character's expression"
+            }
+        ]
+    },
+    "qualitySettings": {
+        "title": "Quality Optimization",
+        "settings": [
+            {
+                "parameter": "Aspect Ratio",
+                "options": [
+                    "16:9",
+                    "9:16",
+                    "1:1",
+                    "4:3"
+                ],
+                "default": "16:9",
+                "description": "Choose based on your target platform"
+            },
+            {
+                "parameter": "Frame Rate",
+                "options": [
+                    "24fps",
+                    "30fps",
+                    "60fps"
+                ],
+                "default": "30fps",
+                "description": "Higher fps for smoother motion"
+            },
+            {
+                "parameter": "Style Strength",
+                "range": [
+                    0.1,
+                    1.0
+                ],
+                "default": 0.7,
+                "description": "Controls how strongly the style is applied"
+            },
+            {
+                "parameter": "Motion Intensity",
+                "range": [
+                    0.1,
+                    1.0
+                ],
+                "default": 0.5,
+                "description": "Controls the amount of motion in the video"
+            }
+        ]
+    },
+    "genres": {
+        "cinematic": {
+            "keywords": [
+                "dramatic lighting",
+                "depth of field",
+                "film grain",
+                "cinematic composition"
+            ],
+            "cameraWork": [
+                "establishing shot",
+                "close-up",
+                "tracking shot",
+                "crane shot"
+            ],
+            "examples": [
+                "Like a scene from Blade Runner 2049",
+                "In the style of Christopher Nolan"
+            ]
+        },
+        "documentary": {
+            "keywords": [
+                "natural lighting",
+                "handheld camera",
+                "realistic",
+                "observational"
+            ],
+            "cameraWork": [
+                "handheld",
+                "static shots",
+                "interview setup"
+            ],
+            "examples": [
+                "Documentary style like Planet Earth",
+                "National Geographic aesthetic"
+            ]
+        },
+        "commercial": {
+            "keywords": [
+                "clean",
+                "professional",
+                "bright lighting",
+                "product focus"
+            ],
+            "cameraWork": [
+                "smooth pans",
+                "product shots",
+                "lifestyle shots"
+            ],
+            "examples": [
+                "Apple commercial style",
+                "Luxury brand aesthetic"
+            ]
+        },
+        "viral": {
+            "keywords": [
+                "engaging",
+                "colorful",
+                "dynamic",
+                "trendy"
+            ],
+            "cameraWork": [
+                "quick cuts",
+                "dynamic angles",
+                "close-ups"
+            ],
+            "examples": [
+                "TikTok trending style",
+                "Instagram Reels aesthetic"
+            ]
+        }
+    }
+}
