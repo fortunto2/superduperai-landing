@@ -100,9 +100,15 @@ export function SimpleVeo3Generator() {
 
   const [generatedPrompt, setGeneratedPrompt] = useState("");
   const [enhancedPrompt, setEnhancedPrompt] = useState("");
+  const [enhancementInfo, setEnhancementInfo] = useState<{
+    length: string;
+    targetCharacters: number;
+    actualCharacters: number;
+  } | null>(null);
   const [copied, setCopied] = useState(false);
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [enhanceError, setEnhanceError] = useState("");
+  const [promptLength, setPromptLength] = useState<'short' | 'medium' | 'long'>('medium');
 
   const updateField = (field: keyof PromptData, value: string) => {
     const newData = { ...promptData, [field]: value };
@@ -131,6 +137,7 @@ export function SimpleVeo3Generator() {
     // Clear enhanced prompt when basic prompt changes
     if (enhancedPrompt) {
       setEnhancedPrompt("");
+      setEnhancementInfo(null);
     }
   };
 
@@ -151,6 +158,7 @@ export function SimpleVeo3Generator() {
         },
         body: JSON.stringify({
           prompt: generatedPrompt,
+          length: promptLength,
         }),
       });
 
@@ -161,6 +169,11 @@ export function SimpleVeo3Generator() {
 
       const data = await response.json();
       setEnhancedPrompt(data.enhancedPrompt);
+      setEnhancementInfo({
+        length: data.length,
+        targetCharacters: data.targetCharacters,
+        actualCharacters: data.actualCharacters
+      });
     } catch (error) {
       console.error('Error enhancing prompt:', error);
       setEnhanceError(error instanceof Error ? error.message : 'Failed to enhance prompt');
@@ -409,6 +422,28 @@ export function SimpleVeo3Generator() {
                 placeholder="Your generated prompt will appear here..."
                 className="min-h-[200px] font-mono text-sm resize-none"
               />
+              {/* AI Enhancement Length Selector */}
+              <div className="space-y-2">
+                <Label>AI Enhancement Length</Label>
+                <div className="flex gap-2">
+                  {[
+                    { value: 'short', label: 'Short (500 chars)', desc: 'Concise enhancement' },
+                    { value: 'medium', label: 'Medium (1000 chars)', desc: 'Balanced detail' },
+                    { value: 'long', label: 'Long (2000 chars)', desc: 'Maximum detail' }
+                  ].map((option) => (
+                    <Badge
+                      key={option.value}
+                      variant={promptLength === option.value ? "default" : "outline"}
+                      className="cursor-pointer flex-1 text-center"
+                      onClick={() => setPromptLength(option.value as 'short' | 'medium' | 'long')}
+                      title={option.desc}
+                    >
+                      {option.label}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+              
               <div className="flex gap-2">
                 <Button 
                   onClick={() => copyToClipboard(generatedPrompt)}
@@ -455,6 +490,12 @@ export function SimpleVeo3Generator() {
                 placeholder="Click 'AI Enhance' to generate a professional, detailed prompt..."
                 className="min-h-[200px] font-mono text-sm resize-none"
               />
+              {enhancementInfo && (
+                <div className="text-xs text-muted-foreground flex justify-between">
+                  <span>Length: {enhancementInfo.length}</span>
+                  <span>Characters: {enhancementInfo.actualCharacters} / {enhancementInfo.targetCharacters}</span>
+                </div>
+              )}
               <Button 
                 onClick={() => copyToClipboard(enhancedPrompt)}
                 disabled={!enhancedPrompt}
