@@ -17,14 +17,9 @@ const MODEL_CONFIG = {
     deploymentName: 'gpt-4.1', // Real deployment name in Azure
     maxChars: { short: 500, medium: 1000, long: 2000 },
     maxTokens: { short: 150, medium: 300, long: 600 },
-    supportsSystem: true
-  },
-  'o4-mini': {
-    name: 'o4-mini',
-    deploymentName: 'o4-mini', // Real deployment name in Azure
-    maxChars: { short: 400, medium: 800, long: 1500 },
-    maxTokens: { short: 120, medium: 250, long: 450 },
-    supportsSystem: true
+    supportsSystem: true,
+    isReasoning: false,
+    type: 'chat' // standard chat model
   }
 } as const;
 
@@ -32,7 +27,7 @@ const MODEL_CONFIG = {
 const enhancePromptSchema = z.object({
   prompt: z.string().min(1, 'Prompt is required'),
   length: z.enum(['short', 'medium', 'long']).default('medium'),
-  model: z.enum(['gpt-4.1', 'o4-mini']).default('gpt-4.1'),
+  model: z.enum(['gpt-4.1']).default('gpt-4.1'),
 });
 
 export async function POST(req: NextRequest) {
@@ -109,56 +104,62 @@ FORMATTING REQUIREMENTS:
 
 Return ONLY the enhanced prompt in English (except for preserved direct speech), with proper paragraph formatting using \n\n between logical sections. No additional text or explanations.`;
 
-    // Generate enhanced prompt using Azure OpenAI
-    const generateOptions: {
-      model: ReturnType<typeof azure>;
-      maxTokens: number;
-      system?: string;
-      prompt: string;
-    } = {
-      model: azure(modelConfig.deploymentName), // Use the deployment name from model config
+    // Configure standard chat model
+    const modelInstance = azure(modelConfig.deploymentName);
+    
+    const generateOptions = {
+      model: modelInstance,
       maxTokens: maxTokens,
-      prompt: '', // Will be set below
+      system: `You are an expert video prompt engineer specializing in Google's VEO3 AI video generation model.
+
+Your task is to enhance and expand user-provided video prompts to make them more detailed, cinematic, and effective for VEO3.`,
+      prompt: enhancementPrompt,
     };
-
-    // Add system message for models that support it, otherwise include in prompt
-    if (modelConfig.supportsSystem) {
-      generateOptions.system = `You are an expert video prompt engineer specializing in Google's VEO3 AI video generation model.
-
-Your task is to enhance and expand user-provided video prompts to make them more detailed, cinematic, and effective for VEO3.`;
-      generateOptions.prompt = enhancementPrompt;
-    } else {
-      // For o1 models, include everything in the prompt
-      generateOptions.prompt = `You are an expert video prompt engineer specializing in Google's VEO3 AI video generation model. Your task is to enhance and expand user-provided video prompts to make them more detailed, cinematic, and effective for VEO3.
-
-${enhancementPrompt}`;
-    }
 
     console.log('Calling Azure OpenAI with options:', {
       deploymentName: modelConfig.deploymentName,
       selectedModel: model,
+      modelType: modelConfig.type,
       resourceName: process.env.AZURE_OPENAI_RESOURCE_NAME,
       apiVersion: process.env.AZURE_OPENAI_API_VERSION || '2024-12-01-preview',
       maxTokens: generateOptions.maxTokens,
-      hasSystem: !!generateOptions.system,
       promptLength: generateOptions.prompt.length
     });
 
-    const { text } = await generateText(generateOptions);
+    const result = await generateText(generateOptions);
     
     console.log('Azure OpenAI response:', {
-      textLength: text.length,
-      textPreview: text.substring(0, 100) + (text.length > 100 ? '...' : '')
+      textLength: result.text.length,
+      textPreview: result.text.substring(0, 100) + (result.text.length > 100 ? '...' : ''),
+      hasReasoning: !!result.reasoning,
+      reasoningLength: result.reasoning?.length || 0,
+      usage: result.usage,
+      providerMetadata: result.providerMetadata
     });
+
+    // For reasoning models, we might get reasoning content
+    const enhancedText = result.text.trim();
+    
+    if (!enhancedText) {
+      console.error('Empty response from Azure OpenAI');
+      return NextResponse.json(
+        { error: 'Received empty response from AI model. Please try again.' },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({ 
       originalPrompt: prompt,
-      enhancedPrompt: text.trim(),
+      enhancedPrompt: enhancedText,
       length: length,
       model: model,
       modelName: modelConfig.name,
       targetCharacters: maxChars,
-      actualCharacters: text.trim().length
+      actualCharacters: enhancedText.length,
+      // Include reasoning info if available
+      ...(result.reasoning && { reasoning: result.reasoning }),
+      ...(result.usage && { usage: result.usage }),
+      ...(result.providerMetadata && { providerMetadata: result.providerMetadata })
     });
 
   } catch (error) {
@@ -171,8 +172,17 @@ ${enhancementPrompt}`;
       );
     }
 
+    // More detailed error logging
+    if (error instanceof Error) {
+      console.error('Error details:', {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      });
+    }
+
     return NextResponse.json(
-      { error: 'Failed to enhance prompt' },
+      { error: 'Failed to enhance prompt', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }

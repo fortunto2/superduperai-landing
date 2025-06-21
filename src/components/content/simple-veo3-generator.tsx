@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Copy, Shuffle, Sparkles, Wand2, Loader2, Trash2 } from "lucide-react";
+import { Copy, Shuffle, Sparkles, Loader2, Trash2, Settings, ChevronDown, ChevronUp } from "lucide-react";
 
 interface PromptData {
   scene: string;
@@ -111,7 +111,7 @@ export function SimpleVeo3Generator() {
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [enhanceError, setEnhanceError] = useState("");
   const [promptLength, setPromptLength] = useState<'short' | 'medium' | 'long'>('medium');
-  const [selectedModel, setSelectedModel] = useState<'gpt-4.1' | 'o4-mini'>('gpt-4.1');
+  const [selectedModel] = useState<'gpt-4.1'>('gpt-4.1');
   const [promptHistory, setPromptHistory] = useState<Array<{
     id: string;
     timestamp: Date;
@@ -121,6 +121,7 @@ export function SimpleVeo3Generator() {
     model?: string;
     promptData: PromptData;
   }>>([]);
+  const [showSettings, setShowSettings] = useState(false);
 
   // Load history from localStorage on component mount
   useEffect(() => {
@@ -507,89 +508,104 @@ export function SimpleVeo3Generator() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <Textarea
-                value={generatedPrompt}
-                readOnly
-                placeholder="Your generated prompt will appear here..."
-                className="min-h-[250px] font-mono text-sm resize-none"
-              />
-              {/* AI Model Selector */}
-              <div className="space-y-2">
-                <Label>AI Model</Label>
-                <div className="flex gap-2">
-                  {[
-                    { value: 'gpt-4.1', label: 'GPT-4.1', desc: 'Best quality', chars: { short: 500, medium: 1000, long: 2000 } },
-                    { value: 'o4-mini', label: 'o4-mini', desc: 'Fast & efficient', chars: { short: 400, medium: 800, long: 1500 } }
-                  ].map((option) => (
-                    <Badge
-                      key={option.value}
-                      variant={selectedModel === option.value ? "default" : "outline"}
-                      className="cursor-pointer text-center p-2 h-auto flex flex-col flex-1"
-                      onClick={() => setSelectedModel(option.value as typeof selectedModel)}
-                      title={option.desc}
-                    >
-                      <span className="font-medium">{option.label}</span>
-                      <span className="text-xs opacity-70">{option.desc}</span>
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-
-              {/* AI Enhancement Length Selector */}
-              <div className="space-y-2">
-                <Label>Enhancement Length</Label>
-                <div className="flex gap-2">
-                  {[
-                    { value: 'short', label: 'Short', desc: 'Concise enhancement' },
-                    { value: 'medium', label: 'Medium', desc: 'Balanced detail' },
-                    { value: 'long', label: 'Long', desc: 'Maximum detail' }
-                  ].map((option) => {
-                    const modelConfig = {
-                      'gpt-4.1': { short: 500, medium: 1000, long: 2000 },
-                      'o4-mini': { short: 400, medium: 800, long: 1500 }
-                    };
-                    const chars = modelConfig[selectedModel][option.value as 'short' | 'medium' | 'long'];
-                    return (
-                      <Badge
-                        key={option.value}
-                        variant={promptLength === option.value ? "default" : "outline"}
-                        className="cursor-pointer flex-1 text-center p-2 h-auto flex flex-col"
-                        onClick={() => setPromptLength(option.value as 'short' | 'medium' | 'long')}
-                        title={option.desc}
-                      >
-                        <span className="font-medium">{option.label}</span>
-                        <span className="text-xs opacity-70">{chars} chars</span>
-                      </Badge>
-                    );
-                  })}
-                </div>
-              </div>
-              
-              <div className="flex gap-2">
-                <Button 
+              {/* Textarea with Copy button in top-right */}
+              <div className="relative">
+                <Textarea
+                  value={generatedPrompt}
+                  readOnly
+                  placeholder="Your generated prompt will appear here..."
+                  className="min-h-[250px] font-mono text-sm resize-none pr-12"
+                />
+                <Button
+                  size="sm"
+                  variant="ghost"
                   onClick={() => copyToClipboard(generatedPrompt)}
                   disabled={!generatedPrompt}
-                  className="flex-1"
+                  className="absolute top-2 right-2 h-8 w-8 p-0 hover:bg-background/80"
+                  title={copied ? "Copied!" : "Copy to clipboard"}
                 >
-                  <Copy className="w-4 h-4 mr-2" />
-                  {copied ? "Copied!" : "Copy Basic"}
-                </Button>
-                <Button 
-                  onClick={enhancePrompt}
-                  disabled={!generatedPrompt || isEnhancing}
-                  variant="secondary"
-                  className="flex-1"
-                >
-                  {isEnhancing ? (
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  ) : (
-                    <Wand2 className="w-4 h-4 mr-2" />
-                  )}
-                  {isEnhancing ? "Enhancing..." : "AI Enhance"}
+                  <Copy className="w-4 h-4" />
                 </Button>
               </div>
+
+              {/* Main AI Enhance Button - Large and Prominent */}
+              <Button 
+                onClick={enhancePrompt}
+                disabled={!generatedPrompt || isEnhancing}
+                size="lg"
+                className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-lg"
+              >
+                {isEnhancing ? (
+                  <>
+                    <Loader2 className="w-6 h-6 mr-3 animate-spin" />
+                    Enhancing with AI...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-6 h-6 mr-3" />
+                    Enhance with AI
+                  </>
+                )}
+              </Button>
+
+              {/* Collapsible Settings */}
+              <div className="border rounded-lg">
+                <Button
+                  variant="ghost"
+                  onClick={() => setShowSettings(!showSettings)}
+                  className="w-full justify-between p-3 h-auto"
+                >
+                  <div className="flex items-center gap-2">
+                    <Settings className="w-4 h-4" />
+                    <span className="text-sm">Enhancement Settings</span>
+                    <Badge variant="outline" className="text-xs">
+                      {promptLength} • GPT-4.1
+                    </Badge>
+                  </div>
+                  {showSettings ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                </Button>
+                
+                {showSettings && (
+                  <div className="px-3 pb-3 space-y-3 border-t">
+                    {/* AI Enhancement Length Selector */}
+                    <div className="space-y-2">
+                      <Label className="text-xs text-muted-foreground">Enhancement Length</Label>
+                      <div className="flex gap-2">
+                        {[
+                          { value: 'short', label: 'Short', desc: 'Concise', chars: 500 },
+                          { value: 'medium', label: 'Medium', desc: 'Balanced', chars: 1000 },
+                          { value: 'long', label: 'Long', desc: 'Detailed', chars: 2000 }
+                        ].map((option) => (
+                          <Badge
+                            key={option.value}
+                            variant={promptLength === option.value ? "default" : "outline"}
+                            className="cursor-pointer flex-1 text-center p-2 h-auto flex flex-col text-xs"
+                            onClick={() => setPromptLength(option.value as 'short' | 'medium' | 'long')}
+                            title={`${option.desc} enhancement - ${option.chars} characters`}
+                          >
+                            <span className="font-medium">{option.label}</span>
+                            <span className="text-xs opacity-70">{option.chars} chars</span>
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Model Info */}
+                    <div className="space-y-2">
+                      <Label className="text-xs text-muted-foreground">AI Model</Label>
+                      <div className="p-2 bg-muted rounded text-xs">
+                        <div className="font-medium">GPT-4.1</div>
+                        <div className="text-muted-foreground">Best quality enhancement model</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
               {enhanceError && (
-                <p className="text-sm text-red-500">{enhanceError}</p>
+                <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                  <p className="text-sm text-red-600">{enhanceError}</p>
+                </div>
               )}
             </div>
           </CardContent>
@@ -599,40 +615,52 @@ export function SimpleVeo3Generator() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Wand2 className="w-5 h-5" />
+              <Sparkles className="w-5 h-5 text-purple-600" />
               Step 3: AI Enhanced Prompt
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <Textarea
-                value={enhancedPrompt}
-                readOnly
-                placeholder="Click 'AI Enhance' to generate a professional, detailed prompt..."
-                className="min-h-[400px] font-mono text-sm resize-none whitespace-pre-wrap"
-              />
+              {/* Textarea with Copy button in top-right */}
+              <div className="relative">
+                <Textarea
+                  value={enhancedPrompt}
+                  readOnly
+                  placeholder="Click 'Enhance with AI' to generate a professional, detailed prompt..."
+                  className="min-h-[400px] font-mono text-sm resize-none whitespace-pre-wrap pr-12"
+                />
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => copyToClipboard(enhancedPrompt)}
+                  disabled={!enhancedPrompt}
+                  className="absolute top-2 right-2 h-8 w-8 p-0 hover:bg-background/80"
+                  title={copied ? "Copied!" : "Copy enhanced prompt"}
+                >
+                  <Copy className="w-4 h-4" />
+                </Button>
+              </div>
+
+              {/* Enhancement Info - Compact */}
               {enhancementInfo && (
-                <div className="text-xs text-muted-foreground space-y-1">
-                  <div className="flex justify-between">
-                    <span>Model: {enhancementInfo.modelName || enhancementInfo.model}</span>
-                    <span>Length: {enhancementInfo.length}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Characters: {enhancementInfo.actualCharacters} / {enhancementInfo.targetCharacters}</span>
-                    <span className={enhancementInfo.actualCharacters > enhancementInfo.targetCharacters ? "text-amber-500" : "text-green-500"}>
-                      {enhancementInfo.actualCharacters <= enhancementInfo.targetCharacters ? "✓ Within limit" : "⚠ Over limit"}
-                    </span>
+                <div className="p-3 bg-muted/50 rounded-lg">
+                  <div className="flex justify-between items-center text-xs text-muted-foreground">
+                    <div className="flex items-center gap-3">
+                      <span>Model: <span className="font-medium text-foreground">{enhancementInfo.modelName || enhancementInfo.model}</span></span>
+                      <span>Length: <span className="font-medium text-foreground">{enhancementInfo.length}</span></span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span>Characters: <span className="font-medium text-foreground">{enhancementInfo.actualCharacters} / {enhancementInfo.targetCharacters}</span></span>
+                      <Badge 
+                        variant={enhancementInfo.actualCharacters <= enhancementInfo.targetCharacters ? "default" : "secondary"}
+                        className="text-xs"
+                      >
+                        {enhancementInfo.actualCharacters <= enhancementInfo.targetCharacters ? "✓ Within limit" : "⚠ Over limit"}
+                      </Badge>
+                    </div>
                   </div>
                 </div>
               )}
-              <Button 
-                onClick={() => copyToClipboard(enhancedPrompt)}
-                disabled={!enhancedPrompt}
-                className="w-full"
-              >
-                <Copy className="w-4 h-4 mr-2" />
-                {copied ? "Copied!" : "Copy Enhanced Prompt"}
-              </Button>
             </div>
           </CardContent>
         </Card>
