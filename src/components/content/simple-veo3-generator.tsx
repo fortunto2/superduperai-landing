@@ -420,7 +420,7 @@ export function SimpleVeo3Generator() {
                 value={generatedPrompt}
                 readOnly
                 placeholder="Your generated prompt will appear here..."
-                className="min-h-[200px] font-mono text-sm resize-none"
+                className="min-h-[250px] font-mono text-sm resize-none"
               />
               {/* AI Enhancement Length Selector */}
               <div className="space-y-2">
@@ -488,7 +488,7 @@ export function SimpleVeo3Generator() {
                 value={enhancedPrompt}
                 readOnly
                 placeholder="Click 'AI Enhance' to generate a professional, detailed prompt..."
-                className="min-h-[200px] font-mono text-sm resize-none"
+                className="min-h-[400px] font-mono text-sm resize-none whitespace-pre-wrap"
               />
               {enhancementInfo && (
                 <div className="text-xs text-muted-foreground flex justify-between">

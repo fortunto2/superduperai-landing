@@ -84,7 +84,13 @@ Enhancement Guidelines:
 
 Original prompt style should be maintained (e.g., if it's casual, keep it casual; if professional, keep it professional).
 
-Return ONLY the enhanced prompt in English (except for preserved direct speech), no additional text or explanations.`,
+FORMATTING REQUIREMENTS:
+- Structure the enhanced prompt with logical paragraph breaks using \n\n
+- Organize content into clear sections (e.g., scene setup, character actions, camera work, lighting/mood, audio)
+- Make it easy to read and understand the different elements
+- Use paragraph breaks to separate major prompt components
+
+Return ONLY the enhanced prompt in English (except for preserved direct speech), with proper paragraph formatting using \n\n between logical sections. No additional text or explanations.`,
       prompt: `Please enhance this VEO3 video prompt to be approximately ${lengthLimits[length]} characters (${length} length): "${prompt}"`,
       maxTokens: maxTokensMap[length],
     });
