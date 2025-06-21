@@ -111,7 +111,7 @@ export function SimpleVeo3Generator() {
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [enhanceError, setEnhanceError] = useState("");
   const [promptLength, setPromptLength] = useState<'short' | 'medium' | 'long'>('medium');
-  const [selectedModel, setSelectedModel] = useState<'gpt-4o' | 'gpt-4o-mini' | 'o1-mini' | 'o1-preview'>('gpt-4o-mini');
+  const [selectedModel, setSelectedModel] = useState<'gpt-4.1' | 'o4-mini'>('o4-mini');
   const [promptHistory, setPromptHistory] = useState<Array<{
     id: string;
     timestamp: Date;
@@ -516,17 +516,15 @@ export function SimpleVeo3Generator() {
               {/* AI Model Selector */}
               <div className="space-y-2">
                 <Label>AI Model</Label>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="flex gap-2">
                   {[
-                    { value: 'gpt-4o-mini', label: 'GPT-4o Mini', desc: 'Fast & efficient', chars: { short: 400, medium: 800, long: 1500 } },
-                    { value: 'gpt-4o', label: 'GPT-4o', desc: 'Best quality', chars: { short: 500, medium: 1000, long: 2000 } },
-                    { value: 'o1-mini', label: 'o1-mini', desc: 'Reasoning model', chars: { short: 300, medium: 600, long: 1200 } },
-                    { value: 'o1-preview', label: 'o1-preview', desc: 'Advanced reasoning', chars: { short: 400, medium: 800, long: 1600 } }
+                    { value: 'o4-mini', label: 'o4-mini', desc: 'Fast & efficient', chars: { short: 400, medium: 800, long: 1500 } },
+                    { value: 'gpt-4.1', label: 'GPT-4.1', desc: 'Best quality', chars: { short: 500, medium: 1000, long: 2000 } }
                   ].map((option) => (
                     <Badge
                       key={option.value}
                       variant={selectedModel === option.value ? "default" : "outline"}
-                      className="cursor-pointer text-center p-2 h-auto flex flex-col"
+                      className="cursor-pointer text-center p-2 h-auto flex flex-col flex-1"
                       onClick={() => setSelectedModel(option.value as typeof selectedModel)}
                       title={option.desc}
                     >
@@ -547,10 +545,8 @@ export function SimpleVeo3Generator() {
                     { value: 'long', label: 'Long', desc: 'Maximum detail' }
                   ].map((option) => {
                     const modelConfig = {
-                      'gpt-4o-mini': { short: 400, medium: 800, long: 1500 },
-                      'gpt-4o': { short: 500, medium: 1000, long: 2000 },
-                      'o1-mini': { short: 300, medium: 600, long: 1200 },
-                      'o1-preview': { short: 400, medium: 800, long: 1600 }
+                      'o4-mini': { short: 400, medium: 800, long: 1500 },
+                      'gpt-4.1': { short: 500, medium: 1000, long: 2000 }
                     };
                     const chars = modelConfig[selectedModel][option.value as 'short' | 'medium' | 'long'];
                     return (

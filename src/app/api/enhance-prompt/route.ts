@@ -11,29 +11,17 @@ const azure = createAzure({
 
 // Available models with their character limits and capabilities
 const MODEL_CONFIG = {
-  'gpt-4o': {
-    name: 'GPT-4o',
+  'gpt-4.1': {
+    name: 'GPT-4.1',
     maxChars: { short: 500, medium: 1000, long: 2000 },
     maxTokens: { short: 150, medium: 300, long: 600 },
     supportsSystem: true
   },
-  'gpt-4o-mini': {
-    name: 'GPT-4o Mini',
+  'o4-mini': {
+    name: 'o4-mini',
     maxChars: { short: 400, medium: 800, long: 1500 },
     maxTokens: { short: 120, medium: 250, long: 450 },
     supportsSystem: true
-  },
-  'o1-mini': {
-    name: 'o1-mini',
-    maxChars: { short: 300, medium: 600, long: 1200 },
-    maxTokens: { short: 100, medium: 200, long: 400 },
-    supportsSystem: false // o1 models don't support system messages
-  },
-  'o1-preview': {
-    name: 'o1-preview',
-    maxChars: { short: 400, medium: 800, long: 1600 },
-    maxTokens: { short: 150, medium: 300, long: 500 },
-    supportsSystem: false
   }
 } as const;
 
@@ -41,7 +29,7 @@ const MODEL_CONFIG = {
 const enhancePromptSchema = z.object({
   prompt: z.string().min(1, 'Prompt is required'),
   length: z.enum(['short', 'medium', 'long']).default('medium'),
-  model: z.enum(['gpt-4o', 'gpt-4o-mini', 'o1-mini', 'o1-preview']).default('gpt-4o-mini'),
+  model: z.enum(['gpt-4.1', 'o4-mini']).default('o4-mini'),
 });
 
 export async function POST(req: NextRequest) {
