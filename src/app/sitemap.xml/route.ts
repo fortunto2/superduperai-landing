@@ -2,8 +2,8 @@ import {
   allTools,
   allCases,
   allPages,
-  allBlogs,
   allHomes,
+  allBlogs,
 } from ".contentlayer/generated";
 
 export const dynamic = "force-static";
@@ -49,39 +49,35 @@ export async function GET() {
       list[0].lastMod
     );
 
-    // Для каждого языка создаем отдельный URL entry
-    for (const entry of list) {
-      const currentLocale = entry.locale;
-      const localePrefix = currentLocale === "en" ? "" : `/${currentLocale}`;
-      const currentUrl = `${site}${localePrefix}${path === "/" ? "" : path}`;
+    // Создаем ОДИН URL entry на группу языков (согласно рекомендациям Google)
+    // Используем английскую версию как основной URL в <loc>
+    const mainLocale = "en";
+    const mainPrefix = mainLocale === "en" ? "" : `/${mainLocale}`;
+    const mainUrl = `${site}${mainPrefix}${path === "/" ? "" : path}`;
 
-      xmlLines.push("  <url>");
-      xmlLines.push(`    <loc>${currentUrl}</loc>`);
+    xmlLines.push("  <url>");
+    xmlLines.push(`    <loc>${mainUrl}</loc>`);
 
-      // Добавляем hreflang ссылки для всех языковых версий
-      for (const langEntry of list) {
-        const langLocale = langEntry.locale;
-        const langPrefix = langLocale === "en" ? "" : `/${langLocale}`;
-        const langUrl = `${site}${langPrefix}${path === "/" ? "" : path}`;
-
-        xmlLines.push(
-          `    <xhtml:link rel="alternate" hreflang="${langLocale}" href="${langUrl}" />`
-        );
-      }
-
-      // Добавляем x-default ссылку (обычно английская версия)
-      const defaultLocale = "en";
-      const defaultPrefix = defaultLocale === "en" ? "" : `/${defaultLocale}`;
-      const defaultUrl = `${site}${defaultPrefix}${path === "/" ? "" : path}`;
+    // Добавляем hreflang ссылки для всех доступных языковых версий
+    for (const langEntry of list) {
+      const langLocale = langEntry.locale;
+      const langPrefix = langLocale === "en" ? "" : `/${langLocale}`;
+      const langUrl = `${site}${langPrefix}${path === "/" ? "" : path}`;
 
       xmlLines.push(
-        `    <xhtml:link rel="alternate" hreflang="x-default" href="${defaultUrl}" />`
+        `    <xhtml:link rel="alternate" hreflang="${langLocale}" href="${langUrl}" />`
       );
-      xmlLines.push(`    <lastmod>${lastmod.toISOString()}</lastmod>`);
-      xmlLines.push(`    <changefreq>weekly</changefreq>`);
-      xmlLines.push(`    <priority>${path === "/" ? "1.0" : "0.8"}</priority>`);
-      xmlLines.push("  </url>");
     }
+
+    // Добавляем x-default ссылку (английская версия)
+    xmlLines.push(
+      `    <xhtml:link rel="alternate" hreflang="x-default" href="${mainUrl}" />`
+    );
+    
+    xmlLines.push(`    <lastmod>${lastmod.toISOString()}</lastmod>`);
+    xmlLines.push(`    <changefreq>weekly</changefreq>`);
+    xmlLines.push(`    <priority>${path === "/" ? "1.0" : "0.8"}</priority>`);
+    xmlLines.push("  </url>");
   }
 
   xmlLines.push("</urlset>");
@@ -91,7 +87,7 @@ export async function GET() {
 
   return new Response(xml, {
     headers: {
-      "Content-Type": "text/plain; charset=utf-8",
+      "Content-Type": "application/xml; charset=utf-8",
       "Cache-Control": "public, max-age=86400, s-maxage=86400",
     },
   });

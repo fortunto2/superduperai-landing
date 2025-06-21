@@ -2,7 +2,18 @@
 title: Akı kontext
 description: Gelişmiş Düzenleme İş Akışı
 date: 2025-05-20
-slug: flux-kontext
+slug: aki-kontext
+locale: tr
+seo:
+  title: Akı kontext düzenleme
+  description: Kontext ile yıkıcı olmayan düzenlemeler
+---
+
+---
+title: Akı kontext
+description: Gelişmiş Düzenleme İş Akışı
+date: 2025-05-20
+slug: aki-kontext
 locale: tr
 seo:
   title: Akı kontext düzenleme

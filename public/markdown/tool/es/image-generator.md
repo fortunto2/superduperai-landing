@@ -1,0 +1,92 @@
+---
+title: "Generador de Imágenes con IA"
+description: "Crea imágenes impresionantes con nuestro generador impulsado por IA"
+date: 2023-10-15
+slug: "image-generator"
+icon: "image"
+locale: "es"
+featured: true
+seo:
+  title: "Generador de Imágenes con IA | SuperDuperAI"
+  description: "Crea imágenes impresionantes al instante con nuestro generador de imágenes impulsado por IA"
+  keywords:
+    - IA
+    - generador de imágenes
+    - arte con IA
+---
+
+---
+title: "Generador de Imágenes con IA"
+description: "Crea imágenes impresionantes con nuestro generador impulsado por IA"
+date: 2023-10-15
+slug: "image-generator"
+icon: "image"
+locale: "es"
+featured: true
+seo:
+  title: "Generador de Imágenes con IA | SuperDuperAI"
+  description: "Crea imágenes impresionantes al instante con nuestro generador de imágenes impulsado por IA"
+  keywords:
+    - IA
+    - generador de imágenes
+    - arte con IA
+---
+
+# Generador de Imágenes con IA
+
+Crea imágenes impresionantes con nuestra tecnología avanzada de IA.
+
+### Alta Calidad
+
+Genera imágenes en resolución 4K
+
+  ### Rápido
+
+Obtén resultados en segundos
+
+  ### Personalizable
+
+Ajusta finamente tus resultados
+
+## Cómo Funciona
+
+Nuestro generador de imágenes utiliza los últimos modelos de IA para crear imágenes a partir de descripciones de texto.
+
+  
+    Describe lo que quieres crear
+  
+  
+    Elige entre varios estilos artísticos
+  
+  
+    Obtén tu imagen en segundos
+  
+
+## Características
+
+### Prompts en Lenguaje Natural
+
+Usa español simple para describir la imagen que quieres crear. No se requiere sintaxis compleja.
+
+### Personalización de Estilo
+
+Elige entre docenas de estilos artísticos, desde fotorrealista hasta arte abstracto.
+
+### Salida de Alta Resolución
+
+Genera imágenes de hasta resolución 4K, perfectas para impresión y uso profesional.
+
+### Generación Rápida
+
+La mayoría de las imágenes se generan en menos de 10 segundos.
+
+## Casos de Uso
+
+- **Creadores de Contenido**: Crea miniaturas e ilustraciones únicas
+- **Diseñadores**: Genera arte conceptual e inspiración
+- **Especialistas en Marketing**: Crea visuales llamativos para redes sociales
+- **Empresas**: Diseña gráficos personalizados para tu marca
+
+  ¿Listo para crear imágenes increíbles? ¡Prueba nuestro Generador de Imágenes
+  con IA hoy!
+
