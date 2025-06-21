@@ -102,6 +102,8 @@ export function SimpleVeo3Generator() {
   const [enhancedPrompt, setEnhancedPrompt] = useState("");
   const [enhancementInfo, setEnhancementInfo] = useState<{
     length: string;
+    model?: string;
+    modelName?: string;
     targetCharacters: number;
     actualCharacters: number;
   } | null>(null);
@@ -109,12 +111,14 @@ export function SimpleVeo3Generator() {
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [enhanceError, setEnhanceError] = useState("");
   const [promptLength, setPromptLength] = useState<'short' | 'medium' | 'long'>('medium');
+  const [selectedModel, setSelectedModel] = useState<'gpt-4o' | 'gpt-4o-mini' | 'o1-mini' | 'o1-preview'>('gpt-4o-mini');
   const [promptHistory, setPromptHistory] = useState<Array<{
     id: string;
     timestamp: Date;
     basicPrompt: string;
     enhancedPrompt: string;
     length: string;
+    model?: string;
     promptData: PromptData;
   }>>([]);
 
@@ -144,13 +148,14 @@ export function SimpleVeo3Generator() {
   }, []);
 
   // Save to localStorage
-  const saveToHistory = (basicPrompt: string, enhancedPrompt: string, length: string, promptData: PromptData) => {
+  const saveToHistory = (basicPrompt: string, enhancedPrompt: string, length: string, model: string, promptData: PromptData) => {
     const historyItem = {
       id: Date.now().toString(),
       timestamp: new Date(),
       basicPrompt,
       enhancedPrompt,
       length,
+      model,
       promptData
     };
 
@@ -171,7 +176,17 @@ export function SimpleVeo3Generator() {
     setGeneratedPrompt(historyItem.basicPrompt);
     setEnhancedPrompt(historyItem.enhancedPrompt);
     setPromptLength(historyItem.length as 'short' | 'medium' | 'long');
-    setEnhancementInfo(null); // Clear enhancement info as it might be outdated
+    
+    // Restore enhancement info if enhanced prompt exists
+    if (historyItem.enhancedPrompt) {
+      setEnhancementInfo({
+        length: historyItem.length,
+        targetCharacters: historyItem.length === 'short' ? 500 : historyItem.length === 'medium' ? 1000 : 2000,
+        actualCharacters: historyItem.enhancedPrompt.length
+      });
+    } else {
+      setEnhancementInfo(null);
+    }
   };
 
   // Clear history
@@ -229,6 +244,7 @@ export function SimpleVeo3Generator() {
         body: JSON.stringify({
           prompt: generatedPrompt,
           length: promptLength,
+          model: selectedModel,
         }),
       });
 
@@ -241,12 +257,14 @@ export function SimpleVeo3Generator() {
       setEnhancedPrompt(data.enhancedPrompt);
       setEnhancementInfo({
         length: data.length,
+        model: data.model,
+        modelName: data.modelName,
         targetCharacters: data.targetCharacters,
         actualCharacters: data.actualCharacters
       });
 
       // Save to history when AI enhancement is successful
-      saveToHistory(generatedPrompt, data.enhancedPrompt, data.length, promptData);
+      saveToHistory(generatedPrompt, data.enhancedPrompt, data.length, data.model, promptData);
     } catch (error) {
       console.error('Error enhancing prompt:', error);
       setEnhanceError(error instanceof Error ? error.message : 'Failed to enhance prompt');
@@ -495,25 +513,59 @@ export function SimpleVeo3Generator() {
                 placeholder="Your generated prompt will appear here..."
                 className="min-h-[250px] font-mono text-sm resize-none"
               />
-              {/* AI Enhancement Length Selector */}
+              {/* AI Model Selector */}
               <div className="space-y-2">
-                <Label>AI Enhancement Length</Label>
-                <div className="flex gap-2">
+                <Label>AI Model</Label>
+                <div className="grid grid-cols-2 gap-2">
                   {[
-                    { value: 'short', label: 'Short (500 chars)', desc: 'Concise enhancement' },
-                    { value: 'medium', label: 'Medium (1000 chars)', desc: 'Balanced detail' },
-                    { value: 'long', label: 'Long (2000 chars)', desc: 'Maximum detail' }
+                    { value: 'gpt-4o-mini', label: 'GPT-4o Mini', desc: 'Fast & efficient', chars: { short: 400, medium: 800, long: 1500 } },
+                    { value: 'gpt-4o', label: 'GPT-4o', desc: 'Best quality', chars: { short: 500, medium: 1000, long: 2000 } },
+                    { value: 'o1-mini', label: 'o1-mini', desc: 'Reasoning model', chars: { short: 300, medium: 600, long: 1200 } },
+                    { value: 'o1-preview', label: 'o1-preview', desc: 'Advanced reasoning', chars: { short: 400, medium: 800, long: 1600 } }
                   ].map((option) => (
                     <Badge
                       key={option.value}
-                      variant={promptLength === option.value ? "default" : "outline"}
-                      className="cursor-pointer flex-1 text-center"
-                      onClick={() => setPromptLength(option.value as 'short' | 'medium' | 'long')}
+                      variant={selectedModel === option.value ? "default" : "outline"}
+                      className="cursor-pointer text-center p-2 h-auto flex flex-col"
+                      onClick={() => setSelectedModel(option.value as typeof selectedModel)}
                       title={option.desc}
                     >
-                      {option.label}
+                      <span className="font-medium">{option.label}</span>
+                      <span className="text-xs opacity-70">{option.desc}</span>
                     </Badge>
                   ))}
+                </div>
+              </div>
+
+              {/* AI Enhancement Length Selector */}
+              <div className="space-y-2">
+                <Label>Enhancement Length</Label>
+                <div className="flex gap-2">
+                  {[
+                    { value: 'short', label: 'Short', desc: 'Concise enhancement' },
+                    { value: 'medium', label: 'Medium', desc: 'Balanced detail' },
+                    { value: 'long', label: 'Long', desc: 'Maximum detail' }
+                  ].map((option) => {
+                    const modelConfig = {
+                      'gpt-4o-mini': { short: 400, medium: 800, long: 1500 },
+                      'gpt-4o': { short: 500, medium: 1000, long: 2000 },
+                      'o1-mini': { short: 300, medium: 600, long: 1200 },
+                      'o1-preview': { short: 400, medium: 800, long: 1600 }
+                    };
+                    const chars = modelConfig[selectedModel][option.value as 'short' | 'medium' | 'long'];
+                    return (
+                      <Badge
+                        key={option.value}
+                        variant={promptLength === option.value ? "default" : "outline"}
+                        className="cursor-pointer flex-1 text-center p-2 h-auto flex flex-col"
+                        onClick={() => setPromptLength(option.value as 'short' | 'medium' | 'long')}
+                        title={option.desc}
+                      >
+                        <span className="font-medium">{option.label}</span>
+                        <span className="text-xs opacity-70">{chars} chars</span>
+                      </Badge>
+                    );
+                  })}
                 </div>
               </div>
               
@@ -564,9 +616,17 @@ export function SimpleVeo3Generator() {
                 className="min-h-[400px] font-mono text-sm resize-none whitespace-pre-wrap"
               />
               {enhancementInfo && (
-                <div className="text-xs text-muted-foreground flex justify-between">
-                  <span>Length: {enhancementInfo.length}</span>
-                  <span>Characters: {enhancementInfo.actualCharacters} / {enhancementInfo.targetCharacters}</span>
+                <div className="text-xs text-muted-foreground space-y-1">
+                  <div className="flex justify-between">
+                    <span>Model: {enhancementInfo.modelName || enhancementInfo.model}</span>
+                    <span>Length: {enhancementInfo.length}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Characters: {enhancementInfo.actualCharacters} / {enhancementInfo.targetCharacters}</span>
+                    <span className={enhancementInfo.actualCharacters > enhancementInfo.targetCharacters ? "text-amber-500" : "text-green-500"}>
+                      {enhancementInfo.actualCharacters <= enhancementInfo.targetCharacters ? "✓ Within limit" : "⚠ Over limit"}
+                    </span>
+                  </div>
                 </div>
               )}
               <Button 
@@ -610,9 +670,16 @@ export function SimpleVeo3Generator() {
                       <p className="text-sm text-muted-foreground">
                         {historyItem.timestamp.toLocaleString()}
                       </p>
-                      <Badge variant="secondary" className="text-xs">
-                        {historyItem.length}
-                      </Badge>
+                      <div className="flex gap-1">
+                        {historyItem.model && (
+                          <Badge variant="outline" className="text-xs">
+                            {historyItem.model}
+                          </Badge>
+                        )}
+                        <Badge variant="secondary" className="text-xs">
+                          {historyItem.length}
+                        </Badge>
+                      </div>
                     </div>
                     <p className="text-sm mb-2 max-h-10 overflow-hidden">
                       {historyItem.basicPrompt.length > 100 
