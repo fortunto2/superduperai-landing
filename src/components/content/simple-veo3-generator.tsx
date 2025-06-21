@@ -111,7 +111,7 @@ export function SimpleVeo3Generator() {
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [enhanceError, setEnhanceError] = useState("");
   const [promptLength, setPromptLength] = useState<'short' | 'medium' | 'long'>('medium');
-  const [selectedModel, setSelectedModel] = useState<'gpt-4.1' | 'o4-mini'>('o4-mini');
+  const [selectedModel, setSelectedModel] = useState<'gpt-4.1' | 'o4-mini'>('gpt-4.1');
   const [promptHistory, setPromptHistory] = useState<Array<{
     id: string;
     timestamp: Date;
@@ -518,8 +518,8 @@ export function SimpleVeo3Generator() {
                 <Label>AI Model</Label>
                 <div className="flex gap-2">
                   {[
-                    { value: 'o4-mini', label: 'o4-mini', desc: 'Fast & efficient', chars: { short: 400, medium: 800, long: 1500 } },
-                    { value: 'gpt-4.1', label: 'GPT-4.1', desc: 'Best quality', chars: { short: 500, medium: 1000, long: 2000 } }
+                    { value: 'gpt-4.1', label: 'GPT-4.1', desc: 'Best quality', chars: { short: 500, medium: 1000, long: 2000 } },
+                    { value: 'o4-mini', label: 'o4-mini', desc: 'Fast & efficient', chars: { short: 400, medium: 800, long: 1500 } }
                   ].map((option) => (
                     <Badge
                       key={option.value}
@@ -545,8 +545,8 @@ export function SimpleVeo3Generator() {
                     { value: 'long', label: 'Long', desc: 'Maximum detail' }
                   ].map((option) => {
                     const modelConfig = {
-                      'o4-mini': { short: 400, medium: 800, long: 1500 },
-                      'gpt-4.1': { short: 500, medium: 1000, long: 2000 }
+                      'gpt-4.1': { short: 500, medium: 1000, long: 2000 },
+                      'o4-mini': { short: 400, medium: 800, long: 1500 }
                     };
                     const chars = modelConfig[selectedModel][option.value as 'short' | 'medium' | 'long'];
                     return (

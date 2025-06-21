@@ -91,7 +91,6 @@ Added support for 2 AI models in the VEO3 Prompt Generator with dynamic characte
 ```env
 AZURE_OPENAI_RESOURCE_NAME=your-resource-name
 AZURE_OPENAI_API_KEY=your-api-key
-AZURE_OPENAI_DEPLOYMENT_NAME=your-deployment-name
 ```
 
-Note: The deployment name should match the model you want to use as the default deployment. 
+Note: The model is selected by the user in the UI and passed directly to the API. No deployment name configuration needed. 

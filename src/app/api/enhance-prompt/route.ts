@@ -7,18 +7,21 @@ import { NextRequest, NextResponse } from 'next/server';
 const azure = createAzure({
   resourceName: process.env.AZURE_OPENAI_RESOURCE_NAME!,
   apiKey: process.env.AZURE_OPENAI_API_KEY!,
+  apiVersion: process.env.AZURE_OPENAI_API_VERSION || '2024-12-01-preview',
 });
 
 // Available models with their character limits and capabilities
 const MODEL_CONFIG = {
   'gpt-4.1': {
     name: 'GPT-4.1',
+    deploymentName: 'gpt-4.1', // Real deployment name in Azure
     maxChars: { short: 500, medium: 1000, long: 2000 },
     maxTokens: { short: 150, medium: 300, long: 600 },
     supportsSystem: true
   },
   'o4-mini': {
     name: 'o4-mini',
+    deploymentName: 'o4-mini', // Real deployment name in Azure
     maxChars: { short: 400, medium: 800, long: 1500 },
     maxTokens: { short: 120, medium: 250, long: 450 },
     supportsSystem: true
@@ -29,14 +32,25 @@ const MODEL_CONFIG = {
 const enhancePromptSchema = z.object({
   prompt: z.string().min(1, 'Prompt is required'),
   length: z.enum(['short', 'medium', 'long']).default('medium'),
-  model: z.enum(['gpt-4.1', 'o4-mini']).default('o4-mini'),
+  model: z.enum(['gpt-4.1', 'o4-mini']).default('gpt-4.1'),
 });
 
 export async function POST(req: NextRequest) {
   try {
+    // Check environment variables (only resource name and API key needed)
+    if (!process.env.AZURE_OPENAI_RESOURCE_NAME || !process.env.AZURE_OPENAI_API_KEY) {
+      console.error('Missing Azure OpenAI environment variables');
+      return NextResponse.json(
+        { error: 'Azure OpenAI not configured. Please set AZURE_OPENAI_RESOURCE_NAME and AZURE_OPENAI_API_KEY environment variables.' },
+        { status: 500 }
+      );
+    }
+
     // Parse and validate request body
     const body = await req.json();
     const { prompt, length, model } = enhancePromptSchema.parse(body);
+    
+    console.log('Enhancement request:', { prompt: prompt.substring(0, 100) + '...', length, model });
 
     const modelConfig = MODEL_CONFIG[model];
     const maxChars = modelConfig.maxChars[length];
@@ -102,7 +116,7 @@ Return ONLY the enhanced prompt in English (except for preserved direct speech),
       system?: string;
       prompt: string;
     } = {
-      model: azure(process.env.AZURE_OPENAI_DEPLOYMENT_NAME || model),
+      model: azure(modelConfig.deploymentName), // Use the deployment name from model config
       maxTokens: maxTokens,
       prompt: '', // Will be set below
     };
@@ -120,7 +134,22 @@ Your task is to enhance and expand user-provided video prompts to make them more
 ${enhancementPrompt}`;
     }
 
+    console.log('Calling Azure OpenAI with options:', {
+      deploymentName: modelConfig.deploymentName,
+      selectedModel: model,
+      resourceName: process.env.AZURE_OPENAI_RESOURCE_NAME,
+      apiVersion: process.env.AZURE_OPENAI_API_VERSION || '2024-12-01-preview',
+      maxTokens: generateOptions.maxTokens,
+      hasSystem: !!generateOptions.system,
+      promptLength: generateOptions.prompt.length
+    });
+
     const { text } = await generateText(generateOptions);
+    
+    console.log('Azure OpenAI response:', {
+      textLength: text.length,
+      textPreview: text.substring(0, 100) + (text.length > 100 ? '...' : '')
+    });
 
     return NextResponse.json({ 
       originalPrompt: prompt,
