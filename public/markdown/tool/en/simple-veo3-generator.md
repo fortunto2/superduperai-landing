@@ -1,6 +1,9 @@
 ---
 title: "VEO3 Prompt Generator"
 description: "Create professional video prompts for Google's VEO3 AI with our simple, intuitive generator"
+date: "2025-01-20"
+slug: "simple-veo3-generator"
+locale: "en"
 publishedAt: "2025-01-20"
 updatedAt: "2025-01-20"
 author: "SuperDuperAI Team"
@@ -12,6 +15,9 @@ featured: true
 ---
 title: "VEO3 Prompt Generator"
 description: "Create professional video prompts for Google's VEO3 AI with our simple, intuitive generator"
+date: "2025-01-20"
+slug: "simple-veo3-generator"
+locale: "en"
 publishedAt: "2025-01-20"
 updatedAt: "2025-01-20"
 author: "SuperDuperAI Team"

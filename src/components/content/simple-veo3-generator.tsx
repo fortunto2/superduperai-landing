@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Copy, Shuffle, Sparkles } from "lucide-react";
+import { Copy, Shuffle, Sparkles, Wand2, Loader2 } from "lucide-react";
 
 interface PromptData {
   scene: string;
@@ -99,7 +99,10 @@ export function SimpleVeo3Generator() {
   });
 
   const [generatedPrompt, setGeneratedPrompt] = useState("");
+  const [enhancedPrompt, setEnhancedPrompt] = useState("");
   const [copied, setCopied] = useState(false);
+  const [isEnhancing, setIsEnhancing] = useState(false);
+  const [enhanceError, setEnhanceError] = useState("");
 
   const updateField = (field: keyof PromptData, value: string) => {
     const newData = { ...promptData, [field]: value };
@@ -124,6 +127,46 @@ export function SimpleVeo3Generator() {
 
     const prompt = parts.join(", ") + ".";
     setGeneratedPrompt(prompt);
+    
+    // Clear enhanced prompt when basic prompt changes
+    if (enhancedPrompt) {
+      setEnhancedPrompt("");
+    }
+  };
+
+  const enhancePrompt = async () => {
+    if (!generatedPrompt) {
+      setEnhanceError("Please generate a basic prompt first");
+      return;
+    }
+
+    setIsEnhancing(true);
+    setEnhanceError("");
+
+    try {
+      const response = await fetch('/api/enhance-prompt', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompt: generatedPrompt,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to enhance prompt');
+      }
+
+      const data = await response.json();
+      setEnhancedPrompt(data.enhancedPrompt);
+    } catch (error) {
+      console.error('Error enhancing prompt:', error);
+      setEnhanceError(error instanceof Error ? error.message : 'Failed to enhance prompt');
+    } finally {
+      setIsEnhancing(false);
+    }
   };
 
   const loadExample = (example: PromptData) => {
@@ -150,9 +193,9 @@ export function SimpleVeo3Generator() {
     generatePrompt(randomData);
   };
 
-  const copyToClipboard = async () => {
-    if (generatedPrompt) {
-      await navigator.clipboard.writeText(generatedPrompt);
+  const copyToClipboard = async (text: string) => {
+    if (text) {
+      await navigator.clipboard.writeText(text);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
@@ -166,15 +209,17 @@ export function SimpleVeo3Generator() {
     };
     setPromptData(emptyData);
     setGeneratedPrompt("");
+    setEnhancedPrompt("");
+    setEnhanceError("");
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-6xl mx-auto space-y-6">
       {/* Header */}
       <div className="text-center space-y-2">
         <h1 className="text-3xl font-bold">VEO3 Prompt Generator</h1>
         <p className="text-muted-foreground">
-          Create professional video prompts for Google&apos;s VEO3 AI
+          Create professional video prompts for Google&apos;s VEO3 AI with AI-powered enhancement
         </p>
       </div>
 
@@ -189,13 +234,13 @@ export function SimpleVeo3Generator() {
         </Button>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-6">
+      <div className="grid lg:grid-cols-3 gap-6">
         {/* Input Form */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Sparkles className="w-5 h-5" />
-              Prompt Builder
+              Step 1: Prompt Builder
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -348,59 +393,107 @@ export function SimpleVeo3Generator() {
           </CardContent>
         </Card>
 
-        {/* Preview and Examples */}
-        <div className="space-y-6">
-          {/* Generated Prompt */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Generated Prompt</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <Textarea
-                  value={generatedPrompt}
-                  readOnly
-                  placeholder="Your generated prompt will appear here..."
-                  className="min-h-[200px] font-mono text-sm resize-none"
-                />
+        {/* Step 2: Basic Prompt */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Copy className="w-5 h-5" />
+              Step 2: Generated Prompt
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <Textarea
+                value={generatedPrompt}
+                readOnly
+                placeholder="Your generated prompt will appear here..."
+                className="min-h-[200px] font-mono text-sm resize-none"
+              />
+              <div className="flex gap-2">
                 <Button 
-                  onClick={copyToClipboard}
+                  onClick={() => copyToClipboard(generatedPrompt)}
                   disabled={!generatedPrompt}
-                  className="w-full"
+                  className="flex-1"
                 >
                   <Copy className="w-4 h-4 mr-2" />
-                  {copied ? "Copied!" : "Copy Prompt"}
+                  {copied ? "Copied!" : "Copy Basic"}
+                </Button>
+                <Button 
+                  onClick={enhancePrompt}
+                  disabled={!generatedPrompt || isEnhancing}
+                  variant="secondary"
+                  className="flex-1"
+                >
+                  {isEnhancing ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <Wand2 className="w-4 h-4 mr-2" />
+                  )}
+                  {isEnhancing ? "Enhancing..." : "AI Enhance"}
                 </Button>
               </div>
-            </CardContent>
-          </Card>
+              {enhanceError && (
+                <p className="text-sm text-red-500">{enhanceError}</p>
+              )}
+            </div>
+          </CardContent>
+        </Card>
 
-          {/* Example Prompts */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Example Prompts</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {EXAMPLE_PROMPTS.map((example, index) => (
-                  <div key={index} className="p-3 border rounded-lg">
-                    <p className="text-sm mb-2">
-                      {example.scene}, featuring {example.character} who is {example.action}
-                    </p>
-                    <Button
-                      onClick={() => loadExample(example)}
-                      variant="outline"
-                      size="sm"
-                      className="w-full"
-                    >
-                      Load Example {index + 1}
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        {/* Step 3: AI Enhanced Prompt */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Wand2 className="w-5 h-5" />
+              Step 3: AI Enhanced Prompt
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <Textarea
+                value={enhancedPrompt}
+                readOnly
+                placeholder="Click 'AI Enhance' to generate a professional, detailed prompt..."
+                className="min-h-[200px] font-mono text-sm resize-none"
+              />
+              <Button 
+                onClick={() => copyToClipboard(enhancedPrompt)}
+                disabled={!enhancedPrompt}
+                className="w-full"
+              >
+                <Copy className="w-4 h-4 mr-2" />
+                {copied ? "Copied!" : "Copy Enhanced Prompt"}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Example Prompts Section */}
+      <div className="max-w-4xl mx-auto">
+        <Card>
+          <CardHeader>
+            <CardTitle>Example Prompts</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-3 gap-4">
+              {EXAMPLE_PROMPTS.map((example, index) => (
+                <div key={index} className="p-3 border rounded-lg">
+                  <p className="text-sm mb-2">
+                    {example.scene}, featuring {example.character} who is {example.action}
+                  </p>
+                  <Button
+                    onClick={() => loadExample(example)}
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                  >
+                    Load Example {index + 1}
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
