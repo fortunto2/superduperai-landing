@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Check } from 'lucide-react';
 import { PricingSection } from './pricing-section';
 import { VideoShowcase } from '@/components/landing/video-showcase';
+import { SimpleVeo3Generator } from './simple-veo3-generator';
 
 // Минимальное определение компонентов для проверки работоспособности
 const components = {
@@ -43,7 +44,8 @@ const components = {
   Button,
   Check,
   PricingSection,
-  VideoShowcase
+  VideoShowcase,
+  SimpleVeo3Generator
 };
 
 interface MDXProps {

@@ -5,8 +5,28 @@ date: 2024-02-05
 slug: "agencies-teams"
 category: "business"
 image: "/images/cases/agency-hero.jpg"
-locale: "en"
 featured: true
+locale: "en"
+seo:
+  title: "AI Video Solutions for Agencies & Creative Teams | SuperDuperAI"
+  description: "Speed up your video creation process with collaborative AI tools that streamline prototyping and production for client projects"
+  keywords:
+    - creative agency
+    - video production
+    - team collaboration
+    - client projects
+    - rapid prototyping
+---
+
+---
+title: "AI Video Solutions for Agencies & Teams"
+description: "Accelerate video production with collaborative AI tools for rapid prototyping and client deliverables"
+date: 2024-02-05
+slug: "agencies-teams"
+category: "business"
+image: "/images/cases/agency-hero.jpg"
+featured: true
+locale: "en"
 seo:
   title: "AI Video Solutions for Agencies & Creative Teams | SuperDuperAI"
   description: "Speed up your video creation process with collaborative AI tools that streamline prototyping and production for client projects"

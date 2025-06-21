@@ -1,0 +1,189 @@
+import { generateText } from 'ai';
+import { createAzure } from '@ai-sdk/azure';
+import { z } from 'zod';
+import { NextRequest, NextResponse } from 'next/server';
+
+// Initialize Azure provider
+const azure = createAzure({
+  resourceName: process.env.AZURE_OPENAI_RESOURCE_NAME!,
+  apiKey: process.env.AZURE_OPENAI_API_KEY!,
+  apiVersion: process.env.AZURE_OPENAI_API_VERSION || '2024-12-01-preview',
+});
+
+// Available models with their character limits and capabilities
+const MODEL_CONFIG = {
+  'gpt-4.1': {
+    name: 'GPT-4.1',
+    deploymentName: 'gpt-4.1', // Real deployment name in Azure
+    maxChars: { short: 500, medium: 1000, long: 2000 },
+    maxTokens: { short: 150, medium: 300, long: 600 },
+    supportsSystem: true,
+    isReasoning: false,
+    type: 'chat' // standard chat model
+  }
+} as const;
+
+// Request schema validation
+const enhancePromptSchema = z.object({
+  prompt: z.string().min(1, 'Prompt is required'),
+  length: z.enum(['short', 'medium', 'long']).default('medium'),
+  model: z.enum(['gpt-4.1']).default('gpt-4.1'),
+});
+
+export async function POST(req: NextRequest) {
+  try {
+    // Check environment variables (only resource name and API key needed)
+    if (!process.env.AZURE_OPENAI_RESOURCE_NAME || !process.env.AZURE_OPENAI_API_KEY) {
+      console.error('Missing Azure OpenAI environment variables');
+      return NextResponse.json(
+        { error: 'Azure OpenAI not configured. Please set AZURE_OPENAI_RESOURCE_NAME and AZURE_OPENAI_API_KEY environment variables.' },
+        { status: 500 }
+      );
+    }
+
+    // Parse and validate request body
+    const body = await req.json();
+    const { prompt, length, model } = enhancePromptSchema.parse(body);
+    
+    console.log('Enhancement request:', { prompt: prompt.substring(0, 100) + '...', length, model });
+
+    const modelConfig = MODEL_CONFIG[model];
+    const maxChars = modelConfig.maxChars[length];
+    const maxTokens = modelConfig.maxTokens[length];
+
+    const enhancementPrompt = `Please enhance this VEO3 video prompt to be approximately ${maxChars} characters (${length} length): "${prompt}"
+
+CRITICAL LANGUAGE RULE:
+- ALWAYS write the enhanced prompt in ENGLISH ONLY
+- EXCEPTION: Preserve direct speech/dialogue in its original language if explicitly specified
+- Example: "says in russian: 'Я опаздываю'" → keep the Russian phrase exactly as is
+- Example: "says in spanish: 'Te amo'" → keep the Spanish phrase exactly as is
+- All descriptions, camera work, lighting, etc. must be in English
+
+VEO3 PROMPTING GUIDELINES (based on official documentation):
+
+STRUCTURE:
+1. Scene Description: Overall description of what's happening, who's involved, and the general atmosphere
+2. Visual Style: Overall look and feel - cinematic, realistic, animated, stylized, or surreal  
+3. Camera Movement: How camera moves - slow pan, static shot, tracking shot, aerial zoom
+4. Main Subject: Primary person, character, or object that should be the focus
+5. Background Setting: Specific location or environment where scene takes place
+6. Lighting/Mood: Type of lighting and emotional tone you want
+7. Audio Cue: Specific sound or music during the scene
+8. Color Palette: Dominant colors or tones - bold, pastel, muted, monochrome
+
+PROMPTING TIPS:
+- Use natural language - write as you would speak
+- Use long prompts - more information = better output
+- Be clear and descriptive - avoid slang terms like 'robo-arm'
+- Avoid quotes for dialogue - " " ( ) [ ] may generate unwanted subtitles
+- Language influences culture - mentioning language affects clothing, signs, architecture
+
+TARGET LENGTH: ${maxChars} characters (${length} version)
+
+Enhancement Guidelines:
+1. Preserve the original intent and core elements of the user's prompt
+2. Add specific cinematic details (camera movements, lighting, composition)
+3. Include more vivid descriptions of actions, emotions, and atmosphere
+4. Specify technical details that help VEO3 generate better videos
+5. Maintain the original duration and style preferences if specified
+6. Add professional video production terminology
+7. Make the prompt more specific and actionable
+8. Include cultural context when appropriate (but describe in English)
+9. Add sensory details (sounds, textures, temperature)
+10. Specify color palettes and visual aesthetics
+11. PRESERVE any direct speech in original language while describing everything else in English
+
+Original prompt style should be maintained (e.g., if it's casual, keep it casual; if professional, keep it professional).
+
+FORMATTING REQUIREMENTS:
+- Structure the enhanced prompt with logical paragraph breaks using \n\n
+- Organize content into clear sections (e.g., scene setup, character actions, camera work, lighting/mood, audio)
+- Make it easy to read and understand the different elements
+- Use paragraph breaks to separate major prompt components
+
+Return ONLY the enhanced prompt in English (except for preserved direct speech), with proper paragraph formatting using \n\n between logical sections. No additional text or explanations.`;
+
+    // Configure standard chat model
+    const modelInstance = azure(modelConfig.deploymentName);
+    
+    const generateOptions = {
+      model: modelInstance,
+      maxTokens: maxTokens,
+      system: `You are an expert video prompt engineer specializing in Google's VEO3 AI video generation model.
+
+Your task is to enhance and expand user-provided video prompts to make them more detailed, cinematic, and effective for VEO3.`,
+      prompt: enhancementPrompt,
+    };
+
+    console.log('Calling Azure OpenAI with options:', {
+      deploymentName: modelConfig.deploymentName,
+      selectedModel: model,
+      modelType: modelConfig.type,
+      resourceName: process.env.AZURE_OPENAI_RESOURCE_NAME,
+      apiVersion: process.env.AZURE_OPENAI_API_VERSION || '2024-12-01-preview',
+      maxTokens: generateOptions.maxTokens,
+      promptLength: generateOptions.prompt.length
+    });
+
+    const result = await generateText(generateOptions);
+    
+    console.log('Azure OpenAI response:', {
+      textLength: result.text.length,
+      textPreview: result.text.substring(0, 100) + (result.text.length > 100 ? '...' : ''),
+      hasReasoning: !!result.reasoning,
+      reasoningLength: result.reasoning?.length || 0,
+      usage: result.usage,
+      providerMetadata: result.providerMetadata
+    });
+
+    // For reasoning models, we might get reasoning content
+    const enhancedText = result.text.trim();
+    
+    if (!enhancedText) {
+      console.error('Empty response from Azure OpenAI');
+      return NextResponse.json(
+        { error: 'Received empty response from AI model. Please try again.' },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({ 
+      originalPrompt: prompt,
+      enhancedPrompt: enhancedText,
+      length: length,
+      model: model,
+      modelName: modelConfig.name,
+      targetCharacters: maxChars,
+      actualCharacters: enhancedText.length,
+      // Include reasoning info if available
+      ...(result.reasoning && { reasoning: result.reasoning }),
+      ...(result.usage && { usage: result.usage }),
+      ...(result.providerMetadata && { providerMetadata: result.providerMetadata })
+    });
+
+  } catch (error) {
+    console.error('Error enhancing prompt:', error);
+    
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: 'Invalid request data', details: error.errors },
+        { status: 400 }
+      );
+    }
+
+    // More detailed error logging
+    if (error instanceof Error) {
+      console.error('Error details:', {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      });
+    }
+
+    return NextResponse.json(
+      { error: 'Failed to enhance prompt', details: error instanceof Error ? error.message : 'Unknown error' },
+      { status: 500 }
+    );
+  }
+} 
