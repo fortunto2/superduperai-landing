@@ -74,7 +74,7 @@ export function SimpleVeo3Generator() {
   const [promptData, setPromptData] = useState<PromptData>({
     scene: "", style: "", camera: "", duration: "",
     character: "", action: "", lighting: "", mood: "",
-    speech: "", language: "English"
+    speech: "", language: "English" // Default fallback
   });
 
   const [generatedPrompt, setGeneratedPrompt] = useState("");
@@ -101,6 +101,24 @@ export function SimpleVeo3Generator() {
     actualCharacters: number;
     targetCharacters: number;
   } | null>(null);
+
+  // Set language based on locale after component mount
+  useEffect(() => {
+    const locale = window.location.pathname.split('/')[1];
+    const localeToLanguage: Record<string, string> = {
+      'en': 'English',
+      'ru': 'Russian',
+      'es': 'Spanish',
+      'hi': 'Hindi',
+      'tr': 'Turkish'
+    };
+    const defaultLanguage = localeToLanguage[locale] || 'English';
+    
+    setPromptData(prev => ({
+      ...prev,
+      language: defaultLanguage
+    }));
+  }, []);
 
   // Load history from localStorage on component mount
   useEffect(() => {
@@ -300,204 +318,204 @@ export function SimpleVeo3Generator() {
 
         {/* Tab 1: Prompt Builder */}
         <TabsContent value="builder">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Shuffle className="w-5 h-5" />
-                VEO3 Prompt Builder
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {/* Scene Description */}
-              <div className="space-y-2">
-                <Label htmlFor="scene">Scene Description</Label>
-                <Textarea
-                  id="scene"
-                  placeholder="Describe the main scene (e.g., A cozy coffee shop in the morning)"
-                  value={promptData.scene}
-                  onChange={(e) => updateField("scene", e.target.value)}
-                  className="min-h-[80px]"
-                />
-              </div>
-
-              {/* Character */}
-              <div className="space-y-2">
-                <Label htmlFor="character">Character/Subject</Label>
-                <Textarea
-                  id="character"
-                  placeholder="Who is in the scene? (e.g., A young woman reading a book)"
-                  value={promptData.character}
-                  onChange={(e) => updateField("character", e.target.value)}
-                />
-              </div>
-
-              {/* Action */}
-              <div className="space-y-2">
-                <Label htmlFor="action">Action/Activity</Label>
-                <Textarea
-                  id="action"
-                  placeholder="What are they doing? (e.g., slowly sipping coffee while turning pages)"
-                  value={promptData.action}
-                  onChange={(e) => updateField("action", e.target.value)}
-                />
-              </div>
-
-              {/* Speech */}
-              <div className="space-y-2">
-                <Label htmlFor="speech">Character Speech (Optional)</Label>
-                <Textarea
-                  id="speech"
-                  placeholder="What does the character say? (e.g., Hello there! or Привет!)"
-                  value={promptData.speech}
-                  onChange={(e) => updateField("speech", e.target.value)}
-                />
-              </div>
-
-              {/* Language */}
-              <div className="space-y-2">
-                <Label>Speech Language</Label>
-                <div className="flex flex-wrap gap-2">
-                  {PRESET_OPTIONS.languages.map((language) => (
-                    <Badge
-                      key={language}
-                      variant={promptData.language === language ? "default" : "outline"}
-                      className="cursor-pointer"
-                      onClick={() => updateField("language", language)}
-                    >
-                      {language}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-
-              {/* Style Selection */}
-              <div className="space-y-2">
-                <Label>Visual Style</Label>
-                <div className="flex flex-wrap gap-2">
-                  {PRESET_OPTIONS.styles.map((style) => (
-                    <Badge
-                      key={style}
-                      variant={promptData.style === style ? "default" : "outline"}
-                      className="cursor-pointer"
-                      onClick={() => updateField("style", style)}
-                    >
-                      {style}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-
-              {/* Camera Angle */}
-              <div className="space-y-2">
-                <Label>Camera Angle</Label>
-                <div className="flex flex-wrap gap-2">
-                  {PRESET_OPTIONS.cameras.map((camera) => (
-                    <Badge
-                      key={camera}
-                      variant={promptData.camera === camera ? "default" : "outline"}
-                      className="cursor-pointer"
-                      onClick={() => updateField("camera", camera)}
-                    >
-                      {camera}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-
-              {/* Lighting */}
-              <div className="space-y-2">
-                <Label>Lighting</Label>
-                <div className="flex flex-wrap gap-2">
-                  {PRESET_OPTIONS.lighting.map((light) => (
-                    <Badge
-                      key={light}
-                      variant={promptData.lighting === light ? "default" : "outline"}
-                      className="cursor-pointer"
-                      onClick={() => updateField("lighting", light)}
-                    >
-                      {light}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-
-              {/* Mood */}
-              <div className="space-y-2">
-                <Label>Mood</Label>
-                <div className="flex flex-wrap gap-2">
-                  {PRESET_OPTIONS.moods.map((mood) => (
-                    <Badge
-                      key={mood}
-                      variant={promptData.mood === mood ? "default" : "outline"}
-                      className="cursor-pointer"
-                      onClick={() => updateField("mood", mood)}
-                    >
-                      {mood}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-
-              {/* Duration */}
-              <div className="space-y-2">
-                <Label>Duration</Label>
-                <div className="flex flex-wrap gap-2">
-                  {PRESET_OPTIONS.durations.map((duration) => (
-                    <Badge
-                      key={duration}
-                      variant={promptData.duration === duration ? "default" : "outline"}
-                      className="cursor-pointer"
-                      onClick={() => updateField("duration", duration)}
-                    >
-                      {duration}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-
-              {/* Actions */}
-              <div className="flex flex-wrap gap-2 pt-4">
-                <Button onClick={randomizePrompt} variant="outline">
-                  <Shuffle className="w-4 h-4 mr-2" />
-                  Randomize All
-                </Button>
-                <Button onClick={clearAll} variant="outline">
-                  Clear All
-                </Button>
-              </div>
-
-              {/* Quick Examples */}
-              <div className="space-y-2">
-                <Label className="text-sm font-medium">Quick Examples:</Label>
-                <div className="flex flex-wrap gap-2">
-                  {EXAMPLE_PROMPTS.map((example, index) => (
-                    <Button
-                      key={index}
-                      onClick={() => loadExample(example)}
-                      variant="outline"
-                      size="sm"
-                      className="text-xs"
-                    >
-                      {example.scene.split(' ').slice(0, 3).join(' ')}...
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Tab 2: AI Enhancement */}
-        <TabsContent value="enhance">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Generated Prompt */}
+            {/* Left: Builder */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Shuffle className="w-5 h-5" />
+                  VEO3 Prompt Builder
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {/* Scene Description */}
+                <div className="space-y-2">
+                  <Label htmlFor="scene">Scene Description</Label>
+                  <Textarea
+                    id="scene"
+                    placeholder="Describe the main scene (e.g., A cozy coffee shop in the morning)"
+                    value={promptData.scene}
+                    onChange={(e) => updateField("scene", e.target.value)}
+                    className="min-h-[80px]"
+                  />
+                </div>
+
+                {/* Character */}
+                <div className="space-y-2">
+                  <Label htmlFor="character">Character/Subject</Label>
+                  <Textarea
+                    id="character"
+                    placeholder="Who is in the scene? (e.g., A young woman reading a book)"
+                    value={promptData.character}
+                    onChange={(e) => updateField("character", e.target.value)}
+                  />
+                </div>
+
+                {/* Action */}
+                <div className="space-y-2">
+                  <Label htmlFor="action">Action/Activity</Label>
+                  <Textarea
+                    id="action"
+                    placeholder="What are they doing? (e.g., slowly sipping coffee while turning pages)"
+                    value={promptData.action}
+                    onChange={(e) => updateField("action", e.target.value)}
+                  />
+                </div>
+
+                {/* Speech */}
+                <div className="space-y-2">
+                  <Label htmlFor="speech">Character Speech (Optional)</Label>
+                  <Textarea
+                    id="speech"
+                    placeholder="What does the character say? (e.g., Hello there! or Привет!)"
+                    value={promptData.speech}
+                    onChange={(e) => updateField("speech", e.target.value)}
+                  />
+                </div>
+
+                              {/* Language */}
+              <div className="space-y-2">
+                <Label htmlFor="language">Speech Language</Label>
+                <div className="space-y-2">
+                  <input
+                    id="language"
+                    type="text"
+                    placeholder="Enter language (e.g., English, Russian, Spanish...)"
+                    value={promptData.language}
+                    onChange={(e) => updateField("language", e.target.value)}
+                    className="w-full px-3 py-2 border border-input bg-background rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
+                  />
+                  <div className="flex flex-wrap gap-2">
+                    <Label className="text-xs text-muted-foreground">Quick select:</Label>
+                    {PRESET_OPTIONS.languages.map((language) => (
+                      <Badge
+                        key={language}
+                        variant={promptData.language === language ? "default" : "outline"}
+                        className="cursor-pointer text-xs"
+                        onClick={() => updateField("language", language)}
+                      >
+                        {language}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+                {/* Style Selection */}
+                <div className="space-y-2">
+                  <Label>Visual Style</Label>
+                  <div className="flex flex-wrap gap-2">
+                    {PRESET_OPTIONS.styles.map((style) => (
+                      <Badge
+                        key={style}
+                        variant={promptData.style === style ? "default" : "outline"}
+                        className="cursor-pointer"
+                        onClick={() => updateField("style", style)}
+                      >
+                        {style}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Camera Angle */}
+                <div className="space-y-2">
+                  <Label>Camera Angle</Label>
+                  <div className="flex flex-wrap gap-2">
+                    {PRESET_OPTIONS.cameras.map((camera) => (
+                      <Badge
+                        key={camera}
+                        variant={promptData.camera === camera ? "default" : "outline"}
+                        className="cursor-pointer"
+                        onClick={() => updateField("camera", camera)}
+                      >
+                        {camera}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Lighting */}
+                <div className="space-y-2">
+                  <Label>Lighting</Label>
+                  <div className="flex flex-wrap gap-2">
+                    {PRESET_OPTIONS.lighting.map((light) => (
+                      <Badge
+                        key={light}
+                        variant={promptData.lighting === light ? "default" : "outline"}
+                        className="cursor-pointer"
+                        onClick={() => updateField("lighting", light)}
+                      >
+                        {light}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Mood */}
+                <div className="space-y-2">
+                  <Label>Mood</Label>
+                  <div className="flex flex-wrap gap-2">
+                    {PRESET_OPTIONS.moods.map((mood) => (
+                      <Badge
+                        key={mood}
+                        variant={promptData.mood === mood ? "default" : "outline"}
+                        className="cursor-pointer"
+                        onClick={() => updateField("mood", mood)}
+                      >
+                        {mood}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Duration */}
+                <div className="space-y-2">
+                  <Label>Duration</Label>
+                  <div className="flex flex-wrap gap-2">
+                    {PRESET_OPTIONS.durations.map((duration) => (
+                      <Badge
+                        key={duration}
+                        variant={promptData.duration === duration ? "default" : "outline"}
+                        className="cursor-pointer"
+                        onClick={() => updateField("duration", duration)}
+                      >
+                        {duration}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+
+
+
+                {/* Quick Examples */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Quick Examples:</Label>
+                  <div className="flex flex-wrap gap-2">
+                    {EXAMPLE_PROMPTS.map((example, index) => (
+                      <Button
+                        key={index}
+                        onClick={() => loadExample(example)}
+                        variant="outline"
+                        size="sm"
+                        className="text-xs"
+                      >
+                        {example.scene.split(' ').slice(0, 3).join(' ')}...
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Right: Generated Prompt Preview */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Copy className="w-5 h-5" />
                   Generated Prompt
                   <Badge variant="secondary" className="ml-auto text-xs">
-                    Editable
+                    Preview
                   </Badge>
                 </CardTitle>
               </CardHeader>
@@ -509,7 +527,7 @@ export function SimpleVeo3Generator() {
                       value={generatedPrompt}
                       onChange={(e) => setGeneratedPrompt(e.target.value)}
                       placeholder="Your generated prompt will appear here, or type your own prompt..."
-                      className="min-h-[300px] font-mono text-sm resize-none pr-20"
+                      className="min-h-[400px] font-mono text-sm resize-none pr-20"
                     />
                     <div className="absolute top-2 right-2 flex gap-1">
                       <Button
@@ -535,12 +553,58 @@ export function SimpleVeo3Generator() {
                     </div>
                   </div>
 
+                  {/* Action Buttons */}
+                  <div className="space-y-3">
+                    {/* Quick Actions */}
+                    <div className="flex gap-2">
+                      <Button onClick={randomizePrompt} variant="outline" className="flex-1">
+                        <Shuffle className="w-4 h-4 mr-2" />
+                        Randomize All
+                      </Button>
+                      <Button onClick={clearAll} variant="outline" className="flex-1">
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        Clear All
+                      </Button>
+                    </div>
+
+                    {/* Navigate to AI Enhancement - Large and Prominent */}
+                    <Button 
+                      onClick={() => {
+                        const enhanceTab = document.querySelector('[value="enhance"]') as HTMLElement;
+                        enhanceTab?.click();
+                      }}
+                      disabled={!generatedPrompt}
+                      size="lg"
+                      className="w-full h-16 text-lg font-bold bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white shadow-lg transform hover:scale-[1.02] transition-all duration-200"
+                    >
+                      <Sparkles className="w-6 h-6 mr-3" />
+                      Continue to AI Enhancement →
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        {/* Tab 2: AI Enhancement */}
+        <TabsContent value="enhance">
+          <div className="max-w-4xl mx-auto">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Sparkles className="w-5 h-5 text-purple-600" />
+                  AI Enhanced Prompt
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
                   {/* Main AI Enhance Button - Large and Prominent */}
                   <Button 
                     onClick={enhancePrompt}
                     disabled={!generatedPrompt || isEnhancing}
                     size="lg"
-                    className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-lg"
+                    className="w-full h-16 text-lg font-bold bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg transform hover:scale-[1.02] transition-all duration-200"
                   >
                     {isEnhancing ? (
                       <>
@@ -614,27 +678,14 @@ export function SimpleVeo3Generator() {
                       <p className="text-sm text-red-600">{enhanceError}</p>
                     </div>
                   )}
-                </div>
-              </CardContent>
-            </Card>
 
-            {/* AI Enhanced Prompt */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Sparkles className="w-5 h-5 text-purple-600" />
-                  AI Enhanced Prompt
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {/* Textarea with Copy button in top-right */}
+                  {/* AI Enhanced Prompt Display */}
                   <div className="relative">
                     <Textarea
                       value={enhancedPrompt}
                       readOnly
                       placeholder="Click 'Enhance with AI' to generate a professional, detailed prompt..."
-                      className="min-h-[400px] font-mono text-sm resize-none whitespace-pre-wrap pr-12"
+                      className="min-h-[500px] font-mono text-sm resize-none whitespace-pre-wrap pr-12"
                     />
                     <Button
                       size="sm"
