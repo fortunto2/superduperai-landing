@@ -7,7 +7,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Copy, Shuffle, Sparkles, Loader2, Trash2, Settings, ChevronDown, ChevronUp } from "lucide-react";
+import { Copy, Shuffle, Sparkles, Loader2, Trash2, Settings, ChevronDown, ChevronUp, BookOpen, ExternalLink } from "lucide-react";
+import Link from "next/link";
 
 interface PromptData {
   scene: string;
@@ -300,6 +301,30 @@ export function SimpleVeo3Generator() {
 
   return (
     <div className="max-w-6xl mx-auto">
+      {/* VEO3 Info Banner */}
+      <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+        <div className="flex items-start gap-3">
+          <div className="flex-shrink-0 w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
+            <BookOpen className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+          </div>
+          <div className="flex-1">
+            <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-1">
+              Master VEO3 Video Generation
+            </h3>
+            <p className="text-sm text-blue-700 dark:text-blue-300 mb-2">
+              Learn professional prompting techniques and best practices for Google&apos;s most advanced AI video model.
+            </p>
+            <Link 
+              href="/en/blog/veo3" 
+              className="inline-flex items-center text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 transition-colors"
+            >
+              Read Complete VEO3 Guide
+              <ExternalLink className="w-3 h-3 ml-1" />
+            </Link>
+          </div>
+        </div>
+      </div>
+
       <Tabs defaultValue="builder" className="space-y-6">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="builder">
