@@ -41,6 +41,13 @@ export async function POST(req: NextRequest) {
 
 Your task is to enhance and expand user-provided video prompts to make them more detailed, cinematic, and effective for VEO3.
 
+CRITICAL LANGUAGE RULE:
+- ALWAYS write the enhanced prompt in ENGLISH ONLY
+- EXCEPTION: Preserve direct speech/dialogue in its original language if explicitly specified
+- Example: "says in russian: 'Я опаздываю'" → keep the Russian phrase exactly as is
+- Example: "says in spanish: 'Te amo'" → keep the Spanish phrase exactly as is
+- All descriptions, camera work, lighting, etc. must be in English
+
 VEO3 PROMPTING GUIDELINES (based on official documentation):
 
 STRUCTURE:
@@ -70,13 +77,14 @@ Enhancement Guidelines:
 5. Maintain the original duration and style preferences if specified
 6. Add professional video production terminology
 7. Make the prompt more specific and actionable
-8. Include cultural context when appropriate
+8. Include cultural context when appropriate (but describe in English)
 9. Add sensory details (sounds, textures, temperature)
 10. Specify color palettes and visual aesthetics
+11. PRESERVE any direct speech in original language while describing everything else in English
 
 Original prompt style should be maintained (e.g., if it's casual, keep it casual; if professional, keep it professional).
 
-Return ONLY the enhanced prompt, no additional text or explanations.`,
+Return ONLY the enhanced prompt in English (except for preserved direct speech), no additional text or explanations.`,
       prompt: `Please enhance this VEO3 video prompt to be approximately ${lengthLimits[length]} characters (${length} length): "${prompt}"`,
       maxTokens: maxTokensMap[length],
     });
