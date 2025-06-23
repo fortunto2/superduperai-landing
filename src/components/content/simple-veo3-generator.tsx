@@ -314,7 +314,8 @@ export function SimpleVeo3Generator() {
       });
       
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
       }
       
       const data = await response.json();
@@ -323,15 +324,32 @@ export function SimpleVeo3Generator() {
         setEnhancedPrompt(data.enhancedPrompt);
         setEnhancementInfo({
           model: data.model || selectedModel,
-          modelName: data.modelName,
-          length: `${data.customLimit || customCharacterLimit} chars`,
-          actualCharacters: data.enhancedPrompt.length,
+          modelName: data.model,
+          length: `${data.characterLimit || customCharacterLimit} chars`,
+          actualCharacters: data.characterCount || data.enhancedPrompt.length,
           targetCharacters: data.targetCharacters || customCharacterLimit
         });
         
+        // Log structured output metadata for debugging
+        if (data.metadata) {
+          console.log('Structured output metadata:', {
+            focusTypes: data.focusTypes,
+            hasCharacterSpeech: data.metadata.hasCharacterSpeech,
+            speechExtracted: data.metadata.speechExtracted,
+            focusEnhancements: data.metadata.focusEnhancements,
+            structuredFields: Object.keys(data.metadata.structuredData || {})
+          });
+        }
+        
         // Save to history - use the original basic prompt for history
         const basicPromptForHistory = activeTab === 'enhance' && enhancedPrompt.trim() ? promptToEnhance : generatedPrompt;
-        saveToHistory(basicPromptForHistory, data.enhancedPrompt, `${data.customLimit || customCharacterLimit} chars`, data.model || selectedModel, promptData);
+        saveToHistory(
+          basicPromptForHistory, 
+          data.enhancedPrompt, 
+          `${data.characterLimit || customCharacterLimit} chars`, 
+          data.model || selectedModel, 
+          promptData
+        );
       } else {
         throw new Error('No enhanced prompt received');
       }
