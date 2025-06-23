@@ -114,6 +114,21 @@ const enhancePromptSchema = z.object({
       speech: z.string()
     })).optional(),
     language: z.string().optional()
+  }).optional(),
+  // New: Moodboard images support
+  moodboard: z.object({
+    images: z.array(z.object({
+      id: z.string(),
+      url: z.string().url('Invalid image URL').optional(), // Make URL optional
+      base64: z.string().optional(), // Alternative to URL
+      tags: z.array(z.enum(['character', 'style', 'background', 'lighting', 'mood', 'action'])),
+      description: z.string().optional(),
+      weight: z.number().min(0.1).max(1.0).default(1.0) // Influence weight
+    })).refine(
+      (images) => images.every(img => img.url || img.base64),
+      { message: "Each image must have either url or base64" }
+    ),
+    enabled: z.boolean().default(false)
   }).optional()
 });
 
@@ -130,15 +145,71 @@ export async function POST(req: NextRequest) {
 
     // Parse and validate request body
     const body = await req.json();
-    const { prompt, customLimit, model, focusType, includeAudio, promptData } = enhancePromptSchema.parse(body);
+    const { prompt, customLimit, model, focusType, includeAudio, promptData, moodboard } = enhancePromptSchema.parse(body);
     
-    console.log('Enhancement request:', { prompt: prompt.substring(0, 100) + '...', customLimit, model, focusType, includeAudio });
+    console.log('Enhancement request:', { 
+      prompt: prompt.substring(0, 100) + '...', 
+      customLimit, 
+      model, 
+      focusType, 
+      includeAudio,
+      moodboardEnabled: moodboard?.enabled || false,
+      imageCount: moodboard?.images?.length || 0
+    });
 
     // Process focus types
     const focusTypes = focusType ? focusType.split(',').map(type => type.trim()) : [];
     
     // Check if we have characters with speech
     const hasCharacterSpeech = includeAudio && promptData?.characters?.some(char => char.speech.trim()) || false;
+
+    // Process moodboard images
+    let moodboardContext = '';
+    let moodboardImages: Array<{ type: 'image'; image: string }> = [];
+    
+    if (moodboard?.enabled && moodboard.images?.length > 0) {
+      // Group images by tags for better organization
+      const imagesByTag: Record<string, Array<{ id: string; description?: string; weight: number; index: number; tags: string[] }>> = {};
+      
+      moodboard.images.forEach((img, index) => {
+        img.tags.forEach(tag => {
+          if (!imagesByTag[tag]) imagesByTag[tag] = [];
+          imagesByTag[tag].push({
+            ...img,
+            index: index + 1
+          });
+        });
+      });
+      
+      // Build moodboard context for prompt
+      const tagDescriptions = {
+        character: 'character appearance, expressions, clothing, and personality traits',
+        style: 'visual style, artistic approach, cinematography, and overall aesthetic',
+        background: 'environments, settings, locations, and background elements',
+        lighting: 'lighting conditions, mood, time of day, and atmospheric effects',
+        mood: 'emotional tone, atmosphere, and feeling',
+        action: 'movements, activities, dynamics, and interactions'
+      };
+      
+      moodboardContext = '\n\nMOODBOARD VISUAL REFERENCES:\n';
+      moodboardContext += 'The user has provided visual references to guide the enhancement. PRIORITIZE incorporating these visual elements prominently into the appropriate VEO3 sections:\n\n';
+      
+      Object.entries(imagesByTag).forEach(([tag, images]) => {
+        moodboardContext += `${tag.toUpperCase()} REFERENCES (${images.length} image${images.length > 1 ? 's' : ''}):\n`;
+        images.forEach(img => {
+          moodboardContext += `- Image ${img.index}${img.description ? `: ${img.description}` : ''} (weight: ${img.weight}) - INTEGRATE PROMINENTLY\n`;
+        });
+        moodboardContext += `MANDATORY: Incorporate specific visual elements from these references into ${tagDescriptions[tag as keyof typeof tagDescriptions]} sections. Reference the moodboard images directly in your descriptions.\n\n`;
+      });
+      
+      // Prepare images for multimodal API call - ensure we have valid image data
+      moodboardImages = moodboard.images
+        .filter(img => img.url || img.base64) // Only include images with valid data
+        .map(img => ({
+          type: 'image' as const,
+          image: img.url || `data:image/jpeg;base64,${img.base64}`
+        }));
+    }
 
     // Extract character speech for context
     let characterSpeechInfo = '';
@@ -177,13 +248,14 @@ export async function POST(req: NextRequest) {
     // Create dynamic schema based on settings
     const veo3Schema = createVEO3Schema(focusTypes, includeAudio, hasCharacterSpeech);
 
-    const enhancementPrompt = `Enhance this VEO3 video prompt using structured output format. Target length: ${targetChars} characters (max: ${maxChars}): "${prompt}"${focusInstruction}${characterSpeechInfo}
+    const enhancementPrompt = `Enhance this VEO3 video prompt using structured output format. Target length: ${targetChars} characters (max: ${maxChars}): "${prompt}"${focusInstruction}${characterSpeechInfo}${moodboardContext}
 
 CRITICAL REQUIREMENTS:
 1. LANGUAGE: Write everything in ENGLISH except preserve direct speech in original language
 2. LENGTH: Stay under ${targetChars} characters total across all sections
 3. STRUCTURE: Use the exact VEO3 format with all required sections
 4. QUALITY: Professional video production terminology and specific details
+${moodboard?.enabled ? '5. VISUAL REFERENCES: Incorporate visual elements from the provided moodboard images into relevant sections' : ''}
 
 VEO3 ENHANCEMENT GUIDELINES:
 - Scene Description: Overall action, participants, atmosphere
@@ -195,7 +267,16 @@ VEO3 ENHANCEMENT GUIDELINES:
 - Color Palette: Dominant colors and visual tones
 ${includeAudio ? '- Audio Cue: Sound design, dialogue, ambient sounds, music' : ''}
 
-SMART LENGTH DISTRIBUTION:
+${moodboard?.enabled ? `MOODBOARD INTEGRATION INSTRUCTIONS:
+- Analyze the provided ${moodboard.images?.length || 0} reference image(s)
+- Extract visual elements relevant to each VEO3 section
+- Prioritize images with higher weight values
+- Maintain consistency with the original prompt intent
+- Use specific visual details from the references
+- IMPORTANT: Make direct references to "the moodboard image" or "reference image" in your descriptions
+- MANDATORY: Transform at least 30% of each tagged section to reflect the visual references
+
+` : ''}SMART LENGTH DISTRIBUTION:
 ${focusTypes.includes('character') ? '- Allocate 30% to character descriptions and main subject' : ''}
 ${focusTypes.includes('action') ? '- Allocate 25% each to scene description and camera movement' : ''}
 ${focusTypes.includes('cinematic') ? '- Allocate 25% to camera movement, 20% each to visual style and lighting' : ''}
@@ -210,17 +291,18 @@ ENHANCEMENT PRINCIPLES:
 6. Add cultural context (described in English)
 7. Include specific color and lighting details
 8. Preserve direct speech in original language
+${moodboard?.enabled ? '9. Incorporate visual references from moodboard images' : ''}
 
 Generate a structured enhancement that follows VEO3 format exactly.`;
 
     // Configure model for structured output
     const modelInstance = azure(modelConfig.deploymentName);
     
-    const result = await generateObject({
-      model: modelInstance,
-      maxTokens: maxTokens,
-      temperature: 0.7, // Add some creativity but keep it controlled
-      system: `You are an expert VEO3 video prompt engineer with structured output capabilities. 
+    // Prepare messages for multimodal input
+    const messages = [
+      {
+        role: 'system' as const,
+        content: `You are an expert VEO3 video prompt engineer with structured output capabilities. 
 
 CRITICAL INSTRUCTIONS:
 1. Generate content that EXACTLY fits the character limit: ${targetChars} characters
@@ -230,16 +312,31 @@ CRITICAL INSTRUCTIONS:
 5. Apply focus-specific enhancements as requested
 6. Include character count tracking
 7. Extract character speech information if present
+${moodboard?.enabled ? '8. Analyze provided moodboard images and incorporate visual elements' : ''}
 
 FOCUS STRATEGY APPLICATION:
 ${focusTypes.map(type => `- ${type.toUpperCase()}: ${focusInstructions[type as keyof typeof focusInstructions]}`).join('\n')}
 
-Your output will be automatically formatted for VEO3 usage.`,
-      prompt: enhancementPrompt,
+Your output will be automatically formatted for VEO3 usage.`
+      },
+      {
+        role: 'user' as const,
+        content: moodboardImages.length > 0 ? [
+          { type: 'text' as const, text: enhancementPrompt },
+          ...moodboardImages
+        ] : enhancementPrompt
+      }
+    ];
+    
+    const result = await generateObject({
+      model: modelInstance,
+      maxTokens: maxTokens,
+      temperature: 0.7, // Add some creativity but keep it controlled
+      messages,
       schema: veo3Schema,
       // Explicitly specify schema name and description for better LLM guidance
       schemaName: 'VEO3VideoPromptEnhancement',
-      schemaDescription: `Enhanced VEO3 video prompt with dynamic structured output. Contains ${includeAudio ? 'audio-enabled' : 'audio-disabled'} sections${hasCharacterSpeech ? ' with character speech extraction' : ''}${focusTypes.length > 0 ? ` and focus enhancements for: ${focusTypes.join(', ')}` : ''}. Target length: ${targetChars} characters.`
+      schemaDescription: `Enhanced VEO3 video prompt with dynamic structured output. Contains ${includeAudio ? 'audio-enabled' : 'audio-disabled'} sections${hasCharacterSpeech ? ' with character speech extraction' : ''}${focusTypes.length > 0 ? ` and focus enhancements for: ${focusTypes.join(', ')}` : ''}${moodboard?.enabled ? ` with ${moodboard.images?.length || 0} moodboard image references` : ''}. Target length: ${targetChars} characters.`
     });
 
     // Format the structured output back to VEO3 format
@@ -286,6 +383,17 @@ LIGHTING/MOOD: ${structuredData.lighting_mood}`;
           action: focusTypes.includes('action') ? structuredData.action_sequence : null,
           cinematic: focusTypes.includes('cinematic') ? structuredData.cinematography_notes : null,
           safe: focusTypes.includes('safe') ? structuredData.safety_compliance : null
+        },
+        moodboard: moodboard?.enabled ? {
+          enabled: true,
+          imageCount: moodboard.images?.length || 0,
+          tags: [...new Set(moodboard.images?.flatMap(img => img.tags) || [])],
+          totalWeight: moodboard.images?.reduce((sum, img) => sum + img.weight, 0) || 0
+        } : {
+          enabled: false,
+          imageCount: 0,
+          tags: [],
+          totalWeight: 0
         }
       }
     };
