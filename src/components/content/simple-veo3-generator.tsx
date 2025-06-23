@@ -125,6 +125,7 @@ export function SimpleVeo3Generator() {
     actualCharacters: number;
     targetCharacters: number;
   } | null>(null);
+  const [activeTab, setActiveTab] = useState("builder");
 
   // Set language based on locale after component mount
   useEffect(() => {
@@ -390,7 +391,7 @@ export function SimpleVeo3Generator() {
         </div>
       </div>
 
-      <Tabs defaultValue="builder" className="space-y-6">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="builder">
             <Shuffle className="w-4 h-4 mr-2" />
@@ -715,8 +716,13 @@ export function SimpleVeo3Generator() {
                     {/* Navigate to AI Enhancement - Large and Prominent */}
                     <Button 
                       onClick={() => {
-                        const enhanceTab = document.querySelector('[value="enhance"]') as HTMLElement;
-                        enhanceTab?.click();
+                        setActiveTab("enhance");
+                        // Automatically trigger enhancement after tab switch
+                        setTimeout(() => {
+                          if (generatedPrompt && !isEnhancing) {
+                            enhancePrompt();
+                          }
+                        }, 100);
                       }}
                       disabled={!generatedPrompt}
                       size="lg"
@@ -938,10 +944,7 @@ export function SimpleVeo3Generator() {
                 <p className="text-muted-foreground text-center mb-4">
                   Generate and enhance prompts to see them here
                 </p>
-                <Button variant="outline" onClick={() => {
-                  const builderTab = document.querySelector('[value="builder"]') as HTMLElement;
-                  builderTab?.click();
-                }}>
+                <Button variant="outline" onClick={() => setActiveTab("builder")}>
                   Start Building
                 </Button>
               </CardContent>
