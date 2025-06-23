@@ -1,0 +1,94 @@
+---
+title: "Free VEO3 Viral Prompt Generator - Create Trending AI Videos"
+description: "Generate viral-ready video prompts for Google's VEO3 AI. Free tool with viral templates, complex prompt builder, and proven techniques for consistent trending content."
+date: "2025-01-20"
+slug: "veo3-prompt-generator"
+locale: "en"
+featured: true
+seo:
+  title: "Free VEO3 Viral Prompt Generator | Create Trending AI Videos | SuperDuperAI"
+  description: "Generate viral-ready prompts for Google's VEO3 AI video model. Free tool with viral templates, complex prompt structures, and proven techniques for trending content."
+  keywords: ["VEO3 viral prompts", "free VEO3 prompt tool", "VEO3 trending prompts", "viral prompt generator", "Google VEO3 prompts"]
+---
+
+---
+title: "Free VEO3 Viral Prompt Generator - Create Trending AI Videos"
+description: "Generate viral-ready video prompts for Google's VEO3 AI. Free tool with viral templates, complex prompt builder, and proven techniques for consistent trending content."
+date: "2025-01-20"
+slug: "veo3-prompt-generator"
+locale: "en"
+featured: true
+seo:
+  title: "Free VEO3 Viral Prompt Generator | Create Trending AI Videos | SuperDuperAI"
+  description: "Generate viral-ready prompts for Google's VEO3 AI video model. Free tool with viral templates, complex prompt structures, and proven techniques for trending content."
+  keywords: ["VEO3 viral prompts", "free VEO3 prompt tool", "VEO3 trending prompts", "viral prompt generator", "Google VEO3 prompts"]
+---
+
+# Free VEO3 Viral Prompt Generator
+
+Create viral-ready prompts for Google's VEO3 AI video generator. Build complex, detailed prompts with multiple characters, dialogue, and professional elements that consistently produce trending content.
+
+## 🔥 What Makes VEO3 Videos Go Viral
+
+- **Multiple Characters** - Add several characters with unique names, descriptions, and dialogue
+- **Multi-Language Support** - Write dialogue in your native language, output optimized English prompts
+- **Professional Audio** - Specify background sounds, music, and character voices
+- **Visual Complexity** - Rich scene details with professional camera work and lighting
+- **Trending Elements** - Current viral aesthetics and platform-specific optimizations
+
+## 🚀 Key Features (100% Free)
+
+### Advanced Character System
+- **Multiple Characters** - Add unlimited characters to your scenes
+- **Character Details** - Name, physical description, personality traits
+- **Dialogue & Speech** - What each character says in any language
+- **Character Interactions** - How characters relate and interact
+
+### Professional Prompt Building
+- **Viral Templates** - Pre-built trending content categories
+- **AI Enhancement** - GPT-4.1 powered prompt optimization
+- **Real-time Preview** - See your prompt as you build it
+- **Multi-platform Ready** - Optimized for TikTok, YouTube Shorts, Instagram Reels
+
+### Smart Generation System
+- **Auto-completion** - Intelligent suggestions for scenes and characters
+- **Length Optimization** - Short (500), Medium (1000), Long (2000) character options
+- **History Tracking** - Save and reuse your best prompts
+- **One-click Copy** - Ready to paste into VEO3
+
+## 🎬 How It Works
+
+1. **Describe Your Scene** - Set the location and atmosphere
+2. **Add Characters** - Create detailed characters with names and dialogue
+3. **Choose Style** - Select camera angles, lighting, and mood
+4. **Enhance with AI** - Let GPT-4.1 optimize your prompt for maximum viral potential
+5. **Copy & Create** - Use in [Google VEO3](https://labs.google/fx/tools/video-fx) to generate your video
+
+## 💡 Pro Tips for Viral Success
+
+- **Start with Hooks** - First 3 seconds determine if viewers keep watching
+- **Layer Details** - Complex prompts create more engaging content
+- **Use Trending Aesthetics** - Match current popular visual styles
+- **Add Emotional Triggers** - Content that evokes feelings gets shared more
+
+## 🔗 Related Tools
+
+Master the complete viral content workflow:
+
+- [AI Image Generator](/en/tool/image-generator "Create viral thumbnails and concept art") - Design eye-catching thumbnails for your VEO3 videos
+- [Agent Director](/en/tool/agent-director "Plan viral video campaigns") - Plan multi-video viral VEO3 campaigns  
+- [VEO3 Complete Guide](/en/blog/veo3 "Master VEO3 for viral success") - Deep dive into viral VEO3 prompting techniques
+
+## ❓ Quick FAQ
+
+**Is this really free forever?**
+Yes! No limits, no signup required. We keep it free while others charge $50-200/month.
+
+**How detailed should my prompts be?**
+The more detailed, the better. Complex prompts with 800-2000 characters consistently produce better VEO3 results.
+
+**Can I use multiple characters?**
+Absolutely! Our tool specializes in multi-character scenes with individual dialogue and interactions.
+
+**Does it work with other AI video platforms?**
+Yes! While optimized for VEO3, prompts work great with Runway, Pika Labs, and other AI video generators. 

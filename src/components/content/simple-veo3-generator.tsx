@@ -21,7 +21,6 @@ interface PromptData {
   scene: string;
   style: string;
   camera: string;
-  duration: string;
   characters: Character[];
   action: string;
   lighting: string;
@@ -34,7 +33,7 @@ const PRESET_OPTIONS = {
   cameras: ["Close-up", "Wide shot", "Over-the-shoulder", "Drone view", "Handheld", "Static"],
   lighting: ["Natural", "Golden hour", "Blue hour", "Dramatic", "Soft", "Neon", "Candlelight"],
   moods: ["Peaceful", "Energetic", "Mysterious", "Romantic", "Tense", "Joyful", "Melancholic"],
-  durations: ["5 seconds", "10 seconds", "30 seconds", "1 minute", "2 minutes"],
+
   languages: ["English", "Spanish", "French", "German", "Italian", "Russian", "Japanese", "Chinese"]
 };
 
@@ -53,7 +52,6 @@ const EXAMPLE_PROMPTS: PromptData[] = [
     camera: "Wide shot",
     lighting: "Golden hour",
     mood: "Peaceful",
-    duration: "30 seconds"
   },
   {
     scene: "A busy street market",
@@ -68,8 +66,7 @@ const EXAMPLE_PROMPTS: PromptData[] = [
     style: "Documentary",
     camera: "Close-up",
     lighting: "Natural",
-    mood: "Energetic",
-    duration: "10 seconds"
+    mood: "Energetic"
   },
   {
     scene: "A cozy coffee shop",
@@ -84,14 +81,13 @@ const EXAMPLE_PROMPTS: PromptData[] = [
     style: "Realistic",
     camera: "Over-the-shoulder",
     lighting: "Soft",
-    mood: "Peaceful",
-    duration: "1 minute"
+    mood: "Peaceful"
   }
 ];
 
 export function SimpleVeo3Generator() {
   const [promptData, setPromptData] = useState<PromptData>({
-    scene: "", style: "", camera: "", duration: "",
+    scene: "", style: "", camera: "",
     characters: [{
       id: "default",
       name: "",
@@ -105,7 +101,7 @@ export function SimpleVeo3Generator() {
   const [enhancedPrompt, setEnhancedPrompt] = useState("");
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [enhanceError, setEnhanceError] = useState("");
-  const [promptLength, setPromptLength] = useState<'short' | 'medium' | 'long'>('medium');
+  const [customCharacterLimit, setCustomCharacterLimit] = useState(4000);
   const [selectedModel] = useState<'gpt-4.1'>('gpt-4.1');
   const [promptHistory, setPromptHistory] = useState<Array<{
     id: string;
@@ -126,6 +122,8 @@ export function SimpleVeo3Generator() {
     targetCharacters: number;
   } | null>(null);
   const [activeTab, setActiveTab] = useState("builder");
+  const [selectedFocusTypes, setSelectedFocusTypes] = useState<Array<'character' | 'action' | 'cinematic' | 'safe'>>(['safe']); // Safe by default
+  const [includeAudio, setIncludeAudio] = useState(true); // Audio enabled by default
 
   // Set language based on locale after component mount
   useEffect(() => {
@@ -208,8 +206,15 @@ export function SimpleVeo3Generator() {
     setPromptData(historyItem.promptData);
     setGeneratedPrompt(historyItem.basicPrompt);
     setEnhancedPrompt(historyItem.enhancedPrompt);
+    // Try to extract character limit from length string (e.g., "1000 chars")
     if (historyItem.length) {
-      setPromptLength(historyItem.length as 'short' | 'medium' | 'long');
+      const match = historyItem.length.match(/(\d+)/);
+      if (match) {
+        const charLimit = parseInt(match[1]);
+        if (charLimit >= 200 && charLimit <= 10000) {
+          setCustomCharacterLimit(charLimit);
+        }
+      }
     }
   };
 
@@ -272,13 +277,24 @@ export function SimpleVeo3Generator() {
     if (data.style) parts.push(`${data.style.toLowerCase()} style`);
     if (data.lighting) parts.push(`${data.lighting.toLowerCase()} lighting`);
     if (data.mood) parts.push(`${data.mood.toLowerCase()} mood`);
-    if (data.duration) parts.push(`Duration: ${data.duration}`);
+
     
     return parts.join(', ') + '.';
   };
 
-  const enhancePrompt = async () => {
-    if (!generatedPrompt.trim()) return;
+  const enhancePrompt = async (focusType?: string) => {
+    // Determine which prompt to enhance based on current tab and available content
+    let promptToEnhance = '';
+    
+    if (activeTab === 'enhance' && enhancedPrompt.trim()) {
+      // If we're on the enhance tab and there's already enhanced content, use that
+      promptToEnhance = enhancedPrompt.trim();
+    } else if (generatedPrompt.trim()) {
+      // Otherwise use the generated prompt from first tab
+      promptToEnhance = generatedPrompt.trim();
+    } else {
+      return; // No prompt to enhance
+    }
     
     setIsEnhancing(true);
     setEnhanceError("");
@@ -288,9 +304,12 @@ export function SimpleVeo3Generator() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          prompt: generatedPrompt,
-          length: promptLength,
-          model: selectedModel
+          prompt: promptToEnhance,
+          customLimit: customCharacterLimit,
+          model: selectedModel,
+          focusType: focusType, // Add focus type for specialized enhancement
+          includeAudio: includeAudio,
+          promptData: promptData // Send character data for speech extraction
         }),
       });
       
@@ -305,13 +324,14 @@ export function SimpleVeo3Generator() {
         setEnhancementInfo({
           model: data.model || selectedModel,
           modelName: data.modelName,
-          length: promptLength,
+          length: `${data.customLimit || customCharacterLimit} chars`,
           actualCharacters: data.enhancedPrompt.length,
-          targetCharacters: data.targetCharacters || 1000
+          targetCharacters: data.targetCharacters || customCharacterLimit
         });
         
-        // Save to history
-        saveToHistory(generatedPrompt, data.enhancedPrompt, promptLength, data.model || selectedModel, promptData);
+        // Save to history - use the original basic prompt for history
+        const basicPromptForHistory = activeTab === 'enhance' && enhancedPrompt.trim() ? promptToEnhance : generatedPrompt;
+        saveToHistory(basicPromptForHistory, data.enhancedPrompt, `${data.customLimit || customCharacterLimit} chars`, data.model || selectedModel, promptData);
       } else {
         throw new Error('No enhanced prompt received');
       }
@@ -320,6 +340,26 @@ export function SimpleVeo3Generator() {
       setEnhanceError(error instanceof Error ? error.message : 'Failed to enhance prompt');
     } finally {
       setIsEnhancing(false);
+    }
+  };
+
+  const toggleFocusType = (focusType: 'character' | 'action' | 'cinematic' | 'safe') => {
+    setSelectedFocusTypes(prev => {
+      if (prev.includes(focusType)) {
+        return prev.filter(type => type !== focusType);
+      } else {
+        return [...prev, focusType];
+      }
+    });
+  };
+
+  const enhanceWithSelectedFocus = async () => {
+    if (selectedFocusTypes.length === 0) {
+      // No focus types selected, use default enhancement
+      await enhancePrompt();
+    } else {
+      // Use selected focus types (pass as comma-separated string)
+      await enhancePrompt(selectedFocusTypes.join(','));
     }
   };
 
@@ -342,7 +382,7 @@ export function SimpleVeo3Generator() {
       camera: PRESET_OPTIONS.cameras[Math.floor(Math.random() * PRESET_OPTIONS.cameras.length)],
       lighting: PRESET_OPTIONS.lighting[Math.floor(Math.random() * PRESET_OPTIONS.lighting.length)],
       mood: PRESET_OPTIONS.moods[Math.floor(Math.random() * PRESET_OPTIONS.moods.length)],
-      duration: PRESET_OPTIONS.durations[Math.floor(Math.random() * PRESET_OPTIONS.durations.length)]
+
     };
     setPromptData(randomData);
   };
@@ -355,7 +395,7 @@ export function SimpleVeo3Generator() {
 
   const clearAll = () => {
     const emptyData: PromptData = {
-      scene: "", style: "", camera: "", duration: "",
+      scene: "", style: "", camera: "",
       characters: [], action: "", lighting: "", mood: "",
       language: "English"
     };
@@ -493,15 +533,28 @@ export function SimpleVeo3Generator() {
                           />
                         </div>
                         
-                        <div>
-                          <Label htmlFor={`char-speech-${character.id}`} className="text-xs">Speech (Optional)</Label>
+                        <div className="relative">
+                          <div className="flex items-center gap-2">
+                            <Label htmlFor={`char-speech-${character.id}`} className="text-xs">Speech/Dialogue</Label>
+                            {character.speech && (
+                              <Badge variant="secondary" className="text-xs px-2 py-0.5">
+                                🎙️ Has Voice
+                              </Badge>
+                            )}
+                          </div>
                           <Textarea
                             id={`char-speech-${character.id}`}
                             placeholder="What they say (e.g., Hello there! or Привет!)"
                             value={character.speech}
                             onChange={(e) => updateCharacter(character.id, "speech", e.target.value)}
-                            className="min-h-[50px] text-sm"
+                            className={`min-h-[50px] text-sm ${character.speech ? 'border-blue-200 bg-blue-50/30' : ''}`}
                           />
+                          {character.speech && (
+                            <div className="mt-1 text-xs text-blue-600 flex items-center gap-1">
+                              <span>🔊</span>
+                              <span>This dialogue will be highlighted in the enhanced prompt</span>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -547,110 +600,119 @@ export function SimpleVeo3Generator() {
                 </div>
               </div>
 
-                {/* Style Selection */}
+                {/* Visual Style */}
                 <div className="space-y-2">
-                  <Label>Visual Style</Label>
-                  <div className="flex flex-wrap gap-2">
-                    {PRESET_OPTIONS.styles.map((style) => (
-                      <Badge
-                        key={style}
-                        variant={promptData.style === style ? "default" : "outline"}
-                        className="cursor-pointer"
-                        onClick={() => updateField("style", style)}
-                      >
-                        {style}
-                      </Badge>
-                    ))}
+                  <Label htmlFor="style">Visual Style</Label>
+                  <div className="space-y-2">
+                    <input
+                      id="style"
+                      type="text"
+                      placeholder="Enter visual style (e.g., Cinematic, Documentary, Anime...)"
+                      value={promptData.style}
+                      onChange={(e) => updateField("style", e.target.value)}
+                      className="w-full px-3 py-2 border border-input bg-background rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
+                    />
+                    <div className="flex flex-wrap gap-2">
+                      <Label className="text-xs text-muted-foreground">Quick select:</Label>
+                      {PRESET_OPTIONS.styles.map((style) => (
+                        <Badge
+                          key={style}
+                          variant={promptData.style === style ? "default" : "outline"}
+                          className="cursor-pointer text-xs"
+                          onClick={() => updateField("style", style)}
+                        >
+                          {style}
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
                 {/* Camera Angle */}
                 <div className="space-y-2">
-                  <Label>Camera Angle</Label>
-                  <div className="flex flex-wrap gap-2">
-                    {PRESET_OPTIONS.cameras.map((camera) => (
-                      <Badge
-                        key={camera}
-                        variant={promptData.camera === camera ? "default" : "outline"}
-                        className="cursor-pointer"
-                        onClick={() => updateField("camera", camera)}
-                      >
-                        {camera}
-                      </Badge>
-                    ))}
+                  <Label htmlFor="camera">Camera Angle</Label>
+                  <div className="space-y-2">
+                    <input
+                      id="camera"
+                      type="text"
+                      placeholder="Enter camera angle (e.g., Close-up, Wide shot, Drone view...)"
+                      value={promptData.camera}
+                      onChange={(e) => updateField("camera", e.target.value)}
+                      className="w-full px-3 py-2 border border-input bg-background rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
+                    />
+                    <div className="flex flex-wrap gap-2">
+                      <Label className="text-xs text-muted-foreground">Quick select:</Label>
+                      {PRESET_OPTIONS.cameras.map((camera) => (
+                        <Badge
+                          key={camera}
+                          variant={promptData.camera === camera ? "default" : "outline"}
+                          className="cursor-pointer text-xs"
+                          onClick={() => updateField("camera", camera)}
+                        >
+                          {camera}
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
                 {/* Lighting */}
                 <div className="space-y-2">
-                  <Label>Lighting</Label>
-                  <div className="flex flex-wrap gap-2">
-                    {PRESET_OPTIONS.lighting.map((light) => (
-                      <Badge
-                        key={light}
-                        variant={promptData.lighting === light ? "default" : "outline"}
-                        className="cursor-pointer"
-                        onClick={() => updateField("lighting", light)}
-                      >
-                        {light}
-                      </Badge>
-                    ))}
+                  <Label htmlFor="lighting">Lighting</Label>
+                  <div className="space-y-2">
+                    <input
+                      id="lighting"
+                      type="text"
+                      placeholder="Enter lighting type (e.g., Natural, Golden hour, Dramatic...)"
+                      value={promptData.lighting}
+                      onChange={(e) => updateField("lighting", e.target.value)}
+                      className="w-full px-3 py-2 border border-input bg-background rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
+                    />
+                    <div className="flex flex-wrap gap-2">
+                      <Label className="text-xs text-muted-foreground">Quick select:</Label>
+                      {PRESET_OPTIONS.lighting.map((light) => (
+                        <Badge
+                          key={light}
+                          variant={promptData.lighting === light ? "default" : "outline"}
+                          className="cursor-pointer text-xs"
+                          onClick={() => updateField("lighting", light)}
+                        >
+                          {light}
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
                 {/* Mood */}
                 <div className="space-y-2">
-                  <Label>Mood</Label>
-                  <div className="flex flex-wrap gap-2">
-                    {PRESET_OPTIONS.moods.map((mood) => (
-                      <Badge
-                        key={mood}
-                        variant={promptData.mood === mood ? "default" : "outline"}
-                        className="cursor-pointer"
-                        onClick={() => updateField("mood", mood)}
-                      >
-                        {mood}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Duration */}
-                <div className="space-y-2">
-                  <Label>Duration</Label>
-                  <div className="flex flex-wrap gap-2">
-                    {PRESET_OPTIONS.durations.map((duration) => (
-                      <Badge
-                        key={duration}
-                        variant={promptData.duration === duration ? "default" : "outline"}
-                        className="cursor-pointer"
-                        onClick={() => updateField("duration", duration)}
-                      >
-                        {duration}
-                      </Badge>
-                    ))}
+                  <Label htmlFor="mood">Mood</Label>
+                  <div className="space-y-2">
+                    <input
+                      id="mood"
+                      type="text"
+                      placeholder="Enter mood (e.g., Peaceful, Energetic, Mysterious...)"
+                      value={promptData.mood}
+                      onChange={(e) => updateField("mood", e.target.value)}
+                      className="w-full px-3 py-2 border border-input bg-background rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
+                    />
+                    <div className="flex flex-wrap gap-2">
+                      <Label className="text-xs text-muted-foreground">Quick select:</Label>
+                      {PRESET_OPTIONS.moods.map((mood) => (
+                        <Badge
+                          key={mood}
+                          variant={promptData.mood === mood ? "default" : "outline"}
+                          className="cursor-pointer text-xs"
+                          onClick={() => updateField("mood", mood)}
+                        >
+                          {mood}
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
 
-
-                {/* Quick Examples */}
-                <div className="space-y-2">
-                  <Label className="text-sm font-medium">Quick Examples:</Label>
-                  <div className="flex flex-wrap gap-2">
-                    {EXAMPLE_PROMPTS.map((example, index) => (
-                      <Button
-                        key={index}
-                        onClick={() => loadExample(example)}
-                        variant="outline"
-                        size="sm"
-                        className="text-xs"
-                      >
-                        {example.scene.split(' ').slice(0, 3).join(' ')}...
-                      </Button>
-                    ))}
-                  </div>
-                </div>
               </CardContent>
             </Card>
 
@@ -731,6 +793,24 @@ export function SimpleVeo3Generator() {
                       <Sparkles className="w-6 h-6 mr-3" />
                       Continue to AI Enhancement →
                     </Button>
+
+                    {/* Quick Examples */}
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium">Quick Examples:</Label>
+                      <div className="flex flex-wrap gap-2">
+                        {EXAMPLE_PROMPTS.map((example, index) => (
+                          <Button
+                            key={index}
+                            onClick={() => loadExample(example)}
+                            variant="outline"
+                            size="sm"
+                            className="text-xs"
+                          >
+                            {example.scene.split(' ').slice(0, 3).join(' ')}...
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -752,8 +832,8 @@ export function SimpleVeo3Generator() {
                 <div className="space-y-4">
                   {/* Main AI Enhance Button - Large and Prominent */}
                   <Button 
-                    onClick={enhancePrompt}
-                    disabled={!generatedPrompt || isEnhancing}
+                    onClick={enhanceWithSelectedFocus}
+                    disabled={(!generatedPrompt && !enhancedPrompt) || isEnhancing}
                     size="lg"
                     className="w-full h-16 text-lg font-bold bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg transform hover:scale-[1.02] transition-all duration-200"
                   >
@@ -765,10 +845,63 @@ export function SimpleVeo3Generator() {
                     ) : (
                       <>
                         <Sparkles className="w-6 h-6 mr-3" />
-                        Enhance with AI
+                        {enhancedPrompt.trim() ? 'Re-enhance with AI' : 'Enhance with AI'}
+                        {selectedFocusTypes.length > 0 && (
+                          <span className="ml-2 text-sm opacity-90">
+                            ({selectedFocusTypes.length} focus{selectedFocusTypes.length !== 1 ? 'es' : ''})
+                          </span>
+                        )}
                       </>
                     )}
                   </Button>
+
+                  {/* Quick Enhancement Actions */}
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
+                    <Button
+                      variant={selectedFocusTypes.includes('character') ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => toggleFocusType('character')}
+                      className="text-xs"
+                    >
+                      👤 Focus Character
+                    </Button>
+                    <Button
+                      variant={selectedFocusTypes.includes('action') ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => toggleFocusType('action')}
+                      className="text-xs"
+                    >
+                      🎬 Focus Action
+                    </Button>
+                    <Button
+                      variant={selectedFocusTypes.includes('cinematic') ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => toggleFocusType('cinematic')}
+                      className="text-xs"
+                    >
+                      🎥 More Cinematic
+                    </Button>
+                    <Button
+                      variant={includeAudio ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setIncludeAudio(!includeAudio)}
+                      className={`text-xs ${includeAudio 
+                        ? 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700' 
+                        : 'bg-blue-50 border-blue-200 hover:bg-blue-100'}`}
+                    >
+                      🔊 Audio & Voice
+                    </Button>
+                    <Button
+                      variant={selectedFocusTypes.includes('safe') ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => toggleFocusType('safe')}
+                      className={`text-xs ${selectedFocusTypes.includes('safe') 
+                        ? 'bg-green-600 text-white border-green-600 hover:bg-green-700' 
+                        : 'bg-green-50 border-green-200 hover:bg-green-100'}`}
+                    >
+                      🛡️ Safe Content
+                    </Button>
+                  </div>
 
                   {/* Collapsible Settings */}
                   <div className="border rounded-lg">
@@ -781,7 +914,7 @@ export function SimpleVeo3Generator() {
                         <Settings className="w-4 h-4" />
                         <span className="text-sm">Enhancement Settings</span>
                         <Badge variant="outline" className="text-xs">
-                          {promptLength} • GPT-4.1
+                          {customCharacterLimit} chars • GPT-4.1
                         </Badge>
                       </div>
                       {showSettings ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -789,26 +922,36 @@ export function SimpleVeo3Generator() {
                     
                     {showSettings && (
                       <div className="px-3 pb-3 space-y-3 border-t">
-                        {/* AI Enhancement Length Selector */}
-                        <div className="space-y-2">
-                          <Label className="text-xs text-muted-foreground">Enhancement Length</Label>
-                          <div className="flex gap-2">
-                            {[
-                              { value: 'short', label: 'Short', desc: 'Concise', chars: 500 },
-                              { value: 'medium', label: 'Medium', desc: 'Balanced', chars: 1000 },
-                              { value: 'long', label: 'Long', desc: 'Detailed', chars: 2000 }
-                            ].map((option) => (
-                              <Badge
-                                key={option.value}
-                                variant={promptLength === option.value ? "default" : "outline"}
-                                className="cursor-pointer flex-1 text-center p-2 h-auto flex flex-col text-xs"
-                                onClick={() => setPromptLength(option.value as 'short' | 'medium' | 'long')}
-                                title={`${option.desc} enhancement - ${option.chars} characters`}
-                              >
-                                <span className="font-medium">{option.label}</span>
-                                <span className="text-xs opacity-70">{option.chars} chars</span>
-                              </Badge>
-                            ))}
+                        {/* Character Limit Slider */}
+                        <div className="space-y-3">
+                          <div className="flex items-center justify-between">
+                            <Label className="text-xs text-muted-foreground">Character Limit</Label>
+                            <Badge variant="outline" className="text-xs">
+                              {customCharacterLimit} chars
+                            </Badge>
+                          </div>
+                          <div className="space-y-2">
+                            <input
+                              type="range"
+                              min="200"
+                              max="10000"
+                              step="100"
+                              value={customCharacterLimit}
+                              onChange={(e) => setCustomCharacterLimit(Number(e.target.value))}
+                              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                            />
+                            <div className="flex justify-between text-xs text-muted-foreground">
+                              <span>200</span>
+                              <span>2K</span>
+                              <span>5K</span>
+                              <span>10K</span>
+                            </div>
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            {customCharacterLimit < 600 && "Concise and focused"}
+                            {customCharacterLimit >= 600 && customCharacterLimit < 1500 && "Balanced detail"}
+                            {customCharacterLimit >= 1500 && customCharacterLimit < 3000 && "Rich and detailed"}
+                            {customCharacterLimit >= 3000 && "Extremely detailed"}
                           </div>
                         </div>
 
@@ -834,7 +977,7 @@ export function SimpleVeo3Generator() {
                   <div className="relative">
                     <Textarea
                       value={enhancedPrompt}
-                      readOnly
+                      onChange={(e) => setEnhancedPrompt(e.target.value)}
                       placeholder="Click 'Enhance with AI' to generate a professional, detailed prompt..."
                       className="min-h-[500px] font-mono text-sm resize-none whitespace-pre-wrap pr-12"
                     />
