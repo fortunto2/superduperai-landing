@@ -66,6 +66,30 @@ export const Case = defineDocumentType(() => ({
   },
 }));
 
+// Определение типа документа для документации
+export const Doc = defineDocumentType(() => ({
+  name: "Doc",
+  filePathPattern: "docs/**/*.mdx",
+  contentType: "mdx",
+  fields: {
+    title: { type: "string", required: true },
+    description: { type: "string", required: true },
+    date: { type: "date", required: true },
+    slug: { type: "string", required: true },
+    order: { type: "number", required: false },
+    category: { type: "string", required: false },
+    featured: { type: "boolean", required: false, default: false },
+    seo: { type: "nested", of: SEO, required: false },
+    locale: { type: "string", required: true },
+  },
+  computedFields: {
+    url: {
+      type: "string",
+      resolve: (doc) => `/docs/${doc.slug}`,
+    },
+  },
+}));
+
 // Определение типа документа для статических страниц
 export const Page = defineDocumentType(() => ({
   name: "Page",
@@ -135,7 +159,7 @@ export const Blog = defineDocumentType(() => ({
 
 export default makeSource({
   contentDirPath: "src/content",
-  documentTypes: [Tool, Case, Page, Home, Blog],
+  documentTypes: [Tool, Case, Doc, Page, Home, Blog],
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [

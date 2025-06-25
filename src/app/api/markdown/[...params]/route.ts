@@ -36,8 +36,23 @@ async function mdxToMarkdown(filePath: string): Promise<string> {
   // Удаляем оставшиеся JSX теги
   markdown = markdown.replace(/<[^>]*\/?>/g, "");
 
-  // Удаляем фигурные скобки с выражениями
+  // Сохраняем код блоки и удаляем фигурные скобки только вне их
+  const codeBlocks: string[] = [];
+  let codeBlockIndex = 0;
+  
+  // Сохраняем код блоки
+  markdown = markdown.replace(/```[\s\S]*?```/g, (match) => {
+    codeBlocks.push(match);
+    return `__CODE_BLOCK_${codeBlockIndex++}__`;
+  });
+  
+  // Удаляем фигурные скобки с выражениями только вне код блоков
   markdown = markdown.replace(/\{[^{}]*\}/g, "");
+  
+  // Восстанавливаем код блоки
+  codeBlocks.forEach((block, index) => {
+    markdown = markdown.replace(`__CODE_BLOCK_${index}__`, block);
+  });
 
   // Удаляем лишние пустые строки
   markdown = markdown.replace(/\n{3,}/g, "\n\n");
@@ -80,13 +95,13 @@ export async function GET(
     const slug = urlParams[2].replace(/\.md$/, ""); // slug без расширения .md
 
     // Проверяем допустимость типа
-    const validTypes = ["tool", "case", "pages", "homes"];
+    const validTypes = ["tool", "case", "pages", "homes", "docs"];
     if (!validTypes.includes(type)) {
       console.error(`Invalid content type: ${type}`);
       return NextResponse.json(
         {
           error:
-            "Invalid content type. Supported types: tool, case, pages, homes",
+            "Invalid content type. Supported types: tool, case, pages, homes, docs",
         },
         { status: 400 }
       );

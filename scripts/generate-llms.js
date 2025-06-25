@@ -123,6 +123,19 @@ const blogsData = [
   }
 ];
 
+const docsData = [
+  {
+    title: 'Image Generation API',
+    slug: 'image-generation',
+    description: 'Complete guide to SuperDuperAI\'s image generation API with multiple AI models and flexible pricing.'
+  },
+  {
+    title: 'Video Generation API',
+    slug: 'video-generation',
+    description: 'Create stunning videos from text, images, or enhance existing videos with AI using our comprehensive API.'
+  }
+];
+
 // Создаем директорию public, если её нет
 const publicDir = path.join(__dirname, '../public');
 if (!fs.existsSync(publicDir)) {
@@ -149,6 +162,11 @@ const blogLinks = blogsData
   .map(blog => `- [${blog.title}](/blog/${blog.slug}.md): ${blog.description}`)
   .join('\n');
 
+// Генерируем ссылки на документацию
+const docLinks = docsData
+  .map(doc => `- [${doc.title}](/docs/${doc.slug}.md): ${doc.description}`)
+  .join('\n');
+
 // Создаем содержимое файла
 const content = `# SuperDuperAI
 
@@ -169,6 +187,9 @@ ${pageLinks}
 
 ### Blog
 ${blogLinks}
+
+### Documentation
+${docLinks}
 
 ## Features
 

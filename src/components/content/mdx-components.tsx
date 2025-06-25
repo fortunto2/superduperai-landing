@@ -12,6 +12,7 @@ import { Check } from 'lucide-react';
 import { PricingSection } from './pricing-section';
 import { VideoShowcase } from '@/components/landing/video-showcase';
 import { SimpleVeo3Generator } from './simple-veo3-generator';
+import { CodeBlock } from '@/components/ui/code-block';
 
 // Минимальное определение компонентов для проверки работоспособности
 const components = {
@@ -35,6 +36,9 @@ const components = {
   ),
   blockquote: ({ className, ...props }: React.HTMLAttributes<HTMLQuoteElement>) => (
     <blockquote className={`border-l-4 border-primary pl-4 italic my-6 ${className ?? ''}`} {...props} />
+  ),
+  pre: ({ className, children, ..._props }: React.HTMLAttributes<HTMLPreElement>) => (
+    <CodeBlock className={className}>{children}</CodeBlock>
   ),
   FeatureGrid,
   Feature,

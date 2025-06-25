@@ -34,6 +34,10 @@ SuperDuperAI is a professional video creation platform powered by artificial int
 - [GPT-Image-1](/blog/gpt-image-1.md): Conversational image generation with OpenAI GPT-Image-1.
 - [Kling 2.1](/blog/kling-2-1.md): Fast text-to-video and image animation with Kling 2.1.
 
+### Documentation
+- [Image Generation API](/docs/image-generation.md): Complete guide to SuperDuperAI's image generation API with multiple AI models and flexible pricing.
+- [Video Generation API](/docs/video-generation.md): Create stunning videos from text, images, or enhance existing videos with AI using our comprehensive API.
+
 ## Features
 
 - **Instant Video Generation**: Transform text into professional videos in 30 seconds or less.

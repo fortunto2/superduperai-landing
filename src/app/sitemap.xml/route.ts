@@ -4,6 +4,7 @@ import {
   allPages,
   allHomes,
   allBlogs,
+  allDocs,
 } from ".contentlayer/generated";
 
 export const dynamic = "force-static";
@@ -26,6 +27,7 @@ export async function GET() {
   allTools.forEach((t) => push(t.url, t.locale, new Date(t.date)));
   allCases.forEach((c) => push(c.url, c.locale, new Date(c.date)));
   allBlogs.forEach((b) => push(`/blog/${b.slug}`, b.locale, new Date(b.date)));
+  allDocs.forEach((d) => push(d.url, d.locale, new Date(d.date)));
 
   // Группируем по пути для создания языковых кластеров
   const groups = new Map<string, Entry[]>();

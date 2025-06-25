@@ -81,6 +81,13 @@ export function Navbar() {
           >
             {t("navbar.blog")}
           </Link>
+          <Link
+            href="/tool"
+            className="text-muted-foreground hover:text-accent transition-colors"
+            title="Tools - SuperDuperAI"
+          >
+            Tools
+          </Link>
         </nav>
 
         {/* Кнопки действий - скрыты на мобильных */}
@@ -169,6 +176,14 @@ export function Navbar() {
                 title={t("navbar.blog") + " - SuperDuperAI"}
               >
                 {t("navbar.blog")}
+              </Link>
+              <Link
+                href="/tool"
+                className="text-muted-foreground hover:text-accent transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+                title="Tools - SuperDuperAI"
+              >
+                Tools
               </Link>
               <Link
                 href="/terms"
