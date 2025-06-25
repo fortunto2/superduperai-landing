@@ -36,9 +36,11 @@ seo:
     - developer guide
 ---
 
-# Image Generation API
-
 Generate high-quality images from text descriptions using state-of-the-art AI models. Choose from 10 different models based on your needs and budget.
+
+## Interactive API Explorer
+
+Try out the API with different models, languages, and configurations:
 
 ### 🎨 Text-to-Image
 

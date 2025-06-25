@@ -38,13 +38,15 @@ seo:
     - developer guide
 ---
 
-# Video Generation API
-
 Create professional-quality videos from text descriptions, animate images, or enhance existing videos using cutting-edge AI models. Choose from 11 different models optimized for various use cases.
+
+## Interactive API Explorer
+
+Configure and test the API with different models, languages, and data fetching methods:
 
 ### 📝 Text-to-Video
 
-Create videos from text descriptions • 3 premium models • $2-$10 per second
+Create videos from text descriptions • 3 premium models • $2-$3 per second
 
   ### 🖼️ Image-to-Video
 
@@ -128,7 +130,7 @@ Create videos from text descriptions only.
 |-------|------------------|-----------|------------|----------|
 | `google-cloud/veo2-text2video` | 5-8 seconds | $2.00 | $10.00 | Google Cloud |
 | `google-cloud/veo3-text2video` | 5-8 seconds | $3.00 | $15.00 | Google Cloud |
-| `azure-openai/sora` | 5-20 seconds | **$10.00** | **$50.00** | Azure OpenAI |
+| `azure-openai/sora` | 5-20 seconds | **$2.00** | **$10.00** | Azure OpenAI |
 
 #### Image-to-Video (6 models)
 Animate existing images into videos.
