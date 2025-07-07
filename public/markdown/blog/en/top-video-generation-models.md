@@ -1,0 +1,32 @@
+---
+title: "Top Video Generation Models: Live Leaderboard & 2025 Review"
+type: "Blog"
+date: "2025-07-07"
+slug: "top-video-generation-models"
+locale: "en"
+keywords:
+description: "A comprehensive review and SEO-optimized insight on Top Video Generation Models: Live Leaderboard & 2025 Review."
+  - "text-to-video AI"
+  - "video generation leaderboard"
+  - "live leaderboard"
+---
+
+---
+title: "Top Video Generation Models: Live Leaderboard & 2025 Review"
+type: "Blog"
+date: "2025-07-07"
+slug: "top-video-generation-models"
+locale: "en"
+keywords:
+description: "A comprehensive review and SEO-optimized insight on Top Video Generation Models: Live Leaderboard & 2025 Review."
+  - "text-to-video AI"
+  - "video generation leaderboard"
+  - "live leaderboard"
+---
+
+# Top Video Generation Models: Live Leaderboard & 2025 Review
+
+В этой статье мы смотрим на топ-10 моделей text-to-video с актуальным live-рейтинговым API. Далее — подробный обзор ключевых моделей.
+
+## Google Imagen Video
+... (остальной контент без изменений)

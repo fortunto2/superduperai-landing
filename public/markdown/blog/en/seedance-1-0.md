@@ -1,0 +1,33 @@
+---
+title: "Seedance 1.0 Video Generator"
+type: "Blog"
+date: "2025-07-07"
+slug: "seedance-1-0"
+locale: "en"
+keywords:
+description: "A comprehensive review and SEO-optimized insight on Seedance 1.0 Video Generator."
+  - "Seedance"
+  - "video generator"
+---
+
+---
+title: "Seedance 1.0 Video Generator"
+type: "Blog"
+date: "2025-07-07"
+slug: "seedance-1-0"
+locale: "en"
+keywords:
+description: "A comprehensive review and SEO-optimized insight on Seedance 1.0 Video Generator."
+  - "Seedance"
+  - "video generator"
+---
+# Seedance 1.0
+
+Seedance 1.0 is a cutting-edge video generator leveraging latent diffusion and key-frame conditioning. Ideal for rapid prototyping and teaser creation.
+
+**Key Features:**
+- **Algorithm:** Latent diffusion + key-frame prompts
+- **Max Length:** 10 s
+- **Use Cases:** Marketing teasers, concept videos
+
+**Learn more:** [Seedance Official Site](https://example.com/seedance)
