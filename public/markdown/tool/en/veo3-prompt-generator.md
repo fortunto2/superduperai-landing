@@ -9,6 +9,7 @@ seo:
   title: "Free VEO3 Viral Prompt Generator | Create Trending AI Videos | SuperDuperAI"
   description: "Generate viral-ready prompts for Google's VEO3 AI video model. Free tool with viral templates, complex prompt structures, and proven techniques for trending content."
   keywords: ["VEO3 viral prompts", "free VEO3 prompt tool", "VEO3 trending prompts", "viral prompt generator", "Google VEO3 prompts"]
+  ogImage: "/images/og/veo3-prompt-generator.webp"
 ---
 
 ---
@@ -22,11 +23,19 @@ seo:
   title: "Free VEO3 Viral Prompt Generator | Create Trending AI Videos | SuperDuperAI"
   description: "Generate viral-ready prompts for Google's VEO3 AI video model. Free tool with viral templates, complex prompt structures, and proven techniques for trending content."
   keywords: ["VEO3 viral prompts", "free VEO3 prompt tool", "VEO3 trending prompts", "viral prompt generator", "Google VEO3 prompts"]
+  ogImage: "/images/og/veo3-prompt-generator.webp"
 ---
 
 # Free VEO3 Viral Prompt Generator
 
 Create viral-ready prompts for Google's VEO3 AI video generator. Build complex, detailed prompts with multiple characters, dialogue, and professional elements that consistently produce trending content.
+
+## 🎬 Viral Video Examples
+
+See what's possible with detailed VEO3 prompts. Click any video to watch, expand to see the full prompt, and copy to use in your own projects.
+
+ console.log('Copied prompt:', prompt)}
+/>
 
 ## 🔥 What Makes VEO3 Videos Go Viral
 

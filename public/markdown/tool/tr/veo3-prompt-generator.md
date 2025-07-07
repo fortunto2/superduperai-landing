@@ -12,7 +12,19 @@ seo:
   ogImage: "/images/og/veo3-prompt-generator.webp"
 ---
 
-import { Veo3ExamplesLoader } from '@/components/content/veo3-examples-loader';
+---
+title: "Ücretsiz VEO3 Viral Prompt Üretici - Trend AI Videolar Oluşturun"
+description: "Google VEO3 AI için viral hazır video promptları üretin. Viral şablonlar, karmaşık prompt oluşturucu ve sürekli trend içerik için kanıtlanmış tekniklerle ücretsiz araç."
+date: "2025-01-20"
+slug: "veo3-prompt-generator"
+locale: "tr"
+featured: true
+seo:
+  title: "Ücretsiz VEO3 Viral Prompt Üretici | Trend AI Videolar Oluşturun | SuperDuperAI"
+  description: "Google'ın VEO3 AI video modeli için viral hazır promptlar üretin. Viral şablonlar, karmaşık prompt yapıları ve trend içerik için kanıtlanmış tekniklerle ücretsiz araç."
+  keywords: ["VEO3 viral promptlar", "ücretsiz VEO3 prompt aracı", "VEO3 trend promptlar", "viral prompt üretici", "Google VEO3 promptlar"]
+  ogImage: "/images/og/veo3-prompt-generator.webp"
+---
 
 # Ücretsiz VEO3 Viral Prompt Üretici
 
@@ -22,13 +34,8 @@ Google'ın VEO3 AI video üreticisi için viral hazır promptlar oluşturun. Bir
 
 Detaylı VEO3 promptlarıyla neler mümkün olduğunu görün. İzlemek için herhangi bir videoya tıklayın, tam promptu görmek için genişletin ve kendi projelerinizde kullanmak için kopyalayın.
 
-<Veo3ExamplesLoader 
-  locale="tr"
-  gridCols={3}
-  onCopyPrompt={(prompt) => console.log('Copied prompt:', prompt)}
+ console.log('Copied prompt:', prompt)}
 />
-
-<SimpleVeo3Generator />
 
 ## 🔥 VEO3 Videoları Neyi Viral Yapıyor
 

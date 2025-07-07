@@ -18,9 +18,9 @@ export function Hero() {
   // Состояние для слайдера
   const [currentSlide, setCurrentSlide] = useState(0);
   const slides = [
-    "/images/screens/screen1.avif",
-    "/images/screens/screen2.avif",
-    "/images/screens/screen3.avif",
+    "/images/screens/screen1.webp",
+    "/images/screens/screen2.webp",
+    "/images/screens/screen3.webp",
   ];
 
   // Автоматическое переключение слайдов

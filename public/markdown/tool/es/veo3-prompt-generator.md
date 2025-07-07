@@ -12,7 +12,19 @@ seo:
   ogImage: "/images/og/veo3-prompt-generator.webp"
 ---
 
-import { Veo3ExamplesLoader } from '@/components/content/veo3-examples-loader';
+---
+title: "Generador Gratuito de Prompts Virales VEO3 - Crea Videos AI Trending"
+description: "Genera prompts listos para volverse virales para Google VEO3 AI. Herramienta gratuita con plantillas virales, constructor de prompts complejos y técnicas probadas para contenido trending consistente."
+date: "2025-01-20"
+slug: "veo3-prompt-generator"
+locale: "es"
+featured: true
+seo:
+  title: "Generador Gratuito de Prompts Virales VEO3 | Crea Videos AI Trending | SuperDuperAI"
+  description: "Genera prompts listos para volverse virales para el modelo de video AI VEO3 de Google. Herramienta gratuita con plantillas virales, estructuras de prompts complejas y técnicas probadas para contenido trending."
+  keywords: ["VEO3 prompts virales", "herramienta gratuita VEO3 prompt", "VEO3 prompts trending", "generador prompts virales", "Google VEO3 prompts"]
+  ogImage: "/images/og/veo3-prompt-generator.webp"
+---
 
 # Generador Gratuito de Prompts Virales VEO3
 
@@ -22,13 +34,8 @@ Crea prompts listos para volverse virales para el generador de videos AI VEO3 de
 
 Ve qué es posible con prompts detallados de VEO3. Haz clic en cualquier video para ver, expande para ver el prompt completo y copia para usar en tus propios proyectos.
 
-<Veo3ExamplesLoader 
-  locale="es"
-  gridCols={3}
-  onCopyPrompt={(prompt) => console.log('Copied prompt:', prompt)}
+ console.log('Copied prompt:', prompt)}
 />
-
-<SimpleVeo3Generator />
 
 ## 🔥 Qué Hace que los Videos VEO3 se Vuelvan Virales
 
