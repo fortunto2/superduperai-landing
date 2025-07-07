@@ -52,7 +52,7 @@ export const VideoPromptExamples: React.FC<VideoPromptExamplesProps> = ({
                 target="_blank"
                 rel="noopener noreferrer nofollow"
                 className="absolute bottom-2 right-2 bg-black/60 hover:bg-black/80 text-white rounded-full p-1"
-                title="Открыть видео в новой вкладке"
+                title="Open video in new tab"
               >
                 <ExternalLink className="w-5 h-5" />
               </a>
@@ -67,10 +67,10 @@ export const VideoPromptExamples: React.FC<VideoPromptExamplesProps> = ({
                 className="flex items-center gap-1 mb-2"
                 onClick={() => setExpanded(expanded === idx ? null : idx)}
                 aria-expanded={expanded === idx}
-                title={expanded === idx ? 'Свернуть промпт' : 'Показать промпт'}
+                title={expanded === idx ? 'Hide prompt' : 'Show prompt'}
               >
                 {expanded === idx ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                {expanded === idx ? 'Свернуть промпт' : 'Показать промпт'}
+                {expanded === idx ? 'Hide prompt' : 'Show prompt'}
               </Button>
               {expanded === idx && (
                 <div className="bg-muted rounded p-3 text-xs whitespace-pre-line mb-2 max-h-64 overflow-auto border">
@@ -82,19 +82,19 @@ export const VideoPromptExamples: React.FC<VideoPromptExamplesProps> = ({
                   variant="outline"
                   size="sm"
                   onClick={() => handleCopy(ex.prompt, idx)}
-                  title={copiedIdx === idx ? 'Скопировано!' : 'Скопировать промпт'}
+                  title={copiedIdx === idx ? 'Copied!' : 'Copy prompt'}
                 >
                   <Copy className="w-4 h-4 mr-1" />
-                  {copiedIdx === idx ? 'Скопировано!' : 'Скопировать'}
+                  {copiedIdx === idx ? 'Copied!' : 'Copy'}
                 </Button>
                 {onSendToTool && (
                   <Button
                     variant="default"
                     size="sm"
                     onClick={() => onSendToTool(ex.prompt)}
-                    title="Отправить промпт в генератор"
+                    title="Send prompt to generator"
                   >
-                    ➡️ В генератор
+                    ➡️ To Generator
                   </Button>
                 )}
               </div>
