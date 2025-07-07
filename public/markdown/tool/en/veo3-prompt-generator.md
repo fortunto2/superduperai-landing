@@ -28,6 +28,13 @@ seo:
 
 Create viral-ready prompts for Google's VEO3 AI video generator. Build complex, detailed prompts with multiple characters, dialogue, and professional elements that consistently produce trending content.
 
+## 🎬 Viral Video Examples
+
+See what's possible with detailed VEO3 prompts. Click any video to watch, expand to see the full prompt, and copy to use in your own projects.
+
+ console.log('Copied prompt:', prompt)}
+/>
+
 ## 🔥 What Makes VEO3 Videos Go Viral
 
 - **Multiple Characters** - Add several characters with unique names, descriptions, and dialogue
