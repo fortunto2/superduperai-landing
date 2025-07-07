@@ -8,9 +8,14 @@
 
 ### Интеграция
 
-- **Пакеты**: 
+- **Основные пакеты**: 
   - `langsmith` v0.3.39
   - `@vercel/otel` v1.13.0 (для OpenTelemetry)
+- **Peer dependencies (автоматически установлены)**:
+  - `@opentelemetry/api-logs` v0.52.1
+  - `@opentelemetry/resources` v1.30.1
+  - `@opentelemetry/sdk-logs` v0.52.1
+  - `@opentelemetry/sdk-metrics` v1.30.1
 - **Метод**: `AISDKExporter` из `langsmith/vercel` с `@vercel/otel`
 - **Инструментация**: `instrumentation.ts` с `registerOTel()`
 - **Endpoint**: `/api/enhance-prompt` route.ts
