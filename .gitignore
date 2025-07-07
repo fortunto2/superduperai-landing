@@ -55,4 +55,5 @@ node_modules/.cache/
 .next/cache/*
 !.next/cache/.gitkeep
 .contentlayer/
+public/**/*
 public/*
