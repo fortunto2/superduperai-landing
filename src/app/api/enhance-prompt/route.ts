@@ -2,6 +2,7 @@ import { generateObject } from 'ai';
 import { createAzure } from '@ai-sdk/azure';
 import { z } from 'zod';
 import { NextRequest, NextResponse } from 'next/server';
+import { AISDKExporter } from 'langsmith/vercel';
 
 // Initialize Azure provider
 const azure = createAzure({
@@ -336,7 +337,19 @@ Your output will be automatically formatted for VEO3 usage.`
       schema: veo3Schema,
       // Explicitly specify schema name and description for better LLM guidance
       schemaName: 'VEO3VideoPromptEnhancement',
-      schemaDescription: `Enhanced VEO3 video prompt with dynamic structured output. Contains ${includeAudio ? 'audio-enabled' : 'audio-disabled'} sections${hasCharacterSpeech ? ' with character speech extraction' : ''}${focusTypes.length > 0 ? ` and focus enhancements for: ${focusTypes.join(', ')}` : ''}${moodboard?.enabled ? ` with ${moodboard.images?.length || 0} moodboard image references` : ''}. Target length: ${targetChars} characters.`
+      schemaDescription: `Enhanced VEO3 video prompt with dynamic structured output. Contains ${includeAudio ? 'audio-enabled' : 'audio-disabled'} sections${hasCharacterSpeech ? ' with character speech extraction' : ''}${focusTypes.length > 0 ? ` and focus enhancements for: ${focusTypes.join(', ')}` : ''}${moodboard?.enabled ? ` with ${moodboard.images?.length || 0} moodboard image references` : ''}. Target length: ${targetChars} characters.`,
+      // LangSmith telemetry integration via AI SDK
+      experimental_telemetry: AISDKExporter.getSettings({
+        runName: 'VEO3_Prompt_Enhancement',
+        metadata: {
+          user_id: 'veo3_generator',
+          prompt_type: 'video_enhancement',
+          model_used: model,
+          focus_types: focusTypes.join(','),
+          character_limit: customLimit,
+          has_moodboard: moodboard?.enabled || false
+        }
+      })
     });
 
     // Format the structured output back to VEO3 format
