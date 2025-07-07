@@ -55,3 +55,12 @@ node_modules/.cache/
 .next/cache/*
 !.next/cache/.gitkeep
 .contentlayer/
+public/llms.txt
+public/markdown/blog/en/hailuo-ai.md
+public/markdown/blog/en/midjourney-v1-video.md
+public/markdown/blog/en/seedance-ai.md
+public/markdown/tool/en/veo3-prompt-generator.md
+public/markdown/tool/es/veo3-prompt-generator.md
+public/markdown/tool/hi/veo3-prompt-generator.md
+public/markdown/tool/ru/veo3-prompt-generator.md
+public/markdown/tool/tr/veo3-prompt-generator.md
