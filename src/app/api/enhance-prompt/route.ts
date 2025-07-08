@@ -4,6 +4,80 @@ import { z } from 'zod';
 import { NextRequest, NextResponse } from 'next/server';
 import { AISDKExporter } from 'langsmith/vercel';
 
+// SECURITY: Allowed origins for CORS protection
+const ALLOWED_ORIGINS = [
+  'https://superduperai.com',
+  'https://www.superduperai.com',
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+  ...(process.env.NODE_ENV === 'development' ? ['http://localhost:3001'] : [])
+];
+
+// SECURITY: Rate limiting store (in production use Redis)
+const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT_MAX = 10; // requests per window
+const RATE_LIMIT_WINDOW = 15 * 60 * 1000; // 15 minutes
+
+// SECURITY: API Key validation (optional)
+const API_KEY = process.env.VEO3_API_KEY;
+
+/**
+ * Security middleware for API protection
+ */
+function validateSecurity(req: NextRequest) {
+  // 1. CORS Protection - Check Origin
+  const origin = req.headers.get('origin');
+  const referer = req.headers.get('referer');
+  
+  // Allow requests without origin (direct API calls) only in development
+  if (process.env.NODE_ENV === 'production') {
+    if (!origin && !referer) {
+      return { error: 'Origin required', status: 403 };
+    }
+    
+    const requestOrigin = origin || (referer ? new URL(referer).origin : null);
+    if (requestOrigin && !ALLOWED_ORIGINS.includes(requestOrigin)) {
+      console.warn(`Blocked request from unauthorized origin: ${requestOrigin}`);
+      return { error: 'Unauthorized origin', status: 403 };
+    }
+  }
+  
+  // 2. API Key validation (optional)
+  if (API_KEY) {
+    const providedKey = req.headers.get('x-api-key') || req.headers.get('authorization')?.replace('Bearer ', '');
+    if (!providedKey || providedKey !== API_KEY) {
+      return { error: 'Invalid API key', status: 401 };
+    }
+  }
+  
+  // 3. Rate Limiting
+  const clientIP = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown';
+  const now = Date.now();
+  const clientKey = `${clientIP}-${origin || 'no-origin'}`;
+  
+  const clientData = rateLimitStore.get(clientKey);
+  
+  if (!clientData || now > clientData.resetTime) {
+    // Reset or initialize
+    rateLimitStore.set(clientKey, { count: 1, resetTime: now + RATE_LIMIT_WINDOW });
+  } else if (clientData.count >= RATE_LIMIT_MAX) {
+    return { error: 'Rate limit exceeded', status: 429 };
+  } else {
+    clientData.count++;
+  }
+  
+  // Cleanup old entries (basic cleanup)
+  if (Math.random() < 0.01) { // 1% chance to cleanup
+    for (const [key, data] of rateLimitStore.entries()) {
+      if (now > data.resetTime) {
+        rateLimitStore.delete(key);
+      }
+    }
+  }
+  
+  return null; // Success
+}
+
 // Initialize Azure provider
 const azure = createAzure({
   resourceName: process.env.AZURE_OPENAI_RESOURCE_NAME!,
@@ -135,6 +209,15 @@ const enhancePromptSchema = z.object({
 
 export async function POST(req: NextRequest) {
   try {
+    // SECURITY: Validate request security (CORS, rate limiting, API key)
+    const securityError = validateSecurity(req);
+    if (securityError) {
+      return NextResponse.json(
+        { error: securityError.error },
+        { status: securityError.status }
+      );
+    }
+
     // Check environment variables (only resource name and API key needed)
     if (!process.env.AZURE_OPENAI_RESOURCE_NAME || !process.env.AZURE_OPENAI_API_KEY) {
       console.error('Missing Azure OpenAI environment variables');

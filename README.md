@@ -1,4 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SuperDuperAI Landing & MCP Server
+
+This is a [Next.js](https://nextjs.org) project that serves as both a landing page for SuperDuperAI and a Model Context Protocol (MCP) server for AI agents.
+
+## Features
+
+- 🌐 **Multilingual Landing Page** - English, Russian, Spanish, Hindi, Turkish
+- 🎬 **VEO3 Prompt Enhancement** - AI-powered video prompt optimization
+- 🔍 **MCP Server** - Provides AI agents with tools and documentation search
+- 📚 **Vector Documentation Search** - Semantic search through markdown content
+- 🎨 **Modern UI** - Built with Tailwind CSS and shadcn/ui components
+
+## MCP Server
+
+This application includes a full MCP (Model Context Protocol) server that provides AI agents with:
+
+### Available Tools
+
+1. **search_documentation** - Vector-based search through all markdown content
+2. **enhance_veo3_prompt** - AI-powered video prompt enhancement for Google VEO3
+3. **get_available_llms** - List of available AI models and capabilities
+4. **generate_ai_text** - Direct text generation using Azure OpenAI
+5. **get_site_info** - Platform overview and available features
+
+### Claude Desktop Setup
+
+1. Copy `claude-desktop-config.example.json` configuration
+2. Update your Claude Desktop config at `~/.claude/claude_desktop_config.json`
+3. Start the development server: `pnpm dev`
+4. The MCP server will be available at `http://localhost:3000/api/mcp`
+
+See [`docs/mcp-server-guide.md`](docs/mcp-server-guide.md) for detailed setup instructions.
 
 ## Getting Started
 

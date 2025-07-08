@@ -10,22 +10,68 @@ const PUBLIC_FILES = ["/llms.txt", "/favicon.ico", "/robots.txt"];
 // Регулярное выражение для обнаружения Markdown-расширения в конце URL
 const MD_EXTENSION_REGEX = /\.md$/;
 
+// SECURITY: Global rate limiting for API routes
+const globalRateLimit = new Map<string, { count: number; resetTime: number }>();
+const GLOBAL_RATE_LIMIT = 100; // requests per window
+const GLOBAL_RATE_WINDOW = 60 * 1000; // 1 minute
+
+function addSecurityHeaders(response: NextResponse): NextResponse {
+  // Security headers
+  response.headers.set('X-Content-Type-Options', 'nosniff');
+  response.headers.set('X-Frame-Options', 'DENY');
+  response.headers.set('X-XSS-Protection', '1; mode=block');
+  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  
+  // API specific security
+  if (response.url.includes('/api/')) {
+    response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+    response.headers.set('Pragma', 'no-cache');
+  }
+  
+  return response;
+}
+
+function checkGlobalRateLimit(req: NextRequest): boolean {
+  const clientIP = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown';
+  const now = Date.now();
+  
+  const clientData = globalRateLimit.get(clientIP);
+  
+  if (!clientData || now > clientData.resetTime) {
+    globalRateLimit.set(clientIP, { count: 1, resetTime: now + GLOBAL_RATE_WINDOW });
+    return true;
+  } else if (clientData.count >= GLOBAL_RATE_LIMIT) {
+    return false;
+  } else {
+    clientData.count++;
+    return true;
+  }
+}
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Пропускаем API маршруты без изменений
+  // Global rate limiting for all requests
+  if (!checkGlobalRateLimit(request)) {
+    return new NextResponse('Too Many Requests', { status: 429 });
+  }
+
+  // Пропускаем API маршруты без изменений, но добавляем security headers
   if (pathname.startsWith("/api/")) {
-    return NextResponse.next();
+    const response = NextResponse.next();
+    return addSecurityHeaders(response);
   }
 
   // Специальная обработка для sitemap.xml - полностью пропускаем через middleware
   if (pathname === "/sitemap.xml") {
-    return NextResponse.next();
+    const response = NextResponse.next();
+    return addSecurityHeaders(response);
   }
 
   // Пропускаем специальные файлы без изменений
   if (PUBLIC_FILES.some((file) => pathname === file)) {
-    return NextResponse.next();
+    const response = NextResponse.next();
+    return addSecurityHeaders(response);
   }
 
   // Проверяем, содержит ли URL .md в конце
@@ -101,7 +147,8 @@ export function middleware(request: NextRequest) {
       );
 
       // Перенаправляем запрос на API маршрут
-      return NextResponse.rewrite(apiUrl);
+      const response = NextResponse.rewrite(apiUrl);
+      return addSecurityHeaders(response);
     }
   }
 
@@ -109,14 +156,16 @@ export function middleware(request: NextRequest) {
   if (isRscRequest) {
     const headers = new Headers(request.headers);
     headers.set("x-nextjs-data", "1");
-    return NextResponse.next({ request: { headers } });
+    const response = NextResponse.next({ request: { headers } });
+    return addSecurityHeaders(response);
   }
 
   // Проверяем, является ли текущий путь корневым путем с локалью (например, /en, /ru)
   const isLocaleRoot = i18n.locales.some((locale) => pathname === `/${locale}`);
   if (isLocaleRoot) {
     // Редиректим с /locale на корень /
-    return NextResponse.redirect(new URL("/", request.url));
+    const response = NextResponse.redirect(new URL("/", request.url));
+    return addSecurityHeaders(response);
   }
 
   const pathnameHasLocale = i18n.locales.some(
@@ -129,15 +178,18 @@ export function middleware(request: NextRequest) {
     // Используем rewrite для корневого пути, сохраняя чистый URL
     if (pathname === "/" && i18n.preserveRouteOnHome) {
       const url = new URL(`/${locale}${pathname}`, request.url);
-      return NextResponse.rewrite(url);
+      const response = NextResponse.rewrite(url);
+      return addSecurityHeaders(response);
     }
 
     // Для остальных путей используем обычный redirect
     const url = new URL(`/${locale}${pathname}`, request.url);
-    return NextResponse.redirect(url);
+    const response = NextResponse.redirect(url);
+    return addSecurityHeaders(response);
   }
 
-  return NextResponse.next();
+  const response = NextResponse.next();
+  return addSecurityHeaders(response);
 }
 
 function getLocale(request: NextRequest): string | undefined {
