@@ -13,6 +13,25 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Price ID is required' }, { status: 400 });
     }
 
+    // Get the app URL with proper fallback
+    const getAppUrl = () => {
+      // First try NEXT_PUBLIC_APP_URL (manually set)
+      if (process.env.NEXT_PUBLIC_APP_URL) {
+        return process.env.NEXT_PUBLIC_APP_URL;
+      }
+      
+      // Then try VERCEL_URL (automatically set by Vercel)
+      if (process.env.VERCEL_URL) {
+        return `https://${process.env.VERCEL_URL}`;
+      }
+      
+      // Finally fallback to localhost for development
+      return 'http://localhost:3000';
+    };
+
+    const appUrl = getAppUrl();
+    console.log('🔗 Using app URL:', appUrl);
+
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -23,8 +42,8 @@ export async function POST(request: NextRequest) {
         },
       ],
       mode: 'payment',
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/en/veo3-status/{CHECKOUT_SESSION_ID}?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/en/tool/veo3-prompt-generator`,
+      success_url: `${appUrl}/en/veo3-status/{CHECKOUT_SESSION_ID}?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${appUrl}/en/tool/veo3-prompt-generator`,
       metadata: {
         videoCount: quantity.toString(),
       },
