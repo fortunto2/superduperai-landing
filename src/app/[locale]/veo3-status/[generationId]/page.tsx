@@ -1,5 +1,7 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
+import { existsSync } from 'fs';
+import { join } from 'path';
 import Veo3StatusClient from '@/components/veo3/veo3-status-client';
 
 interface Veo3StatusPageProps {
@@ -23,6 +25,12 @@ export default async function Veo3StatusPage({ params }: Veo3StatusPageProps) {
 
   // Validate generation ID format
   if (!generationId || !generationId.startsWith('veo3_')) {
+    notFound();
+  }
+
+  // Check if generation file exists
+  const generationFilePath = join(process.cwd(), '.veo3-generations', `${generationId}.json`);
+  if (!existsSync(generationFilePath)) {
     notFound();
   }
 
