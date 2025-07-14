@@ -77,8 +77,15 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   }
 
   try {
+    // Determine base URL - use NEXT_PUBLIC_APP_URL or fallback to Vercel URL
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 
+                   process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 
+                   'http://localhost:3000';
+    
+    console.log('🌐 Payment webhook calling API at:', baseUrl);
+    
     // Start VEO3 generation
-    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/generate-veo3`, {
+    const response = await fetch(`${baseUrl}/api/generate-veo3`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -139,8 +146,20 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
   }
 
   try {
+    // Determine base URL - use NEXT_PUBLIC_APP_URL or fallback to Vercel URL
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 
+                   process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 
+                   'http://localhost:3000';
+    
+    console.log('🌐 Webhook calling API at:', baseUrl);
+    console.log('📋 Environment vars:', {
+      NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+      VERCEL_URL: process.env.VERCEL_URL,
+      NODE_ENV: process.env.NODE_ENV
+    });
+    
     // Start VEO3 generation
-    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/generate-veo3`, {
+    const response = await fetch(`${baseUrl}/api/generate-veo3`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
