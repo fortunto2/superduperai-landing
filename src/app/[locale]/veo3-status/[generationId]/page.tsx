@@ -5,10 +5,10 @@ import { join } from 'path';
 import Veo3StatusClient from '@/components/veo3/veo3-status-client';
 
 interface Veo3StatusPageProps {
-  params: {
+  params: Promise<{
     locale: string;
     generationId: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({ params }: Veo3StatusPageProps): Promise<Metadata> {
