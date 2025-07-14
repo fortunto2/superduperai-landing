@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { Veo3StatusClient } from '@/components/veo3/veo3-status-client';
+import Veo3StatusClient from '@/components/veo3/veo3-status-client';
 
 interface Veo3StatusPageProps {
   params: {
