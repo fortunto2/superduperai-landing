@@ -1,7 +1,6 @@
+import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { existsSync } from 'fs';
-import { join } from 'path';
 import Veo3StatusClient from '@/components/veo3/veo3-status-client';
 
 interface Veo3StatusPageProps {
@@ -9,86 +8,48 @@ interface Veo3StatusPageProps {
     locale: string;
     generationId: string;
   }>;
+  searchParams: Promise<{
+    session_id?: string;
+  }>;
 }
 
 export async function generateMetadata({ params }: Veo3StatusPageProps): Promise<Metadata> {
   const { generationId } = await params;
+  
   return {
     title: `VEO3 Video Generation Status - ${generationId}`,
-    description: 'Track your VEO3 AI video generation progress and download completed videos.',
-    robots: 'noindex, nofollow', // Don't index status pages
+    description: 'Check the status of your VEO3 video generation',
+    robots: 'noindex, nofollow',
   };
 }
 
-export default async function Veo3StatusPage({ params }: Veo3StatusPageProps) {
+export default async function Veo3StatusPage({ params, searchParams }: Veo3StatusPageProps) {
   const { locale, generationId } = await params;
+  const { session_id } = await searchParams;
 
-  // Validate generation ID format
-  if (!generationId || !generationId.startsWith('veo3_')) {
-    notFound();
-  }
-
-  // Check if generation file exists
-  const generationFilePath = join(process.cwd(), '.veo3-generations', `${generationId}.json`);
-  
-  // For new generations, file should exist immediately
-  // For old generations, show a helpful message instead of 404
-  const fileExists = existsSync(generationFilePath);
-  
-  if (!fileExists) {
-    // Check if this is an old generation ID (before the fix)
-    const isOldGeneration = generationId.includes('_') && generationId.length > 10;
-    
-    if (isOldGeneration) {
-      // Show a helpful message for old generation IDs
-      return (
-        <div className="min-h-screen bg-background">
-          <div className="container mx-auto px-4 py-8">
-            <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-3xl font-bold mb-4">Generation Not Found</h1>
-              <p className="text-muted-foreground mb-6">
-                This generation link is from before our recent system update. 
-                The video generation data is no longer available.
-              </p>
-              <p className="text-sm text-muted-foreground mb-8">
-                Generation ID: <code className="bg-muted px-2 py-1 rounded">{generationId}</code>
-              </p>
-              <div className="space-y-4">
-                <p className="text-muted-foreground">
-                  Please create a new video generation:
-                </p>
-                <a 
-                  href="/en/tool/veo3-prompt-generator"
-                  className="inline-block bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3 rounded-md font-medium transition-colors"
-                >
-                  Create New VEO3 Video
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    }
-    
+  // Validate generationId format
+  if (!generationId || typeof generationId !== 'string') {
     notFound();
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold mb-2">VEO3 Video Generation</h1>
-            <p className="text-muted-foreground">
-              Generation ID: <code className="bg-muted px-2 py-1 rounded text-sm">{generationId}</code>
-            </p>
+    <div className="container mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-3xl font-bold mb-6 text-center">
+          VEO3 Video Generation Status
+        </h1>
+        
+        <Suspense fallback={
+          <div className="flex justify-center items-center min-h-[400px]">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
           </div>
-
+        }>
           <Veo3StatusClient 
-            generationId={generationId} 
-            locale={locale} 
+            generationId={generationId}
+            sessionId={session_id}
+            locale={locale}
           />
-        </div>
+        </Suspense>
       </div>
     </div>
   );

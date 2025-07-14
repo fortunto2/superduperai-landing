@@ -39,10 +39,7 @@ export function Veo3PaymentButtons({ prompt, onPaymentClick }: Veo3PaymentButton
         },
         body: JSON.stringify({
           priceId: type === 'single' ? prices.single : prices.triple,
-          prompt: prompt.trim(),
-          videoCount: type === 'single' ? 1 : 3,
-          successUrl: `${window.location.origin}/en/veo3-status/{CHECKOUT_SESSION_ID}`,
-          cancelUrl: window.location.href,
+          quantity: type === 'single' ? 1 : 3,
         }),
       });
 
@@ -50,7 +47,23 @@ export function Veo3PaymentButtons({ prompt, onPaymentClick }: Veo3PaymentButton
         throw new Error('Failed to create checkout session');
       }
 
-      const { url } = await response.json();
+      const { sessionId, url } = await response.json();
+      
+      // Save generation data to localStorage
+      const generationData = {
+        generationId: sessionId,
+        sessionId: sessionId,
+        prompt: prompt.trim(),
+        videoCount: type === 'single' ? 1 : 3,
+        createdAt: new Date().toISOString(),
+        fileIds: [],
+        status: 'pending',
+        progress: 0,
+        videos: []
+      };
+      
+      localStorage.setItem(`veo3_generation_${sessionId}`, JSON.stringify(generationData));
+      
       window.location.href = url;
       
     } catch (error) {
