@@ -55,3 +55,4 @@ node_modules/.cache/
 .next/cache/*
 !.next/cache/.gitkeep
 .contentlayer/
+.veo3-generations/*.json

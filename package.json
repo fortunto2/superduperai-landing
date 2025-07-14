@@ -52,6 +52,8 @@
     "rehype-pretty-code": "^0.14.1",
     "rehype-slug": "^6.0.0",
     "remark-gfm": "^4.0.1",
+    "sonner": "^2.0.6",
+    "stripe": "^18.3.0",
     "tailwind-merge": "^3.2.0",
     "zod": "^3.25.67"
   },

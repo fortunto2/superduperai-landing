@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Check } from 'lucide-react';
 import { PricingSection } from './pricing-section';
 import { VideoShowcase } from '@/components/landing/video-showcase';
-import { SimpleVeo3Generator } from './simple-veo3-generator';
+import { SimpleVEO3Generator } from './simple-veo3-generator';
 import { CodeBlock } from '@/components/ui/code-block';
 import { InteractiveAPIDocs } from './interactive-api-docs';
 
@@ -50,7 +50,8 @@ const components = {
   Check,
   PricingSection,
   VideoShowcase,
-  SimpleVeo3Generator,
+  SimpleVEO3Generator,
+  SimpleVeo3Generator: SimpleVEO3Generator,
   InteractiveAPIDocs
 };
 
