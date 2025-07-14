@@ -1,0 +1,14 @@
+{
+    "mcpServers": {
+        "superduperai": {
+            "command": "npx",
+            "args": [
+                "mcp-remote",
+                "http://localhost:3000/api/mcp"
+            ],
+            "disabled": false
+        }
+    },
+    "globalShortcut": "",
+    "customInstructions": "You now have access to SuperDuperAI tools through MCP:\n\n🔍 search_documentation - Search through SuperDuperAI documentation\n🎬 enhance_veo3_prompt - Enhance video prompts for Google VEO3\n🤖 get_available_llms - List available AI models\n✍️ generate_ai_text - Generate text using Azure OpenAI\n📊 get_site_info - Get platform information\n\nUse these tools to help users with AI content creation, video generation, and technical questions about SuperDuperAI platform."
+}
