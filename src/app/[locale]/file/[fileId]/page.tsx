@@ -1,12 +1,12 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { FileStatusClient } from '@/components/file/file-status-client';
+import FileStatusClient from '@/components/file/file-status-client';
 
 interface FileStatusPageProps {
-  params: {
+  params: Promise<{
     locale: string;
     fileId: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({ params }: FileStatusPageProps): Promise<Metadata> {

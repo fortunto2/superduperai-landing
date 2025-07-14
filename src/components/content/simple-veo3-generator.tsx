@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Copy, Shuffle, Sparkles, Loader2, Trash2, Settings, ChevronDown, ChevronUp, BookOpen, ExternalLink } from "lucide-react";
 import Link from "next/link";
+import { Veo3PaymentButtons } from "@/components/ui/veo3-payment-buttons";
 
 interface Character {
   id: string;
@@ -1031,6 +1032,16 @@ export function SimpleVeo3Generator() {
                       </div>
                     </div>
                   )}
+
+                  {/* Payment Buttons */}
+                  <div className="mt-6">
+                    <Veo3PaymentButtons 
+                      prompt={enhancedPrompt || generatedPrompt}
+                      onPaymentClick={(type) => {
+                        console.log('Payment clicked:', type, 'for prompt:', enhancedPrompt || generatedPrompt);
+                      }}
+                    />
+                  </div>
                 </div>
               </CardContent>
             </Card>
