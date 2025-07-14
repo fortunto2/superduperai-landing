@@ -250,8 +250,13 @@ export default function Veo3StatusClient({ generationId, sessionId, locale }: Ve
       return genId.split(',').map(id => id.trim()).filter(Boolean);
     }
     
-    // Check if it's a single file ID
-    if (genId.length > 10 && !genId.startsWith('veo3_')) {
+    // Check if it's a Stripe session ID (starts with cs_)
+    if (genId.startsWith('cs_')) {
+      return []; // Stripe session IDs should not be treated as file IDs
+    }
+    
+    // Check if it's a single SuperDuperAI file ID (not starting with veo3_ and not Stripe session)
+    if (genId.length > 10 && !genId.startsWith('veo3_') && !genId.startsWith('cs_')) {
       return [genId];
     }
     
@@ -488,6 +493,38 @@ export default function Veo3StatusClient({ generationId, sessionId, locale }: Ve
                   </div>
                 </div>
               ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Waiting for webhook message */}
+      {generationData.videos.length === 0 && generationData.fileIds.length === 0 && generationData.generationId.startsWith('cs_') && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Clock className="h-5 w-5 text-blue-500" />
+              Waiting for Payment Confirmation
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <p className="text-sm text-muted-foreground">
+                Your payment is being processed. Once confirmed, video generation will begin automatically.
+              </p>
+              <div className="bg-blue-50 dark:bg-blue-950/20 p-3 rounded-md">
+                <p className="text-sm text-blue-800 dark:text-blue-200">
+                  <strong>Next steps:</strong>
+                </p>
+                <ul className="text-sm text-blue-700 dark:text-blue-300 mt-1 space-y-1">
+                  <li>• Payment confirmation (usually instant)</li>
+                  <li>• Video generation starts automatically</li>
+                  <li>• This page will update with progress</li>
+                </ul>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                This page will automatically refresh every 5 seconds to check for updates.
+              </p>
             </div>
           </CardContent>
         </Card>
