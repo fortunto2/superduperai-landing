@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink, Zap, Package, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { getSingleVideoPrice, getTripleVideoPrice } from "@/lib/stripe-config";
+import { useStripePrices } from "@/hooks/use-stripe-prices";
 
 interface Veo3PaymentButtonsProps {
   prompt: string;
@@ -15,10 +15,16 @@ interface Veo3PaymentButtonsProps {
 
 export function Veo3PaymentButtons({ prompt, onPaymentClick }: Veo3PaymentButtonsProps) {
   const [isCreatingCheckout, setIsCreatingCheckout] = useState(false);
+  const { prices, mode, loading, error } = useStripePrices();
 
   const handlePayment = async (type: 'single' | 'triple') => {
     if (!prompt.trim()) {
       toast.error('Please generate a prompt first');
+      return;
+    }
+
+    if (!prices) {
+      toast.error('Prices not loaded yet, please try again');
       return;
     }
 
@@ -32,7 +38,7 @@ export function Veo3PaymentButtons({ prompt, onPaymentClick }: Veo3PaymentButton
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          priceId: type === 'single' ? getSingleVideoPrice() : getTripleVideoPrice(),
+          priceId: type === 'single' ? prices.single : prices.triple,
           prompt: prompt.trim(),
           videoCount: type === 'single' ? 1 : 3,
           successUrl: `${window.location.origin}/en/veo3-status/{CHECKOUT_SESSION_ID}`,
@@ -57,6 +63,29 @@ export function Veo3PaymentButtons({ prompt, onPaymentClick }: Veo3PaymentButton
 
   if (!prompt.trim()) {
     return null;
+  }
+
+  if (loading) {
+    return (
+      <Card className="border-2 border-purple-500/50 bg-gradient-to-r from-purple-50/80 to-blue-50/80 dark:from-purple-950/30 dark:to-blue-950/30 dark:border-purple-400/30">
+        <CardContent className="flex items-center justify-center py-8">
+          <Loader2 className="w-6 h-6 animate-spin mr-2" />
+          <span>Loading payment options...</span>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (error || !prices) {
+    return (
+      <Card className="border-2 border-red-500/50 bg-gradient-to-r from-red-50/80 to-orange-50/80 dark:from-red-950/30 dark:to-orange-950/30 dark:border-red-400/30">
+        <CardContent className="flex items-center justify-center py-8">
+          <span className="text-red-600 dark:text-red-400">
+            {error || 'Failed to load payment options'}
+          </span>
+        </CardContent>
+      </Card>
+    );
   }
 
   return (
@@ -148,6 +177,11 @@ export function Veo3PaymentButtons({ prompt, onPaymentClick }: Veo3PaymentButton
 
         <div className="text-xs text-muted-foreground text-center pt-2 border-t">
           <p>✓ Instant access • ✓ No subscription • ✓ Secure Stripe payment</p>
+          {mode === 'test' && (
+            <p className="text-yellow-600 dark:text-yellow-400 mt-1">
+              🧪 Test mode - Use test card 4242 4242 4242 4242
+            </p>
+          )}
         </div>
       </CardContent>
     </Card>
