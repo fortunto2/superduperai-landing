@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Video, Loader2, Play, Download, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
-import { VEO3PaymentButtons } from '@/components/ui/veo3-payment-buttons';
+import { Veo3PaymentButtons } from '@/components/ui/veo3-payment-buttons';
 
 interface GeneratedVideo {
   fileId: string;
@@ -152,11 +152,10 @@ export function SimpleVEO3Generator() {
             />
           </div>
 
-          <VEO3PaymentButtons 
+          <Veo3PaymentButtons 
             prompt={prompt}
-            onPaymentSuccess={(generationId) => {
-              toast.success('Payment successful! Starting generation...');
-              pollGenerationStatus(generationId);
+            onPaymentClick={(type) => {
+              toast.success(`Payment for ${type} video(s) initiated!`);
             }}
           />
 
