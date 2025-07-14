@@ -1,11 +1,42 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import Stripe from 'stripe';
+import { writeFile } from 'fs/promises';
+import { join } from 'path';
 import { CURRENT_PRICES } from '@/lib/stripe-config';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-06-30.basil',
 });
+
+// Create initial generation file
+async function createInitialGenerationFile(generationId: string, prompt: string, videoCount: number) {
+  const storageDir = join(process.cwd(), '.veo3-generations');
+  const filePath = join(storageDir, `${generationId}.json`);
+  
+  const initialData = {
+    generationId,
+    prompt,
+    videoCount,
+    status: 'pending',
+    progress: 0,
+    createdAt: new Date().toISOString(),
+    videos: Array.from({ length: videoCount }, (_, i) => ({
+      fileId: `pending_${i}`,
+      status: 'pending',
+    })),
+  };
+
+  try {
+    // Ensure directory exists
+    await writeFile(join(storageDir, '.gitkeep'), '');
+    await writeFile(filePath, JSON.stringify(initialData, null, 2));
+    console.log('✅ Created initial generation file:', filePath);
+  } catch (error) {
+    console.error('❌ Failed to create initial generation file:', error);
+    // Don't throw error, just log it
+  }
+}
 
 const checkoutSchema = z.object({
   priceId: z.string().refine(
@@ -62,9 +93,13 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    // Create initial generation file so status page works immediately
+    await createInitialGenerationFile(generationId, validatedData.prompt, validatedData.videoCount);
+
     return NextResponse.json({ 
       url: session.url,
-      sessionId: session.id 
+      sessionId: session.id,
+      generationId 
     });
 
   } catch (error) {
