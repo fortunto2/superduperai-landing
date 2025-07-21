@@ -28,7 +28,13 @@ interface WebhookStatus {
 export default function PaymentSuccessClient({ sessionId, locale }: PaymentSuccessClientProps) {
   const [status, setStatus] = useState<WebhookStatus>({ status: 'pending' });
   const [countdown, setCountdown] = useState(30); // 30 seconds timeout
+  const [isDev, setIsDev] = useState(false);
   const router = useRouter();
+
+  // Check if we're in development
+  useEffect(() => {
+    setIsDev(process.env.NODE_ENV === 'development' || window.location.hostname === 'localhost');
+  }, []);
 
   // Check webhook status
   const checkWebhookStatus = async () => {
@@ -39,10 +45,12 @@ export default function PaymentSuccessClient({ sessionId, locale }: PaymentSucce
         setStatus(data);
         
         if (data.status === 'completed' && data.fileId) {
-          toast.success('Video generation started! Redirecting...');
-          setTimeout(() => {
-            router.push(`/${locale}/file/${data.fileId}`);
-          }, 2000);
+          if (status.status !== 'completed') { // Only redirect once
+            toast.success('Video generation started! Redirecting...');
+            setTimeout(() => {
+              router.push(`/${locale}/file/${data.fileId}`);
+            }, 2000);
+          }
         } else if (data.status === 'error') {
           toast.error('Error processing payment');
         }
@@ -60,7 +68,9 @@ export default function PaymentSuccessClient({ sessionId, locale }: PaymentSucce
         if (prev <= 1) {
           // Timeout - redirect to support or home
           toast.error('Processing is taking longer than expected. Please contact support.');
-          router.push(`/${locale}/tool/veo3-prompt-generator`);
+          setTimeout(() => {
+            router.push(`/${locale}/tool/veo3-prompt-generator`);
+          }, 100);
           return 0;
         }
         return prev - 1;
@@ -172,6 +182,38 @@ export default function PaymentSuccessClient({ sessionId, locale }: PaymentSucce
               >
                 Try Again
               </Button>
+            </div>
+          )}
+
+          {/* Development mode manual controls */}
+          {isDev && status.status === 'pending' && (
+            <div className="text-center pt-4 border-t border-dashed">
+              <p className="text-sm text-muted-foreground mb-3">
+                🚧 Development Mode - Manual Controls
+              </p>
+              <div className="flex gap-2 justify-center">
+                <Button 
+                  onClick={() => setStatus({ status: 'processing' })}
+                  variant="outline"
+                  size="sm"
+                >
+                  Simulate Processing
+                </Button>
+                <Button 
+                  onClick={() => setStatus({ status: 'completed', fileId: 'demo-file-id-12345' })}
+                  variant="outline"
+                  size="sm"
+                >
+                  Simulate Completed
+                </Button>
+                <Button 
+                  onClick={() => router.push(`/${locale}/file/demo-file-id-12345`)}
+                  variant="default"
+                  size="sm"
+                >
+                  Go to Demo File
+                </Button>
+              </div>
             </div>
           )}
         </CardContent>
