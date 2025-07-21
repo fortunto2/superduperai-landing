@@ -10,7 +10,7 @@ const videoGenerationSchema = z.object({
   shotSize: z.string().default('medium_shot'),
   model: z.string().default('veo3'),
   frameRate: z.number().int().min(24).max(120).default(30),
-  duration: z.number().int().min(1).max(60).default(5),
+  duration: z.number().int().min(1).max(60).default(8),
   seed: z.number().optional(),
   generationType: z.enum(['text-to-video', 'image-to-video']).default('text-to-video'),
   file: z.any().optional(), // For FormData file uploads
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
         shotSize: formData.get('shotSize')?.toString() || 'medium_shot',
         model: formData.get('model')?.toString() || 'veo3',
         frameRate: Number(formData.get('frameRate')) || 30,
-        duration: Number(formData.get('duration')) || 5,
+        duration: Number(formData.get('duration')) || 8,
         seed: formData.get('seed') ? Number(formData.get('seed')) : undefined,
         generationType: formData.get('generationType')?.toString() || 'text-to-video',
         chatId: formData.get('chatId')?.toString() || 'video-generator',

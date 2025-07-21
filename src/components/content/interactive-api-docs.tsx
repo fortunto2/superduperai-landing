@@ -341,7 +341,7 @@ const generate${isVideo ? 'Video' : 'Image'} = async (prompt: string) => {
         prompt: prompt,
         generation_config_name: '${config.model}',
         params: {${isVideo ? `
-          duration: 5,
+          duration: 8,
           aspect_ratio: '16:9'` : `
           width: 1024,
           height: 1024,
@@ -438,7 +438,7 @@ def generate_${isVideo ? 'video' : 'image'}(prompt):
                 'prompt': prompt,
                 'generation_config_name': '${config.model}',
                 'params': {${isVideo ? `
-                    'duration': 5,
+                    'duration': 8,
                     'aspect_ratio': '16:9'` : `
                     'width': 1024,
                     'height': 1024,
@@ -559,7 +559,7 @@ RESPONSE=$(curl -s -X POST "$API_BASE/file/${endpoint}" \\
       "prompt": "${prompt}",
       "generation_config_name": "${config.model}",
       "params": {${isVideo ? `
-        "duration": 5,
+        "duration": 8,
         "aspect_ratio": "16:9"` : `
         "width": 1024,
         "height": 1024,

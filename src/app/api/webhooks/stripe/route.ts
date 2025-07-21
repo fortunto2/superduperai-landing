@@ -28,7 +28,7 @@ const API_ENDPOINTS = {
 // Generate single video using SuperDuperAI API
 async function generateVideoWithSuperDuperAI(
   prompt: string, 
-  duration: number = 5, 
+  duration: number = 8, 
   resolution: string = '1280x720', 
   style: string = 'cinematic'
 ): Promise<string> {
@@ -267,7 +267,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
 async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
   console.log('✅ Payment succeeded:', paymentIntent.id);
   
-  let prompt, video_count, customer_email, duration = '5', resolution = '1280x720', style = 'cinematic';
+  let prompt, video_count, customer_email, duration = '8', resolution = '1280x720', style = 'cinematic';
   let toolSlug, toolTitle;
   let sessionId: string | undefined;
 
@@ -296,7 +296,7 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
     prompt = metadata.prompt;
     video_count = metadata.video_count;
     customer_email = metadata.customer_email;
-    duration = metadata.duration || '5';
+    duration = metadata.duration || '8';
     resolution = metadata.resolution || '1280x720';
     style = metadata.style || 'cinematic';
     toolSlug = metadata.toolSlug;

@@ -77,7 +77,7 @@ async function generateVideoWithSuperDuperAI(prompt: string, videoCount: number)
           width: 1280,
           height: 720,
           aspect_ratio: '16:9',
-          duration: 5,
+          duration: 8,
           seed: Math.floor(Math.random() * 1000000),
           generation_config_name: 'google-cloud/veo3', // Use VEO3 model
           frame_rate: 30,
