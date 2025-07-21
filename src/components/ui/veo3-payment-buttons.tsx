@@ -11,9 +11,11 @@ import { useStripePrices } from "@/hooks/use-stripe-prices";
 interface Veo3PaymentButtonsProps {
   prompt: string;
   onPaymentClick?: () => void;
+  toolSlug?: string;
+  toolTitle?: string;
 }
 
-export function Veo3PaymentButtons({ prompt, onPaymentClick }: Veo3PaymentButtonsProps) {
+export function Veo3PaymentButtons({ prompt, onPaymentClick, toolSlug, toolTitle }: Veo3PaymentButtonsProps) {
   const [isCreatingCheckout, setIsCreatingCheckout] = useState(false);
   const { prices, mode, loading, error } = useStripePrices();
 
@@ -41,6 +43,8 @@ export function Veo3PaymentButtons({ prompt, onPaymentClick }: Veo3PaymentButton
           priceId: prices.single,
           quantity: 1,
           prompt: prompt.trim(),
+          toolSlug: toolSlug,
+          toolTitle: toolTitle,
         }),
       });
 

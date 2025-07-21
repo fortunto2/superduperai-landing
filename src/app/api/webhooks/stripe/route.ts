@@ -94,7 +94,7 @@ async function generateVideoWithSuperDuperAI(
 }
 
 // Update webhook status directly in store
-function updateWebhookStatus(sessionId: string, data: { status: 'pending' | 'processing' | 'completed' | 'error'; fileId?: string; error?: string }) {
+function updateWebhookStatus(sessionId: string, data: { status: 'pending' | 'processing' | 'completed' | 'error'; fileId?: string; error?: string; toolSlug?: string; toolTitle?: string }) {
   try {
     webhookStatusStore.set(sessionId, {
       ...data,
@@ -186,14 +186,16 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   updateWebhookStatus(sessionId, { status: 'processing' });
   
   // Extract metadata from checkout session
-  const { 
-    prompt, 
-    video_count, 
-    customer_email,
-    duration = '8',
-    resolution = '1280x720',
-    style = 'cinematic'
-  } = session.metadata || {};
+      const {
+      prompt, 
+      video_count, 
+      customer_email,
+      duration = '8',
+      resolution = '1280x720',
+      style = 'cinematic',
+      toolSlug,
+      toolTitle
+    } = session.metadata || {};
 
   if (!prompt || !video_count) {
     console.warn('⚠️ Missing required metadata in checkout session:', sessionId, session.metadata);
@@ -232,7 +234,12 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     console.log('🎬 VEO3 generation started with fileId:', fileId);
 
     // Update webhook status to processing with fileId (client can start polling)
-    updateWebhookStatus(sessionId, { status: 'processing', fileId });
+    updateWebhookStatus(sessionId, { 
+      status: 'processing', 
+      fileId,
+      toolSlug: toolSlug || undefined,
+      toolTitle: toolTitle || undefined
+    });
 
     console.log('✅ Webhook completed quickly, client will poll fileId:', fileId);
 
@@ -261,6 +268,7 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
   console.log('✅ Payment succeeded:', paymentIntent.id);
   
   let prompt, video_count, customer_email, duration = '5', resolution = '1280x720', style = 'cinematic';
+  let toolSlug, toolTitle;
   let sessionId: string | undefined;
 
   // First, get the checkout session
@@ -291,6 +299,8 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
     duration = metadata.duration || '5';
     resolution = metadata.resolution || '1280x720';
     style = metadata.style || 'cinematic';
+    toolSlug = metadata.toolSlug;
+    toolTitle = metadata.toolTitle;
 
     if (!prompt || !video_count) {
       console.error('❌ Missing required metadata in checkout session:', sessionId, session.metadata);
@@ -322,7 +332,12 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
 
     // Update webhook status to processing with fileId (client can start polling)
     if (sessionId) {
-      updateWebhookStatus(sessionId, { status: 'processing', fileId });
+      updateWebhookStatus(sessionId, { 
+        status: 'processing', 
+        fileId,
+        toolSlug: toolSlug,
+        toolTitle: toolTitle
+      });
     }
 
     console.log('✅ Webhook completed quickly, client will poll fileId:', fileId);

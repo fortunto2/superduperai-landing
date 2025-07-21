@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { webhookStatusStore, type WebhookStatusData } from '@/lib/webhook-status-store';
+import { webhookStatusStore } from '@/lib/webhook-status-store';
 
 export async function GET(
   request: NextRequest,
@@ -7,23 +7,25 @@ export async function GET(
 ) {
   try {
     const { sessionId } = await params;
-
-    if (!sessionId || !sessionId.startsWith('cs_')) {
-      return NextResponse.json(
-        { error: 'Invalid session ID' },
-        { status: 400 }
-      );
+    
+    if (!sessionId) {
+      return NextResponse.json({ error: 'Session ID is required' }, { status: 400 });
     }
 
-    // Get status from store
-    const status = webhookStatusStore.get(sessionId) || { status: 'pending' as const };
+    const status = webhookStatusStore.get(sessionId);
+    
+    if (!status) {
+      return NextResponse.json({ 
+        status: 'pending',
+        message: 'Webhook processing not yet started'
+      });
+    }
 
     return NextResponse.json(status);
-
   } catch (error) {
-    console.error('Error checking webhook status:', error);
+    console.error('Error getting webhook status:', error);
     return NextResponse.json(
-      { error: 'Failed to check webhook status' },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }

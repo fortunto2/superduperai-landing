@@ -87,6 +87,24 @@ const EXAMPLE_PROMPTS: PromptData[] = [
 ];
 
 export function SimpleVeo3Generator() {
+  // Get tool info from URL path
+  const getToolInfo = () => {
+    if (typeof window === 'undefined') return { toolSlug: undefined, toolTitle: undefined };
+    
+    const path = window.location.pathname;
+    const toolMatch = path.match(/\/tool\/([^\/]+)/);
+    
+    if (toolMatch) {
+      const toolSlug = toolMatch[1];
+      // Try to get tool title from document title or use slug as fallback
+      const toolTitle = document.title.split(' | ')[0] || toolSlug.replace(/-/g, ' ');
+      return { toolSlug, toolTitle };
+    }
+    
+    return { toolSlug: undefined, toolTitle: undefined };
+  };
+
+  const { toolSlug, toolTitle } = getToolInfo();
   const [promptData, setPromptData] = useState<PromptData>({
     scene: "", style: "", camera: "",
     characters: [{
@@ -1037,6 +1055,8 @@ export function SimpleVeo3Generator() {
                   <div className="mt-6">
                     <Veo3PaymentButtons 
                       prompt={enhancedPrompt || generatedPrompt}
+                      toolSlug={toolSlug}
+                      toolTitle={toolTitle}
                       onPaymentClick={() => {
                         console.log('Payment clicked for prompt:', enhancedPrompt || generatedPrompt);
                       }}

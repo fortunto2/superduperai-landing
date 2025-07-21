@@ -35,6 +35,7 @@ function _Progress({ value, className }: { value: number; className?: string }) 
 interface FileStatusClientProps {
   fileId: string;
   locale: string;
+  showToolInfo?: boolean;
 }
 
 interface FileData {
@@ -75,11 +76,38 @@ interface FileData {
   }>;
 }
 
-export default function FileStatusClient({ fileId, locale: _locale }: FileStatusClientProps) {
+export default function FileStatusClient({ fileId, locale: _locale, showToolInfo = false }: FileStatusClientProps) {
   const [fileData, setFileData] = useState<FileData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [toolInfo, setToolInfo] = useState<{ toolSlug?: string; toolTitle?: string } | null>(null);
+
+  // Fetch tool info from sessionId if available
+  const fetchToolInfo = useCallback(async () => {
+    if (!showToolInfo) return;
+    
+    try {
+      // Try to get sessionId from URL params or localStorage
+      const urlParams = new URLSearchParams(window.location.search);
+      const sessionId = urlParams.get('session_id');
+      
+      if (sessionId) {
+        const response = await fetch(`/api/webhook-status/${sessionId}`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.toolSlug || data.toolTitle) {
+            setToolInfo({
+              toolSlug: data.toolSlug,
+              toolTitle: data.toolTitle
+            });
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Failed to fetch tool info:', error);
+    }
+  }, [showToolInfo]);
 
   const fetchFileStatus = useCallback(async () => {
     try {
@@ -116,7 +144,8 @@ export default function FileStatusClient({ fileId, locale: _locale }: FileStatus
 
   useEffect(() => {
     fetchFileStatus();
-  }, [fetchFileStatus]);
+    fetchToolInfo();
+  }, [fetchFileStatus, fetchToolInfo]);
 
   // Auto-refresh for in-progress files
   useEffect(() => {
@@ -214,6 +243,36 @@ export default function FileStatusClient({ fileId, locale: _locale }: FileStatus
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
+      {/* Tool Info & Back Button */}
+      {showToolInfo && toolInfo && (toolInfo.toolSlug || toolInfo.toolTitle) && (
+        <Card className="bg-muted/50">
+          <CardContent className="pt-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                  <Video className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <h3 className="font-semibold">{toolInfo.toolTitle || 'AI Tool'}</h3>
+                  <p className="text-sm text-muted-foreground">Generated from {toolInfo.toolSlug?.replace(/-/g, ' ')}</p>
+                </div>
+              </div>
+              {toolInfo.toolSlug && (
+                <Button
+                  variant="outline"
+                  asChild
+                  className="gap-2"
+                >
+                  <a href={`/${_locale}/tool/${toolInfo.toolSlug}`}>
+                    ← Back to Tool
+                  </a>
+                </Button>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">

@@ -37,7 +37,7 @@ export default async function FileStatusPage({ params }: FileStatusPageProps) {
             <h1 className="text-3xl font-bold mb-6 text-center">
               AI File Generation Status
             </h1>
-            <FileStatusClient fileId={fileId} locale={locale} />
+            <FileStatusClient fileId={fileId} locale={locale} showToolInfo={true} />
           </div>
         </div>
       </main>

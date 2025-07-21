@@ -7,7 +7,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 export async function POST(request: NextRequest) {
   try {
-    const { priceId, quantity = 1, prompt } = await request.json();
+    const { priceId, quantity = 1, prompt, toolSlug, toolTitle } = await request.json();
 
     if (!priceId) {
       return NextResponse.json({ error: 'Price ID is required' }, { status: 400 });
@@ -51,6 +51,8 @@ export async function POST(request: NextRequest) {
         duration: '8',
         resolution: '1280x720',
         style: 'cinematic',
+        toolSlug: toolSlug || '',
+        toolTitle: toolTitle || '',
       },
     });
 

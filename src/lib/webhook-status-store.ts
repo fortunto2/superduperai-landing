@@ -3,6 +3,8 @@ interface WebhookStatusData {
   fileId?: string;
   error?: string;
   timestamp?: string;
+  toolSlug?: string;
+  toolTitle?: string;
 }
 
 // In-memory storage for webhook status (in production, use Redis or database)
