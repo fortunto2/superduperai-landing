@@ -68,15 +68,23 @@ export default function Veo3StatusClient({ generationId, sessionId, locale }: Ve
   // Load generation data from localStorage
   const loadGenerationData = useCallback(() => {
     try {
+      console.log('🔍 Loading generation data for:', generationId);
+      console.log('🔍 SessionId:', sessionId);
+      console.log('🔍 LocalStorage key:', `veo3_generation_${generationId}`);
+      
       const stored = localStorage.getItem(`veo3_generation_${generationId}`);
+      console.log('🔍 Stored data:', stored);
+      
       if (stored) {
         const data = JSON.parse(stored) as GenerationData;
+        console.log('✅ Loaded data from localStorage:', data);
         setGenerationData(data);
         return data;
       }
       
       // If no data in localStorage but we have sessionId, create initial data
       if (sessionId) {
+        console.log('🆕 Creating initial data for sessionId:', sessionId);
         const initialData: GenerationData = {
           generationId,
           sessionId,
@@ -94,6 +102,7 @@ export default function Veo3StatusClient({ generationId, sessionId, locale }: Ve
         return initialData;
       }
       
+      console.log('❌ No data found and no sessionId');
       return null;
     } catch (err) {
       console.error('Error loading generation data:', err);
