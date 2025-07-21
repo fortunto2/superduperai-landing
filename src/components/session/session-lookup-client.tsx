@@ -28,6 +28,7 @@ interface LookupResult {
   toolSlug?: string;
   toolTitle?: string;
   status?: string;
+  prompt?: string;
   error?: string;
 }
 
@@ -57,7 +58,8 @@ export default function SessionLookupClient({ sessionId, locale }: SessionLookup
             fileId: webhookData.fileId,
             toolSlug: webhookData.toolSlug,
             toolTitle: webhookData.toolTitle,
-            status: webhookData.status
+            status: webhookData.status,
+            prompt: webhookData.prompt
           });
           
           // Auto-redirect after a short delay
@@ -161,6 +163,15 @@ export default function SessionLookupClient({ sessionId, locale }: SessionLookup
                         {result.fileId}
                       </code>
                     </div>
+                    
+                    {result.prompt && (
+                      <div className="bg-muted p-4 rounded-lg mb-4">
+                        <label className="text-xs text-muted-foreground">Generated Prompt</label>
+                        <div className="text-sm mt-1 max-h-32 overflow-y-auto">
+                          {result.prompt}
+                        </div>
+                      </div>
+                    )}
                     
                     <p className="text-sm text-muted-foreground mb-4">
                       Redirecting automatically in 2 seconds...

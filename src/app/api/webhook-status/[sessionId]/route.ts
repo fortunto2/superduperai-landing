@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getWebhookStatusWithFallback, updateWebhookStatusWithFallback, type WebhookStatusData } from '@/lib/webhook-status-store';
+import { getPrompt } from '@/lib/kv';
 
 export async function GET(
   request: NextRequest,
@@ -21,7 +22,18 @@ export async function GET(
       });
     }
 
-    return NextResponse.json(status);
+    // Try to get the full prompt if it was a long prompt
+    let fullPrompt = null;
+    try {
+      fullPrompt = await getPrompt(sessionId);
+    } catch (error) {
+      console.warn('⚠️ Failed to get prompt from KV:', error);
+    }
+
+    return NextResponse.json({
+      ...status,
+      prompt: fullPrompt // Include full prompt if available
+    });
   } catch (error) {
     console.error('Error getting webhook status:', error);
     return NextResponse.json(

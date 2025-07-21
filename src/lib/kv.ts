@@ -12,12 +12,16 @@ export interface WebhookStatusData {
 // KV Key prefixes for organization
 const WEBHOOK_PREFIX = 'webhook:';
 const SESSION_PREFIX = 'session:';
+const PROMPT_PREFIX = 'prompt:';
 
 // Helper to create webhook key
 const getWebhookKey = (sessionId: string) => `${WEBHOOK_PREFIX}${sessionId}`;
 
 // Helper to create session key
 const getSessionKey = (sessionId: string) => `${SESSION_PREFIX}${sessionId}`;
+
+// Helper to create prompt key
+const getPromptKey = (sessionId: string) => `${PROMPT_PREFIX}${sessionId}`;
 
 // Store webhook status data
 export async function storeWebhookStatus(sessionId: string, data: WebhookStatusData): Promise<void> {
@@ -101,6 +105,39 @@ export async function deleteWebhookStatus(sessionId: string): Promise<void> {
     console.log('🗑️ Deleted webhook status from KV:', sessionId);
   } catch (error) {
     console.error('❌ Failed to delete webhook status from KV:', error);
+  }
+}
+
+// Store prompt data (for long prompts that exceed Stripe metadata limits)
+export async function storePrompt(sessionId: string, prompt: string): Promise<void> {
+  try {
+    const key = getPromptKey(sessionId);
+    
+    // Store prompt with expiration (30 days)
+    await kv.set(key, { prompt, timestamp: new Date().toISOString() }, { ex: 30 * 24 * 60 * 60 });
+    
+    console.log('💾 Stored prompt in KV:', sessionId, `(${prompt.length} chars)`);
+  } catch (error) {
+    console.error('❌ Failed to store prompt in KV:', error);
+    throw error;
+  }
+}
+
+// Get prompt data
+export async function getPrompt(sessionId: string): Promise<string | null> {
+  try {
+    const key = getPromptKey(sessionId);
+    const data = await kv.get<{ prompt: string; timestamp: string }>(key);
+    
+    if (data?.prompt) {
+      console.log('📝 Retrieved prompt from KV:', sessionId, `(${data.prompt.length} chars)`);
+      return data.prompt;
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('❌ Failed to get prompt from KV:', error);
+    return null;
   }
 }
 

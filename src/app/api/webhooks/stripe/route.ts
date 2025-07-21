@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import Stripe from 'stripe';
 import { updateWebhookStatusWithFallback } from '@/lib/webhook-status-store';
+import { getPrompt } from '@/lib/kv';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-06-30.basil',
@@ -91,6 +92,41 @@ async function generateVideoWithSuperDuperAI(
   console.log(`📁 FileId: ${fileId}`);
   console.log(`⏱️ Client can now poll /api/file/${fileId} for status updates`);
   return fileId;
+}
+
+// Get full prompt from metadata or KV
+async function getFullPrompt(sessionId: string, metadataPrompt: string, hasLongPrompt: string): Promise<string> {
+  try {
+    // Check if this is a long prompt stored in KV
+    if (hasLongPrompt === 'true') {
+      console.log('📝 Retrieving long prompt from KV for session:', sessionId);
+      const kvPrompt = await getPrompt(sessionId);
+      if (kvPrompt) {
+        console.log('✅ Retrieved long prompt from KV:', kvPrompt.length, 'chars');
+        return kvPrompt;
+      } else {
+        console.warn('⚠️ Long prompt not found in KV, using metadata fallback');
+      }
+    }
+    
+    // Fallback to metadata prompt (for short prompts or KV failures)
+    if (metadataPrompt && !metadataPrompt.startsWith('[LONG_PROMPT:')) {
+      return metadataPrompt;
+    }
+    
+    // If metadata contains long prompt reference, try to extract length
+    const longPromptMatch = metadataPrompt.match(/\[LONG_PROMPT:(\d+)chars\]/);
+    if (longPromptMatch) {
+      const expectedLength = parseInt(longPromptMatch[1]);
+      console.warn(`⚠️ Long prompt reference found but KV data missing. Expected ${expectedLength} chars.`);
+    }
+    
+    // Final fallback - return empty or metadata as-is
+    return metadataPrompt || '';
+  } catch (error) {
+    console.error('❌ Error getting full prompt:', error);
+    return metadataPrompt || '';
+  }
 }
 
 // Update webhook status using KV with fallback
@@ -186,16 +222,20 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   await updateWebhookStatus(sessionId, { status: 'processing' });
   
   // Extract metadata from checkout session
-      const {
-      prompt, 
-      video_count, 
-      customer_email,
-      duration = '8',
-      resolution = '1280x720',
-      style = 'cinematic',
-      toolSlug,
-      toolTitle
-    } = session.metadata || {};
+  const {
+    prompt: metadataPrompt, 
+    video_count, 
+    customer_email,
+    duration = '8',
+    resolution = '1280x720',
+    style = 'cinematic',
+    toolSlug,
+    toolTitle,
+    hasLongPrompt = 'false'
+  } = session.metadata || {};
+
+  // Get full prompt (from KV if it's long, from metadata if short)
+  const prompt = await getFullPrompt(sessionId, metadataPrompt || '', hasLongPrompt);
 
   if (!prompt || !video_count) {
     console.warn('⚠️ Missing required metadata in checkout session:', sessionId, session.metadata);
@@ -293,7 +333,8 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
 
     // Extract metadata from checkout session (not payment intent)
     const metadata = session.metadata || {};
-    prompt = metadata.prompt;
+    const metadataPrompt = metadata.prompt;
+    const hasLongPrompt = metadata.hasLongPrompt || 'false';
     video_count = metadata.video_count;
     customer_email = metadata.customer_email;
     duration = metadata.duration || '8';
@@ -301,6 +342,9 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
     style = metadata.style || 'cinematic';
     toolSlug = metadata.toolSlug;
     toolTitle = metadata.toolTitle;
+
+    // Get full prompt (from KV if it's long, from metadata if short)
+    prompt = await getFullPrompt(sessionId, metadataPrompt || '', hasLongPrompt);
 
     if (!prompt || !video_count) {
       console.error('❌ Missing required metadata in checkout session:', sessionId, session.metadata);

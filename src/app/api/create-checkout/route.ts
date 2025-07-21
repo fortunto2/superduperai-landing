@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
+import { storePrompt } from '@/lib/kv';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-06-30.basil',
@@ -32,6 +33,20 @@ export async function POST(request: NextRequest) {
     const appUrl = getAppUrl();
     console.log('🔗 Using app URL:', appUrl);
 
+    // Handle long prompts (Stripe metadata limit is 500 chars)
+    const promptToStore = prompt || '';
+    const isLongPrompt = promptToStore.length > 400; // Leave some buffer
+    
+    let metadataPrompt = '';
+    if (isLongPrompt) {
+      // Store full prompt in KV and use short reference in metadata
+      metadataPrompt = `[LONG_PROMPT:${promptToStore.length}chars]`;
+      console.log('📝 Long prompt detected, storing in KV:', promptToStore.length, 'chars');
+    } else {
+      // Use prompt directly in metadata if it's short enough
+      metadataPrompt = promptToStore;
+    }
+
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -46,15 +61,27 @@ export async function POST(request: NextRequest) {
       cancel_url: `${appUrl}/en/tool/veo3-prompt-generator`,
       metadata: {
         videoCount: quantity.toString(),
-        prompt: prompt || '',
+        prompt: metadataPrompt,
         video_count: quantity.toString(),
         duration: '8',
         resolution: '1280x720',
         style: 'cinematic',
         toolSlug: toolSlug || '',
         toolTitle: toolTitle || '',
+        hasLongPrompt: isLongPrompt.toString(),
       },
     });
+
+    // Store long prompt in KV if needed
+    if (isLongPrompt) {
+      try {
+        await storePrompt(session.id, promptToStore);
+        console.log('💾 Long prompt stored in KV for session:', session.id);
+      } catch (error) {
+        console.error('❌ Failed to store long prompt in KV:', error);
+        // Continue anyway - we'll try to get prompt from metadata
+      }
+    }
 
     return NextResponse.json({ 
       sessionId: session.id,
