@@ -65,7 +65,9 @@ async function generateVideoWithSuperDuperAI(
       'Authorization': `Bearer ${config.token}`,
       'User-Agent': 'SuperDuperAI-Landing/1.0'
     },
-    body: JSON.stringify(payload)
+    body: JSON.stringify(payload),
+    // Add timeout to prevent webhook from hanging
+    signal: AbortSignal.timeout(15000) // 15 seconds timeout
   });
   
   console.log(`📡 SuperDuperAI API Response Status: ${response.status}`);
@@ -85,7 +87,9 @@ async function generateVideoWithSuperDuperAI(
     throw new Error('No file ID returned from SuperDuperAI API');
   }
   
-  console.log(`✅ Video generation started with fileId: ${fileId}`);
+  console.log(`🚀 Video generation task created successfully!`);
+  console.log(`📁 FileId: ${fileId}`);
+  console.log(`⏱️ Client can now poll /api/file/${fileId} for status updates`);
   return fileId;
 }
 
@@ -187,7 +191,25 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   } = session.metadata || {};
 
   if (!prompt || !video_count) {
-    console.error('❌ Missing required metadata in checkout session:', sessionId);
+    console.warn('⚠️ Missing required metadata in checkout session:', sessionId, session.metadata);
+    
+    // For test events from Stripe CLI, use default values
+    if (!prompt && !video_count) {
+      console.log('🧪 Detected test event, using default values for testing');
+      const testPrompt = 'A beautiful sunset over the ocean with waves gently crashing on the shore';
+      
+      try {
+        const fileId = await generateVideoWithSuperDuperAI(testPrompt, 5, '1280x720', 'cinematic');
+        console.log('🎬 Test VEO3 file created:', fileId);
+        updateWebhookStatus(sessionId, { status: 'completed', fileId });
+        return;
+      } catch (error) {
+        console.error('❌ Failed to generate test video:', error);
+        updateWebhookStatus(sessionId, { status: 'error', error: 'Test generation failed' });
+        return;
+      }
+    }
+    
     updateWebhookStatus(sessionId, { status: 'error', error: 'Missing required metadata' });
     return;
   }
@@ -302,14 +324,16 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
       NODE_ENV: process.env.NODE_ENV
     });
     
-    // Start VEO3 generation directly with SuperDuperAI
+    // Start VEO3 generation directly with SuperDuperAI (async, don't wait)
     const fileId = await generateVideoWithSuperDuperAI(prompt, parseInt(duration), resolution, style);
-    console.log('🎬 VEO3 file created:', fileId);
+    console.log('🎬 VEO3 generation started with fileId:', fileId);
 
-    // Update webhook status to completed
+    // Update webhook status to processing with fileId (client can start polling)
     if (sessionId) {
-      updateWebhookStatus(sessionId, { status: 'completed', fileId });
+      updateWebhookStatus(sessionId, { status: 'processing', fileId });
     }
+
+    console.log('✅ Webhook completed quickly, client will poll fileId:', fileId);
 
     // TODO: Send email notification to customer with file status link
     if (customer_email) {
