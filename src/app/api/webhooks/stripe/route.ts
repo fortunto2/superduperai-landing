@@ -111,6 +111,12 @@ export async function POST(request: NextRequest) {
   const headersList = await headers();
   const signature = headersList.get('stripe-signature')!;
 
+  // Check for empty body
+  if (!body) {
+    console.error('❌ Empty webhook payload received');
+    return NextResponse.json({ error: 'Empty payload' }, { status: 400 });
+  }
+
   let event: Stripe.Event;
 
   try {
@@ -215,8 +221,8 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   
   // Determine base URL - use NEXT_PUBLIC_APP_URL or fallback to Vercel URL
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 
-                 process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 
-                 'http://localhost:3000';
+                 (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 
+                 'http://localhost:3000');
   
   try {
     console.log('🎬 Starting VEO3 generation directly with SuperDuperAI');
@@ -300,8 +306,8 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
   try {
     // Determine base URL - use NEXT_PUBLIC_APP_URL or fallback to Vercel URL
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 
-                   process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 
-                   'http://localhost:3000';
+                   (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 
+                   'http://localhost:3000');
     
     console.log('🌐 Webhook calling API at:', baseUrl);
     console.log('📋 Environment vars:', {
