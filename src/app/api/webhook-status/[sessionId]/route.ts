@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { webhookStatusStore } from '@/lib/webhook-status-store';
+import { webhookStatusStore, type WebhookStatusData } from '@/lib/webhook-status-store';
 
 export async function GET(
   request: NextRequest,
