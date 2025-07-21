@@ -10,7 +10,9 @@ import {
   XCircle,
   Video,
   Clock,
-  ArrowRight
+  ArrowRight,
+  Copy,
+  Search
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -178,6 +180,36 @@ export default function PaymentSuccessClient({ sessionId, locale }: PaymentSucce
               >
                 <Video className="h-4 w-4 mr-2" />
                 View Video Status
+              </Button>
+            </div>
+          )}
+
+          {/* Fallback: Always show session lookup button after some time */}
+          {countdown < 45 && (
+            <div className="text-center mt-4">
+              <p className="text-sm text-muted-foreground mb-2">
+                Having trouble? You can always find your file using this session ID:
+              </p>
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <code className="text-xs bg-muted px-2 py-1 rounded font-mono">
+                  {sessionId}
+                </code>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => navigator.clipboard.writeText(sessionId)}
+                  className="h-6 w-6 p-0"
+                >
+                  <Copy className="w-3 h-3" />
+                </Button>
+              </div>
+              <Button 
+                onClick={() => router.push(`/${locale}/session/${sessionId}`)}
+                variant="outline"
+                className="gap-2"
+              >
+                <Search className="h-4 w-4" />
+                Find My File
               </Button>
             </div>
           )}
