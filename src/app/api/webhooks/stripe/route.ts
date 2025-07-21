@@ -230,7 +230,9 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
   console.log('✅ Payment succeeded:', paymentIntent.id);
   
   let prompt, video_count, customer_email, duration = '5', resolution = '1280x720', style = 'cinematic';
+  let sessionId: string | undefined;
 
+  // First, get the checkout session
   try {
     // Get the checkout session from payment intent
     const sessions = await stripe.checkout.sessions.list({
@@ -244,7 +246,11 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
     }
 
     const session = sessions.data[0];
-    console.log('🔍 Found checkout session:', session.id);
+    sessionId = session.id;
+    console.log('🔍 Found checkout session:', sessionId);
+
+    // Update webhook status to processing
+    updateWebhookStatus(sessionId, { status: 'processing' });
 
     // Extract metadata from checkout session (not payment intent)
     const metadata = session.metadata || {};
@@ -254,10 +260,10 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
     duration = metadata.duration || '5';
     resolution = metadata.resolution || '1280x720';
     style = metadata.style || 'cinematic';
-    // generation_id not needed anymore
 
     if (!prompt || !video_count) {
-      console.error('❌ Missing required metadata in checkout session:', session.id, session.metadata);
+      console.error('❌ Missing required metadata in checkout session:', sessionId, session.metadata);
+      updateWebhookStatus(sessionId, { status: 'error', error: 'Missing required metadata' });
       return;
     }
   } catch (sessionError) {
@@ -265,6 +271,7 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
     return;
   }
 
+  // Now generate the video
   try {
     // Determine base URL - use NEXT_PUBLIC_APP_URL or fallback to Vercel URL
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 
@@ -283,7 +290,9 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
     console.log('🎬 VEO3 file created:', fileId);
 
     // Update webhook status to completed
-    updateWebhookStatus(sessionId, { status: 'completed', fileId });
+    if (sessionId) {
+      updateWebhookStatus(sessionId, { status: 'completed', fileId });
+    }
 
     // TODO: Send email notification to customer with file status link
     if (customer_email) {
@@ -295,10 +304,12 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
     console.error('❌ Failed to start VEO3 generation:', error);
     
     // Update webhook status to error
-    updateWebhookStatus(sessionId, { 
-      status: 'error', 
-      error: error instanceof Error ? error.message : 'Unknown error' 
-    });
+    if (sessionId) {
+      updateWebhookStatus(sessionId, { 
+        status: 'error', 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      });
+    }
     
     // TODO: Send error notification to customer
     if (customer_email) {

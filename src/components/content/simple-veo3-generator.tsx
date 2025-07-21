@@ -1037,8 +1037,8 @@ export function SimpleVeo3Generator() {
                   <div className="mt-6">
                     <Veo3PaymentButtons 
                       prompt={enhancedPrompt || generatedPrompt}
-                      onPaymentClick={(type) => {
-                        console.log('Payment clicked:', type, 'for prompt:', enhancedPrompt || generatedPrompt);
+                      onPaymentClick={() => {
+                        console.log('Payment clicked for prompt:', enhancedPrompt || generatedPrompt);
                       }}
                     />
                   </div>
