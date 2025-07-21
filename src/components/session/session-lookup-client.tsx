@@ -44,12 +44,12 @@ export default function SessionLookupClient({ sessionId, locale }: SessionLookup
       
       console.log('🔍 Looking up session:', sessionId);
       
-      // Try webhook status first
+      // Try webhook status first (now uses KV with fallback)
       const webhookResponse = await fetch(`/api/webhook-status/${sessionId}`);
       
       if (webhookResponse.ok) {
         const webhookData = await webhookResponse.json();
-        console.log('📊 Webhook data found:', webhookData);
+        console.log('📊 Webhook data found (KV):', webhookData);
         
         if (webhookData.fileId) {
           setResult({

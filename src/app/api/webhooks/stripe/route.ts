@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import Stripe from 'stripe';
-import { webhookStatusStore } from '@/lib/webhook-status-store';
+import { updateWebhookStatusWithFallback } from '@/lib/webhook-status-store';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-06-30.basil',
@@ -93,10 +93,10 @@ async function generateVideoWithSuperDuperAI(
   return fileId;
 }
 
-// Update webhook status directly in store
-function updateWebhookStatus(sessionId: string, data: { status: 'pending' | 'processing' | 'completed' | 'error'; fileId?: string; error?: string; toolSlug?: string; toolTitle?: string }) {
+// Update webhook status using KV with fallback
+async function updateWebhookStatus(sessionId: string, data: { status: 'pending' | 'processing' | 'completed' | 'error'; fileId?: string; error?: string; toolSlug?: string; toolTitle?: string }) {
   try {
-    webhookStatusStore.set(sessionId, {
+    await updateWebhookStatusWithFallback(sessionId, {
       ...data,
       timestamp: new Date().toISOString()
     });
@@ -183,7 +183,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   const sessionId = session.id;
 
   // Update webhook status to processing
-  updateWebhookStatus(sessionId, { status: 'processing' });
+  await updateWebhookStatus(sessionId, { status: 'processing' });
   
   // Extract metadata from checkout session
       const {
@@ -208,16 +208,16 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       try {
         const fileId = await generateVideoWithSuperDuperAI(testPrompt, 8, '1280x720', 'cinematic');
         console.log('🎬 Test VEO3 file created:', fileId);
-        updateWebhookStatus(sessionId, { status: 'completed', fileId });
+        await updateWebhookStatus(sessionId, { status: 'completed', fileId });
         return;
       } catch (error) {
         console.error('❌ Failed to generate test video:', error);
-        updateWebhookStatus(sessionId, { status: 'error', error: 'Test generation failed' });
+        await updateWebhookStatus(sessionId, { status: 'error', error: 'Test generation failed' });
         return;
       }
     }
     
-    updateWebhookStatus(sessionId, { status: 'error', error: 'Missing required metadata' });
+    await updateWebhookStatus(sessionId, { status: 'error', error: 'Missing required metadata' });
     return;
   }
   
@@ -234,7 +234,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     console.log('🎬 VEO3 generation started with fileId:', fileId);
 
     // Update webhook status to processing with fileId (client can start polling)
-    updateWebhookStatus(sessionId, { 
+    await updateWebhookStatus(sessionId, { 
       status: 'processing', 
       fileId,
       toolSlug: toolSlug || undefined,
@@ -254,7 +254,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     console.error('❌ Failed to start VEO3 generation:', error);
     
     // Update webhook status to error
-    updateWebhookStatus(sessionId, { status: 'error', error: error instanceof Error ? error.message : 'Unknown error' });
+    await updateWebhookStatus(sessionId, { status: 'error', error: error instanceof Error ? error.message : 'Unknown error' });
     
     // TODO: Send error notification to customer
     const email = customer_email || session.customer_details?.email;
@@ -289,7 +289,7 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
     console.log('🔍 Found checkout session:', sessionId);
 
     // Update webhook status to processing
-    updateWebhookStatus(sessionId, { status: 'processing' });
+    await updateWebhookStatus(sessionId, { status: 'processing' });
 
     // Extract metadata from checkout session (not payment intent)
     const metadata = session.metadata || {};
@@ -304,7 +304,7 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
 
     if (!prompt || !video_count) {
       console.error('❌ Missing required metadata in checkout session:', sessionId, session.metadata);
-      updateWebhookStatus(sessionId, { status: 'error', error: 'Missing required metadata' });
+      await updateWebhookStatus(sessionId, { status: 'error', error: 'Missing required metadata' });
       return;
     }
   } catch (sessionError) {
@@ -332,7 +332,7 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
 
     // Update webhook status to processing with fileId (client can start polling)
     if (sessionId) {
-      updateWebhookStatus(sessionId, { 
+      await updateWebhookStatus(sessionId, { 
         status: 'processing', 
         fileId,
         toolSlug: toolSlug,
@@ -353,7 +353,7 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
     
     // Update webhook status to error
     if (sessionId) {
-      updateWebhookStatus(sessionId, { 
+      await updateWebhookStatus(sessionId, { 
         status: 'error', 
         error: error instanceof Error ? error.message : 'Unknown error' 
       });

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { webhookStatusStore, type WebhookStatusData } from '@/lib/webhook-status-store';
+import { getWebhookStatusWithFallback, updateWebhookStatusWithFallback, type WebhookStatusData } from '@/lib/webhook-status-store';
 
 export async function GET(
   request: NextRequest,
@@ -12,7 +12,7 @@ export async function GET(
       return NextResponse.json({ error: 'Session ID is required' }, { status: 400 });
     }
 
-    const status = webhookStatusStore.get(sessionId);
+    const status = await getWebhookStatusWithFallback(sessionId);
     
     if (!status) {
       return NextResponse.json({ 
@@ -47,7 +47,7 @@ export async function POST(
     }
 
     // Update status in store
-    webhookStatusStore.set(sessionId, {
+    await updateWebhookStatusWithFallback(sessionId, {
       ...data,
       timestamp: new Date().toISOString()
     });
