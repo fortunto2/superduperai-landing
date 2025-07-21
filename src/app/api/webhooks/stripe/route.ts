@@ -67,7 +67,12 @@ async function generateVideoWithSuperDuperAI(
     },
     body: JSON.stringify(payload),
     // Add timeout to prevent webhook from hanging
-    signal: AbortSignal.timeout(15000) // 15 seconds timeout
+    signal: AbortSignal.timeout(15000), // 15 seconds timeout
+    // Skip SSL verification for development (fix certificate issue)
+    ...(process.env.NODE_ENV === 'development' && {
+      // @ts-ignore
+      agent: new (require('https').Agent)({ rejectUnauthorized: false })
+    })
   });
   
   console.log(`📡 SuperDuperAI API Response Status: ${response.status}`);
@@ -220,42 +225,29 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
                  'http://localhost:3000';
   
   try {
+    console.log('🎬 Starting VEO3 generation directly with SuperDuperAI');
     
-    console.log('🌐 Payment webhook calling API at:', baseUrl);
-    
-    // Start VEO3 generation
-    const response = await fetch(`${baseUrl}/api/generate-veo3`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        prompt,
-        sessionId: session.id,
-        generationId: generation_id,
-        videoCount: parseInt(video_count),
-        customerEmail: customer_email || session.customer_details?.email,
-        duration: parseInt(duration),
-        resolution,
-        style,
-      }),
-    });
+    // Start VEO3 generation directly with SuperDuperAI (async, don't wait)
+    const fileId = await generateVideoWithSuperDuperAI(prompt, parseInt(duration), resolution, style);
+    console.log('🎬 VEO3 generation started with fileId:', fileId);
 
-    if (!response.ok) {
-      throw new Error(`Generation API failed: ${response.status}`);
-    }
+    // Update webhook status to processing with fileId (client can start polling)
+    updateWebhookStatus(sessionId, { status: 'processing', fileId });
 
-    const result = await response.json();
-    console.log('🎬 VEO3 generation started:', result);
+    console.log('✅ Webhook completed quickly, client will poll fileId:', fileId);
 
-    // TODO: Send email notification to customer with generation status link
+    // TODO: Send email notification to customer with file status link
     const email = customer_email || session.customer_details?.email;
     if (email) {
-      console.log('📧 TODO: Send email to', email, 'with generation ID:', result.generationId);
+      const statusUrl = `${baseUrl}/en/file/${fileId}`;
+      console.log('📧 TODO: Send email to', email, 'with status URL:', statusUrl);
     }
 
   } catch (error) {
     console.error('❌ Failed to start VEO3 generation:', error);
+    
+    // Update webhook status to error
+    updateWebhookStatus(sessionId, { status: 'error', error: error instanceof Error ? error.message : 'Unknown error' });
     
     // TODO: Send error notification to customer
     const email = customer_email || session.customer_details?.email;
