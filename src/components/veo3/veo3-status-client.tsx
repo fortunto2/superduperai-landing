@@ -219,13 +219,26 @@ export default function Veo3StatusClient({ generationId, sessionId, locale }: Ve
         let data = loadGenerationData();
         
         if (!data) {
+          console.log('❌ No generation data found, checking all localStorage keys...');
+          // Debug: show all localStorage keys
+          for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key?.startsWith('veo3_')) {
+              console.log('📦 Found key:', key, localStorage.getItem(key));
+            }
+          }
           setError('Generation data not found. Please check your link or create a new generation.');
           return;
         }
 
+        console.log('✅ Successfully loaded generation data:', data);
+
         // If we have fileIds, update their statuses
         if (data.fileIds.length > 0) {
+          console.log('🔄 Updating video statuses for', data.fileIds.length, 'files');
           data = await updateVideoStatuses(data);
+        } else {
+          console.log('⏳ No fileIds yet, waiting for webhook or manual update');
         }
 
       } catch (err) {
@@ -290,6 +303,25 @@ export default function Veo3StatusClient({ generationId, sessionId, locale }: Ve
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     toast.success('Copied to clipboard!');
+  };
+
+  // Debug function to create test data
+  const createTestData = () => {
+    const testData: GenerationData = {
+      generationId,
+      sessionId: sessionId || generationId,
+      prompt: 'Test prompt: A beautiful sunset over mountains',
+      videoCount: 1,
+      createdAt: new Date().toISOString(),
+      fileIds: [],
+      status: 'pending',
+      progress: 0,
+      videos: []
+    };
+    
+    localStorage.setItem(`veo3_generation_${generationId}`, JSON.stringify(testData));
+    setGenerationData(testData);
+    toast.success('Test data created!');
   };
 
   const getStatusIcon = (status: string) => {
@@ -544,19 +576,35 @@ export default function Veo3StatusClient({ generationId, sessionId, locale }: Ve
         <CardHeader>
           <CardTitle>Need Help?</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-2">
-          <p className="text-sm text-muted-foreground">
-            • Video generation typically takes 2-5 minutes per video
-          </p>
-          <p className="text-sm text-muted-foreground">
-            • This page will automatically refresh every 5 seconds while processing
-          </p>
-          <p className="text-sm text-muted-foreground">
-            • You can bookmark this page to check status later
-          </p>
-          <p className="text-sm text-muted-foreground">
-            • If you encounter issues, try refreshing the page or contact support
-          </p>
+        <CardContent className="space-y-3">
+          <div className="space-y-2">
+            <p className="text-sm text-muted-foreground">
+              • Video generation typically takes 2-5 minutes per video
+            </p>
+            <p className="text-sm text-muted-foreground">
+              • This page will automatically refresh every 5 seconds while processing
+            </p>
+            <p className="text-sm text-muted-foreground">
+              • You can bookmark this page to check status later
+            </p>
+            <p className="text-sm text-muted-foreground">
+              • If you encounter issues, try refreshing the page or contact support
+            </p>
+          </div>
+          
+          {error && (
+            <div className="pt-2 border-t">
+              <p className="text-sm text-muted-foreground mb-2">Debug options:</p>
+              <Button 
+                onClick={createTestData} 
+                variant="outline" 
+                size="sm"
+                className="text-xs"
+              >
+                Create Test Data
+              </Button>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
