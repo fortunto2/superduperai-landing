@@ -129,19 +129,39 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
 async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
   console.log('✅ Payment succeeded:', paymentIntent.id);
   
-  // Extract metadata from payment intent
-  const { 
-    prompt, 
-    video_count, 
-    customer_email,
-    duration = '5',
-    resolution = '1280x720',
-    style = 'cinematic',
-    generation_id
-  } = paymentIntent.metadata;
+  let prompt, video_count, customer_email, duration = '5', resolution = '1280x720', style = 'cinematic', generation_id;
 
-  if (!prompt || !video_count) {
-    console.error('❌ Missing required metadata in payment intent:', paymentIntent.id);
+  try {
+    // Get the checkout session from payment intent
+    const sessions = await stripe.checkout.sessions.list({
+      payment_intent: paymentIntent.id,
+      limit: 1
+    });
+
+    if (sessions.data.length === 0) {
+      console.error('❌ No checkout session found for payment intent:', paymentIntent.id);
+      return;
+    }
+
+    const session = sessions.data[0];
+    console.log('🔍 Found checkout session:', session.id);
+
+    // Extract metadata from checkout session (not payment intent)
+    const metadata = session.metadata || {};
+    prompt = metadata.prompt;
+    video_count = metadata.video_count;
+    customer_email = metadata.customer_email;
+    duration = metadata.duration || '5';
+    resolution = metadata.resolution || '1280x720';
+    style = metadata.style || 'cinematic';
+    generation_id = metadata.generation_id;
+
+    if (!prompt || !video_count) {
+      console.error('❌ Missing required metadata in checkout session:', session.id, session.metadata);
+      return;
+    }
+  } catch (sessionError) {
+    console.error('❌ Failed to get checkout session for payment intent:', paymentIntent.id, sessionError);
     return;
   }
 
@@ -166,7 +186,7 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
       },
       body: JSON.stringify({
         prompt,
-        paymentIntentId: paymentIntent.id,
+        sessionId: generation_id, // Use the session ID from metadata
         generationId: generation_id,
         videoCount: parseInt(video_count),
         customerEmail: customer_email,
