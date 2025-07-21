@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
         videoCount: quantity.toString(),
         prompt: prompt || '',
         video_count: quantity.toString(),
-        duration: '5',
+        duration: '8',
         resolution: '1280x720',
         style: 'cinematic',
       },

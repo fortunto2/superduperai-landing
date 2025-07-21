@@ -304,6 +304,39 @@ export default function FileStatusClient({ fileId, locale: _locale }: FileStatus
             </div>
           )}
 
+          {/* Preview section */}
+          {fileData.url && (
+            <div className="pt-4 border-t">
+              <div className="mb-4">
+                <h3 className="font-medium mb-3">Preview</h3>
+                <div className="relative aspect-video rounded-lg overflow-hidden bg-muted">
+                  {fileData.type === 'video' ? (
+                    <video
+                      src={fileData.url}
+                      poster={fileData.thumbnail_url}
+                      controls
+                      className="w-full h-full object-cover"
+                      title={`Generated ${fileData.type} preview`}
+                    />
+                  ) : fileData.type === 'image' ? (
+                    <img
+                      src={fileData.url}
+                      alt={`Generated ${fileData.type} preview`}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center h-full">
+                      <div className="text-center">
+                        <File className="w-12 h-12 mx-auto mb-2 text-muted-foreground" />
+                        <p className="text-sm text-muted-foreground">Preview not available for this file type</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Download section */}
           {fileData.url && (
             <div className="pt-4 border-t">

@@ -184,7 +184,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     prompt, 
     video_count, 
     customer_email,
-    duration = '5',
+    duration = '8',
     resolution = '1280x720',
     style = 'cinematic'
   } = session.metadata || {};
@@ -198,7 +198,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       const testPrompt = 'A beautiful sunset over the ocean with waves gently crashing on the shore';
       
       try {
-        const fileId = await generateVideoWithSuperDuperAI(testPrompt, 5, '1280x720', 'cinematic');
+        const fileId = await generateVideoWithSuperDuperAI(testPrompt, 8, '1280x720', 'cinematic');
         console.log('🎬 Test VEO3 file created:', fileId);
         updateWebhookStatus(sessionId, { status: 'completed', fileId });
         return;
