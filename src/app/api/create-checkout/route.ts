@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
         },
       ],
       mode: 'payment',
-      success_url: `${appUrl}/en/veo3-status/{CHECKOUT_SESSION_ID}?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${appUrl}/en/payment-success/{CHECKOUT_SESSION_ID}`,
       cancel_url: `${appUrl}/en/tool/veo3-prompt-generator`,
       metadata: {
         videoCount: quantity.toString(),

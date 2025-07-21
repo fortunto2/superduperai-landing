@@ -88,6 +88,25 @@ async function generateVideoWithSuperDuperAI(
   return fileId;
 }
 
+// Update webhook status
+async function updateWebhookStatus(sessionId: string, data: { status: string; fileId?: string; error?: string }) {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 
+                   process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 
+                   'http://localhost:3000';
+    
+    await fetch(`${baseUrl}/api/webhook-status/${sessionId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+  } catch (error) {
+    console.error('Failed to update webhook status:', error);
+  }
+}
+
 export async function POST(request: NextRequest) {
   const body = await request.text();
   const headersList = await headers();
@@ -139,6 +158,9 @@ export async function POST(request: NextRequest) {
 
 async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   console.log('✅ Checkout completed:', session.id);
+
+  // Update webhook status to processing
+  await updateWebhookStatus(session.id, { status: 'processing' });
   
   // Extract metadata from checkout session
   const { 
@@ -153,9 +175,12 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
 
   if (!prompt || !video_count) {
     console.error('❌ Missing required metadata in checkout session:', session.id);
+    await updateWebhookStatus(session.id, { status: 'error', error: 'Missing required metadata' });
     return;
   }
 
+  const sessionId = session.id; // Save for error handling
+  
   try {
     // Determine base URL - use NEXT_PUBLIC_APP_URL or fallback to Vercel URL
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 
@@ -262,6 +287,9 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
     const fileId = await generateVideoWithSuperDuperAI(prompt, parseInt(duration), resolution, style);
     console.log('🎬 VEO3 file created:', fileId);
 
+    // Update webhook status to completed
+    await updateWebhookStatus(sessionId, { status: 'completed', fileId });
+
     // TODO: Send email notification to customer with file status link
     if (customer_email) {
       const statusUrl = `${baseUrl}/en/file/${fileId}`;
@@ -270,6 +298,12 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
 
   } catch (error) {
     console.error('❌ Failed to start VEO3 generation:', error);
+    
+    // Update webhook status to error
+    await updateWebhookStatus(sessionId, { 
+      status: 'error', 
+      error: error instanceof Error ? error.message : 'Unknown error' 
+    });
     
     // TODO: Send error notification to customer
     if (customer_email) {
