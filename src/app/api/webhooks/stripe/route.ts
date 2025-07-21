@@ -58,7 +58,8 @@ async function generateVideoWithSuperDuperAI(
   
   console.log('📤 Sending request to SuperDuperAI:', payload);
   
-  const response = await fetch(`${config.url}${API_ENDPOINTS.GENERATE_VIDEO}`, {
+  // Create fetch options with proper SSL handling
+  const fetchOptions: RequestInit = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -68,12 +69,23 @@ async function generateVideoWithSuperDuperAI(
     body: JSON.stringify(payload),
     // Add timeout to prevent webhook from hanging
     signal: AbortSignal.timeout(15000), // 15 seconds timeout
-    // Skip SSL verification for development (fix certificate issue)
-    ...(process.env.NODE_ENV === 'development' && {
-      // @ts-ignore
-      agent: new (require('https').Agent)({ rejectUnauthorized: false })
-    })
-  });
+  };
+
+  // For development with self-signed certificates, bypass SSL verification
+  if (process.env.NODE_ENV === 'development' && config.url.includes('dev-editor')) {
+    try {
+      const https = await import('https');
+      // @ts-expect-error - Node.js specific agent property
+      fetchOptions.agent = new https.Agent({ 
+        rejectUnauthorized: false 
+      });
+      console.log('🔓 Development mode: SSL verification disabled for dev-editor');
+    } catch (err) {
+      console.warn('⚠️ Could not disable SSL verification:', err);
+    }
+  }
+
+  const response = await fetch(`${config.url}${API_ENDPOINTS.GENERATE_VIDEO}`, fetchOptions);
   
   console.log(`📡 SuperDuperAI API Response Status: ${response.status}`);
   
@@ -191,8 +203,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     customer_email,
     duration = '5',
     resolution = '1280x720',
-    style = 'cinematic',
-    generation_id
+    style = 'cinematic'
   } = session.metadata || {};
 
   if (!prompt || !video_count) {
