@@ -58,8 +58,7 @@ async function generateVideoWithSuperDuperAI(
   
   console.log('📤 Sending request to SuperDuperAI:', payload);
   
-  // Create fetch options with proper SSL handling
-  const fetchOptions: RequestInit = {
+  const response = await fetch(`${config.url}${API_ENDPOINTS.GENERATE_VIDEO}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -69,23 +68,7 @@ async function generateVideoWithSuperDuperAI(
     body: JSON.stringify(payload),
     // Add timeout to prevent webhook from hanging
     signal: AbortSignal.timeout(15000), // 15 seconds timeout
-  };
-
-  // For development with self-signed certificates, bypass SSL verification
-  if (process.env.NODE_ENV === 'development' && config.url.includes('dev-editor')) {
-    try {
-      const https = await import('https');
-      // @ts-expect-error - Node.js specific agent property
-      fetchOptions.agent = new https.Agent({ 
-        rejectUnauthorized: false 
-      });
-      console.log('🔓 Development mode: SSL verification disabled for dev-editor');
-    } catch (err) {
-      console.warn('⚠️ Could not disable SSL verification:', err);
-    }
-  }
-
-  const response = await fetch(`${config.url}${API_ENDPOINTS.GENERATE_VIDEO}`, fetchOptions);
+  });
   
   console.log(`📡 SuperDuperAI API Response Status: ${response.status}`);
   
