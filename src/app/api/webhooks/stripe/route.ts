@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import Stripe from 'stripe';
+import { webhookStatusStore } from '@/lib/webhook-status-store';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-06-30.basil',
@@ -88,20 +89,14 @@ async function generateVideoWithSuperDuperAI(
   return fileId;
 }
 
-// Update webhook status
-async function updateWebhookStatus(sessionId: string, data: { status: string; fileId?: string; error?: string }) {
+// Update webhook status directly in store
+function updateWebhookStatus(sessionId: string, data: { status: 'pending' | 'processing' | 'completed' | 'error'; fileId?: string; error?: string }) {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 
-                   process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 
-                   'http://localhost:3000';
-    
-    await fetch(`${baseUrl}/api/webhook-status/${sessionId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
+    webhookStatusStore.set(sessionId, {
+      ...data,
+      timestamp: new Date().toISOString()
     });
+    console.log(`📊 Webhook status updated for ${sessionId}:`, data);
   } catch (error) {
     console.error('Failed to update webhook status:', error);
   }
@@ -158,9 +153,10 @@ export async function POST(request: NextRequest) {
 
 async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   console.log('✅ Checkout completed:', session.id);
+  const sessionId = session.id;
 
   // Update webhook status to processing
-  await updateWebhookStatus(session.id, { status: 'processing' });
+  updateWebhookStatus(sessionId, { status: 'processing' });
   
   // Extract metadata from checkout session
   const { 
@@ -174,12 +170,10 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   } = session.metadata || {};
 
   if (!prompt || !video_count) {
-    console.error('❌ Missing required metadata in checkout session:', session.id);
-    await updateWebhookStatus(session.id, { status: 'error', error: 'Missing required metadata' });
+    console.error('❌ Missing required metadata in checkout session:', sessionId);
+    updateWebhookStatus(sessionId, { status: 'error', error: 'Missing required metadata' });
     return;
   }
-
-  const sessionId = session.id; // Save for error handling
   
   try {
     // Determine base URL - use NEXT_PUBLIC_APP_URL or fallback to Vercel URL
@@ -288,7 +282,7 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
     console.log('🎬 VEO3 file created:', fileId);
 
     // Update webhook status to completed
-    await updateWebhookStatus(sessionId, { status: 'completed', fileId });
+    updateWebhookStatus(sessionId, { status: 'completed', fileId });
 
     // TODO: Send email notification to customer with file status link
     if (customer_email) {
@@ -300,7 +294,7 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
     console.error('❌ Failed to start VEO3 generation:', error);
     
     // Update webhook status to error
-    await updateWebhookStatus(sessionId, { 
+    updateWebhookStatus(sessionId, { 
       status: 'error', 
       error: error instanceof Error ? error.message : 'Unknown error' 
     });

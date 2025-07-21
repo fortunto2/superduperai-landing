@@ -1,14 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-interface WebhookStatusData {
-  status: 'pending' | 'processing' | 'completed' | 'error';
-  fileId?: string;
-  error?: string;
-  timestamp?: string;
-}
-
-// In-memory storage for webhook status (in production, use Redis or database)
-const webhookStatusStore = new Map<string, WebhookStatusData>();
+import { webhookStatusStore, type WebhookStatusData } from '@/lib/webhook-status-store';
 
 export async function GET(
   request: NextRequest,
@@ -70,7 +61,4 @@ export async function POST(
       { status: 500 }
     );
   }
-}
-
-// Export the webhook status store for use in webhook handler
-export { webhookStatusStore }; 
+} 
