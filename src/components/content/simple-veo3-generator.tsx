@@ -282,13 +282,13 @@ export function SimpleVeo3Generator() {
     
     if (data.characters.length > 0) {
       const characterDescriptions = data.characters.map(char => {
-        let desc = char.description || char.name || "a character";
-        if (char.speech && data.language) {
-          desc += ` who says in ${data.language.toLowerCase()}: "${char.speech}"`;
-        }
-        return desc;
-      });
-      parts.push(`featuring ${characterDescriptions.join(', ')}`);
+          let desc = char.description || char.name || "a character";
+          if (char.speech && data.language) {
+            desc += ` who says in ${data.language.toLowerCase()}: "${char.speech}"`;
+          }
+          return desc;
+        });
+        parts.push(`featuring ${characterDescriptions.join(', ')}`);
     }
     
     if (data.action) parts.push(`${data.action}`);

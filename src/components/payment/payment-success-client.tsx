@@ -27,7 +27,7 @@ interface WebhookStatus {
 
 export default function PaymentSuccessClient({ sessionId, locale }: PaymentSuccessClientProps) {
   const [status, setStatus] = useState<WebhookStatus>({ status: 'pending' });
-  const [countdown, setCountdown] = useState(30); // 30 seconds timeout
+  const [countdown, setCountdown] = useState(60); // 60 seconds timeout
   const [isDev, setIsDev] = useState(false);
   const router = useRouter();
 
@@ -39,21 +39,30 @@ export default function PaymentSuccessClient({ sessionId, locale }: PaymentSucce
   // Check webhook status
   const checkWebhookStatus = async () => {
     try {
+      console.log('🔍 Checking webhook status for session:', sessionId);
       const response = await fetch(`/api/webhook-status/${sessionId}`);
       if (response.ok) {
         const data = await response.json();
+        console.log('📊 Webhook status received:', data);
         setStatus(data);
         
-        if (data.status === 'completed' && data.fileId) {
-          if (status.status !== 'completed') { // Only redirect once
+        if (data.fileId && data.status !== 'error') {
+          console.log('🎬 FileId found, preparing to redirect:', data.fileId);
+          if (!status.fileId) { // Only redirect once when fileId appears
             toast.success('Video generation started! Redirecting...');
             setTimeout(() => {
+              console.log('🔄 Redirecting to file page:', data.fileId);
               router.push(`/${locale}/file/${data.fileId}`);
             }, 2000);
           }
         } else if (data.status === 'error') {
+          console.error('❌ Webhook error:', data);
           toast.error('Error processing payment');
+        } else {
+          console.log('⏳ Still waiting for fileId...');
         }
+      } else {
+        console.error('❌ Failed to fetch webhook status:', response.status);
       }
     } catch (error) {
       console.error('Error checking webhook status:', error);
@@ -160,8 +169,8 @@ export default function PaymentSuccessClient({ sessionId, locale }: PaymentSucce
             )}
           </div>
 
-          {/* Manual redirect button for completed status */}
-          {status.status === 'completed' && status.fileId && (
+          {/* Manual redirect button when fileId is available */}
+          {status.fileId && status.status !== 'error' && (
             <div className="text-center">
               <Button 
                 onClick={() => router.push(`/${locale}/file/${status.fileId}`)}
