@@ -8,6 +8,86 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
+// SuperDuperAI configuration
+const configureSuperduperAI = () => {
+  if (!process.env.SUPERDUPERAI_TOKEN) {
+    throw new Error('SUPERDUPERAI_TOKEN environment variable is not set');
+  }
+};
+
+const getSuperduperAIConfig = () => ({
+  url: process.env.SUPERDUPERAI_URL || 'https://api.superduperai.com',
+  token: process.env.SUPERDUPERAI_TOKEN
+});
+
+const API_ENDPOINTS = {
+  GENERATE_VIDEO: '/api/v1/file/generate-video'
+};
+
+// Generate single video using SuperDuperAI API
+async function generateVideoWithSuperDuperAI(
+  prompt: string, 
+  duration: number = 5, 
+  resolution: string = '1280x720', 
+  style: string = 'cinematic'
+): Promise<string> {
+  console.log('🎬 Starting SuperDuperAI video generation:', { prompt, duration, resolution, style });
+  
+  // Configure SuperDuperAI client
+  configureSuperduperAI();
+  const config = getSuperduperAIConfig();
+  
+  const [width, height] = resolution.split('x').map(Number);
+  
+  const payload = {
+    config: {
+      prompt,
+      negative_prompt: '',
+      width,
+      height,
+      aspect_ratio: width > height ? '16:9' : height > width ? '9:16' : '1:1',
+      duration,
+      seed: Math.floor(Math.random() * 1000000),
+      generation_config_name: 'google-cloud/veo3', // Use VEO3 model
+      frame_rate: 30,
+      batch_size: 1,
+      references: []
+    }
+  };
+  
+  console.log('📤 Sending request to SuperDuperAI:', payload);
+  
+  const response = await fetch(`${config.url}${API_ENDPOINTS.GENERATE_VIDEO}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${config.token}`,
+      'User-Agent': 'SuperDuperAI-Landing/1.0'
+    },
+    body: JSON.stringify(payload)
+  });
+  
+  console.log(`📡 SuperDuperAI API Response Status: ${response.status}`);
+  
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error('❌ SuperDuperAI API Error:', errorText);
+    throw new Error(`SuperDuperAI API failed: ${response.status} - ${errorText}`);
+  }
+  
+  const result = await response.json();
+  console.log('✅ SuperDuperAI response:', result);
+  
+  // Extract file ID from response
+  const fileId = result.id;
+  if (!fileId) {
+    throw new Error('No file ID returned from SuperDuperAI API');
+  }
+  
+  console.log(`✅ Video generation started with fileId: ${fileId}`);
+  return fileId;
+}
+
 export async function POST(request: NextRequest) {
   const body = await request.text();
   const headersList = await headers();
@@ -129,7 +209,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
 async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
   console.log('✅ Payment succeeded:', paymentIntent.id);
   
-  let prompt, video_count, customer_email, duration = '5', resolution = '1280x720', style = 'cinematic', generation_id;
+  let prompt, video_count, customer_email, duration = '5', resolution = '1280x720', style = 'cinematic';
 
   try {
     // Get the checkout session from payment intent
@@ -154,7 +234,7 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
     duration = metadata.duration || '5';
     resolution = metadata.resolution || '1280x720';
     style = metadata.style || 'cinematic';
-    generation_id = metadata.generation_id;
+    // generation_id not needed anymore
 
     if (!prompt || !video_count) {
       console.error('❌ Missing required metadata in checkout session:', session.id, session.metadata);
@@ -178,34 +258,14 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
       NODE_ENV: process.env.NODE_ENV
     });
     
-    // Start VEO3 generation
-    const response = await fetch(`${baseUrl}/api/generate-veo3`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        prompt,
-        sessionId: generation_id, // Use the session ID from metadata
-        generationId: generation_id,
-        videoCount: parseInt(video_count),
-        customerEmail: customer_email,
-        duration: parseInt(duration),
-        resolution,
-        style,
-      }),
-    });
+    // Start VEO3 generation directly with SuperDuperAI
+    const fileId = await generateVideoWithSuperDuperAI(prompt, parseInt(duration), resolution, style);
+    console.log('🎬 VEO3 file created:', fileId);
 
-    if (!response.ok) {
-      throw new Error(`Generation API failed: ${response.status}`);
-    }
-
-    const result = await response.json();
-    console.log('🎬 VEO3 generation started:', result);
-
-    // TODO: Send email notification to customer with generation status link
+    // TODO: Send email notification to customer with file status link
     if (customer_email) {
-      console.log('📧 TODO: Send email to', customer_email, 'with generation ID:', result.generationId);
+      const statusUrl = `${baseUrl}/en/file/${fileId}`;
+      console.log('📧 TODO: Send email to', customer_email, 'with status URL:', statusUrl);
     }
 
   } catch (error) {
