@@ -7,7 +7,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 export async function POST(request: NextRequest) {
   try {
-    const { priceId, quantity = 1 } = await request.json();
+    const { priceId, quantity = 1, prompt } = await request.json();
 
     if (!priceId) {
       return NextResponse.json({ error: 'Price ID is required' }, { status: 400 });
@@ -46,6 +46,11 @@ export async function POST(request: NextRequest) {
       cancel_url: `${appUrl}/en/tool/veo3-prompt-generator`,
       metadata: {
         videoCount: quantity.toString(),
+        prompt: prompt || '',
+        video_count: quantity.toString(),
+        duration: '5',
+        resolution: '1280x720',
+        style: 'cinematic',
       },
     });
 

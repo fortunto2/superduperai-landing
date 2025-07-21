@@ -40,6 +40,7 @@ export function Veo3PaymentButtons({ prompt, onPaymentClick }: Veo3PaymentButton
         body: JSON.stringify({
           priceId: prices.single,
           quantity: 1,
+          prompt: prompt.trim(),
         }),
       });
 
