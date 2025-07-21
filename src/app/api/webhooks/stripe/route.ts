@@ -175,11 +175,12 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     return;
   }
   
+  // Determine base URL - use NEXT_PUBLIC_APP_URL or fallback to Vercel URL
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 
+                 process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 
+                 'http://localhost:3000';
+  
   try {
-    // Determine base URL - use NEXT_PUBLIC_APP_URL or fallback to Vercel URL
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 
-                   process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 
-                   'http://localhost:3000';
     
     console.log('🌐 Payment webhook calling API at:', baseUrl);
     
