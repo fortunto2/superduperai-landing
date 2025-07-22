@@ -22,10 +22,13 @@ export async function GET(
       });
     }
 
-    // Try to get the full prompt if it was a long prompt
+    // Always try to get the full prompt from KV for analytics
     let fullPrompt = null;
     try {
       fullPrompt = await getPrompt(sessionId);
+      if (fullPrompt) {
+        console.log('📝 Retrieved prompt from KV for analytics:', sessionId, `(${fullPrompt.length} chars)`);
+      }
     } catch (error) {
       console.warn('⚠️ Failed to get prompt from KV:', error);
     }

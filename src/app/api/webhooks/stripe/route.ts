@@ -95,30 +95,27 @@ async function generateVideoWithSuperDuperAI(
 }
 
 // Get full prompt from metadata or KV
-async function getFullPrompt(sessionId: string, metadataPrompt: string, hasLongPrompt: string): Promise<string> {
+async function getFullPrompt(sessionId: string, metadataPrompt: string, _hasLongPrompt: string): Promise<string> {
   try {
-    // Check if this is a long prompt stored in KV
-    if (hasLongPrompt === 'true') {
-      console.log('📝 Retrieving long prompt from KV for session:', sessionId);
-      const kvPrompt = await getPrompt(sessionId);
-      if (kvPrompt) {
-        console.log('✅ Retrieved long prompt from KV:', kvPrompt.length, 'chars');
-        return kvPrompt;
-      } else {
-        console.warn('⚠️ Long prompt not found in KV, using metadata fallback');
-      }
+    // Always try to get prompt from KV first (for analytics)
+    console.log('📝 Retrieving prompt from KV for session:', sessionId);
+    const kvPrompt = await getPrompt(sessionId);
+    if (kvPrompt) {
+      console.log('✅ Retrieved prompt from KV:', kvPrompt.length, 'chars');
+      return kvPrompt;
     }
     
-    // Fallback to metadata prompt (for short prompts or KV failures)
-    if (metadataPrompt && !metadataPrompt.startsWith('[LONG_PROMPT:')) {
+    // Fallback to metadata prompt (for backward compatibility)
+    if (metadataPrompt && !metadataPrompt.startsWith('[PROMPT:')) {
+      console.log('📝 Using metadata prompt as fallback:', metadataPrompt.length, 'chars');
       return metadataPrompt;
     }
     
-    // If metadata contains long prompt reference, try to extract length
-    const longPromptMatch = metadataPrompt.match(/\[LONG_PROMPT:(\d+)chars\]/);
-    if (longPromptMatch) {
-      const expectedLength = parseInt(longPromptMatch[1]);
-      console.warn(`⚠️ Long prompt reference found but KV data missing. Expected ${expectedLength} chars.`);
+    // If metadata contains prompt reference, try to extract length
+    const promptMatch = metadataPrompt.match(/\[PROMPT:(\d+)chars\]/);
+    if (promptMatch) {
+      const expectedLength = parseInt(promptMatch[1]);
+      console.warn(`⚠️ Prompt reference found but KV data missing. Expected ${expectedLength} chars.`);
     }
     
     // Final fallback - return empty or metadata as-is

@@ -33,18 +33,19 @@ export async function POST(request: NextRequest) {
     const appUrl = getAppUrl();
     console.log('🔗 Using app URL:', appUrl);
 
-    // Handle long prompts (Stripe metadata limit is 500 chars)
+    // Handle prompts (store all in KV for analytics, use short reference in Stripe metadata)
     const promptToStore = prompt || '';
-    const isLongPrompt = promptToStore.length > 400; // Leave some buffer
+    const isLongPrompt = promptToStore.length > 400; // Leave some buffer for Stripe metadata
     
     let metadataPrompt = '';
     if (isLongPrompt) {
       // Store full prompt in KV and use short reference in metadata
-      metadataPrompt = `[LONG_PROMPT:${promptToStore.length}chars]`;
+      metadataPrompt = `[PROMPT:${promptToStore.length}chars]`;
       console.log('📝 Long prompt detected, storing in KV:', promptToStore.length, 'chars');
     } else {
-      // Use prompt directly in metadata if it's short enough
+      // For short prompts, still store in KV but use prompt in metadata too
       metadataPrompt = promptToStore;
+      console.log('📝 Short prompt, storing in KV for analytics:', promptToStore.length, 'chars');
     }
 
     // Create Stripe checkout session
@@ -72,15 +73,13 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Store long prompt in KV if needed
-    if (isLongPrompt) {
-      try {
-        await storePrompt(session.id, promptToStore);
-        console.log('💾 Long prompt stored in KV for session:', session.id);
-      } catch (error) {
-        console.error('❌ Failed to store long prompt in KV:', error);
-        // Continue anyway - we'll try to get prompt from metadata
-      }
+    // Store all prompts in KV for analytics
+    try {
+      await storePrompt(session.id, promptToStore);
+      console.log('💾 Prompt stored in KV for analytics:', session.id, `(${promptToStore.length} chars)`);
+    } catch (error) {
+      console.error('❌ Failed to store prompt in KV:', error);
+      // Continue anyway - we'll try to get prompt from metadata
     }
 
     return NextResponse.json({ 

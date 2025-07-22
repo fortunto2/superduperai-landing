@@ -166,9 +166,11 @@ export default function SessionLookupClient({ sessionId, locale }: SessionLookup
                     
                     {result.prompt && (
                       <div className="bg-muted p-4 rounded-lg mb-4">
-                        <label className="text-xs text-muted-foreground">Generated Prompt</label>
-                        <div className="text-sm mt-1 max-h-32 overflow-y-auto">
-                          {result.prompt}
+                        <label className="text-xs text-muted-foreground">
+                          Generated Prompt ({result.prompt.length} characters)
+                        </label>
+                        <div className="text-sm mt-1 max-h-32 overflow-y-auto border rounded p-2 bg-background">
+                          <pre className="whitespace-pre-wrap text-xs">{result.prompt}</pre>
                         </div>
                       </div>
                     )}
