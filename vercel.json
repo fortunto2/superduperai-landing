@@ -3,10 +3,5 @@
         "src/app/api/**/*.ts": {
             "maxDuration": 30
         }
-    },
-    "kv": {
-        "redis": {
-            "url": "@redis-url"
-        }
     }
 }
