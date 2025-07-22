@@ -36,7 +36,8 @@ export default function PaymentSuccessClient({ sessionId, locale }: PaymentSucce
 
   // Check if we're in development
   useEffect(() => {
-    setIsDev(process.env.NODE_ENV === 'development' || window.location.hostname === 'localhost');
+    setIsDev(process.env.NODE_ENV === 'development' || 
+             (typeof window !== 'undefined' && window.location.hostname === 'localhost'));
   }, []);
 
   // Check webhook status
@@ -216,7 +217,8 @@ export default function PaymentSuccessClient({ sessionId, locale }: PaymentSucce
           )}
 
           {/* Development Mode: Manual file lookup */}
-          {(process.env.NODE_ENV === 'development' || window.location.hostname.includes('git-stripe')) && (
+          {(process.env.NODE_ENV === 'development' || 
+            (typeof window !== 'undefined' && window.location.hostname.includes('git-stripe'))) && (
             <div className="text-center mt-6 p-4 border-t border-dashed">
               <p className="text-xs text-muted-foreground mb-3">
                 🧪 Development Mode - Manual File Lookup

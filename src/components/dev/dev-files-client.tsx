@@ -49,8 +49,8 @@ export default function DevFilesClient({ locale }: DevFilesClientProps) {
   useEffect(() => {
     // Check if we're in development mode
     const isDev = process.env.NODE_ENV === 'development' || 
-                  window.location.hostname.includes('git-stripe') ||
-                  window.location.hostname.includes('localhost');
+                  (typeof window !== 'undefined' && window.location.hostname.includes('git-stripe')) ||
+                  (typeof window !== 'undefined' && window.location.hostname.includes('localhost'));
     setIsDevMode(isDev);
   }, []);
 
