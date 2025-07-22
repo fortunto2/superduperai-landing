@@ -12,7 +12,8 @@ import {
   Clock,
   ArrowRight,
   Copy,
-  Search
+  Search,
+  Eye
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -211,6 +212,35 @@ export default function PaymentSuccessClient({ sessionId, locale }: PaymentSucce
                 <Search className="h-4 w-4" />
                 Find My File
               </Button>
+            </div>
+          )}
+
+          {/* Development Mode: Manual file lookup */}
+          {(process.env.NODE_ENV === 'development' || window.location.hostname.includes('git-stripe')) && (
+            <div className="text-center mt-6 p-4 border-t border-dashed">
+              <p className="text-xs text-muted-foreground mb-3">
+                🧪 Development Mode - Manual File Lookup
+              </p>
+              <div className="flex flex-col gap-2">
+                <Button 
+                  onClick={() => router.push(`/${locale}/dev/files`)}
+                  variant="outline"
+                  size="sm"
+                  className="gap-2"
+                >
+                  <Search className="h-4 w-4" />
+                  Browse All Files
+                </Button>
+                <Button 
+                  onClick={() => router.push(`/${locale}/session/${sessionId}`)}
+                  variant="outline"
+                  size="sm"
+                  className="gap-2"
+                >
+                  <Eye className="h-4 w-4" />
+                  Check This Session
+                </Button>
+              </div>
             </div>
           )}
 
