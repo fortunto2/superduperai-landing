@@ -272,7 +272,7 @@ export default function DevFilesClient({ locale }: DevFilesClientProps) {
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => router.push(`/${locale}/file/${file.webhookData.fileId}`)}
+                            onClick={() => router.push(`/${locale}/file/${file.webhookData!.fileId}`)}
                             className="gap-2"
                           >
                             <FileText className="w-4 h-4" />
@@ -291,7 +291,7 @@ export default function DevFilesClient({ locale }: DevFilesClientProps) {
               <h3 className="font-medium mb-3">How to use:</h3>
               <div className="text-sm text-muted-foreground space-y-2">
                 <p>• Enter a session ID to search for specific files</p>
-                <p>• Session IDs start with "cs_test_" or "cs_live_"</p>
+                <p>• Session IDs start with &quot;cs_test_&quot; or &quot;cs_live_&quot;</p>
                 <p>• You can find session IDs in your browser history or payment success URLs</p>
                 <p>• This tool only works in development mode</p>
               </div>
