@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getWebhookStatusWithFallback, updateWebhookStatusWithFallback, type WebhookStatusData } from '@/lib/webhook-status-store';
-import { getPrompt } from '@/lib/kv';
+import { getSessionData, updateSessionData } from '@/lib/kv';
 
 export async function GET(
   request: NextRequest,
@@ -13,32 +12,29 @@ export async function GET(
       return NextResponse.json({ error: 'Session ID is required' }, { status: 400 });
     }
 
-    const status = await getWebhookStatusWithFallback(sessionId);
+    const sessionData = await getSessionData(sessionId);
     
-    if (!status) {
+    if (!sessionData) {
       return NextResponse.json({ 
         status: 'pending',
-        message: 'Webhook processing not yet started'
+        message: 'Session not found or processing not yet started'
       });
     }
 
-    // Always try to get the full prompt from KV for analytics
-    let fullPrompt = null;
-    try {
-      fullPrompt = await getPrompt(sessionId);
-      if (fullPrompt) {
-        console.log('📝 Retrieved prompt from KV for analytics:', sessionId, `(${fullPrompt.length} chars)`);
-      }
-    } catch (error) {
-      console.warn('⚠️ Failed to get prompt from KV:', error);
-    }
+    console.log('📊 Retrieved session data for API:', sessionId, sessionData.status);
 
+    // Return session data in format expected by frontend
     return NextResponse.json({
-      ...status,
-      prompt: fullPrompt // Include full prompt if available
+      status: sessionData.status,
+      fileId: sessionData.fileId,
+      error: sessionData.error,
+      toolSlug: sessionData.toolSlug,
+      toolTitle: sessionData.toolTitle,
+      prompt: sessionData.prompt,
+      timestamp: sessionData.createdAt
     });
   } catch (error) {
-    console.error('Error getting webhook status:', error);
+    console.error('Error getting session data:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -52,7 +48,7 @@ export async function POST(
 ) {
   try {
     const { sessionId } = await params;
-    const data: WebhookStatusData = await request.json();
+    const updates = await request.json();
 
     if (!sessionId || !sessionId.startsWith('cs_')) {
       return NextResponse.json(
@@ -61,20 +57,17 @@ export async function POST(
       );
     }
 
-    // Update status in store
-    await updateWebhookStatusWithFallback(sessionId, {
-      ...data,
-      timestamp: new Date().toISOString()
-    });
+    // Update session data
+    await updateSessionData(sessionId, updates);
 
-    console.log(`📊 Webhook status updated for ${sessionId}:`, data);
+    console.log(`📊 Session data updated for ${sessionId}:`, updates);
 
     return NextResponse.json({ success: true });
 
   } catch (error) {
-    console.error('Error updating webhook status:', error);
+    console.error('Error updating session data:', error);
     return NextResponse.json(
-      { error: 'Failed to update webhook status' },
+      { error: 'Failed to update session data' },
       { status: 500 }
     );
   }

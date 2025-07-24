@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
+import { Suspense } from 'react';
 import SessionLookupClient from '@/components/session/session-lookup-client';
+import { Loader2 } from 'lucide-react';
 
 interface SessionPageProps {
   params: Promise<{
@@ -25,5 +27,13 @@ export default async function SessionPage({ params }: SessionPageProps) {
     notFound();
   }
 
-  return <SessionLookupClient sessionId={sessionId} locale={locale} />;
+  return (
+    <Suspense fallback={
+      <div className="flex justify-center items-center min-h-screen">
+        <Loader2 className="w-8 h-8 animate-spin" />
+      </div>
+    }>
+      <SessionLookupClient sessionId={sessionId} locale={locale} />
+    </Suspense>
+  );
 } 

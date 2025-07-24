@@ -36,7 +36,13 @@ export default function SessionLookupClient({ sessionId, locale }: SessionLookup
   const [result, setResult] = useState<LookupResult | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [_error, setError] = useState<string | null>(null);
+  const [isClient, setIsClient] = useState(false);
   const router = useRouter();
+
+  // Fix hydration mismatch by ensuring client-side only rendering
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const lookupSession = async () => {
     try {
@@ -94,9 +100,47 @@ export default function SessionLookupClient({ sessionId, locale }: SessionLookup
   }, [sessionId]);
 
   const copySessionId = () => {
-    navigator.clipboard.writeText(sessionId);
-    toast.success('Session ID copied to clipboard');
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(sessionId);
+      toast.success('Session ID copied to clipboard');
+    }
   };
+
+  // Prevent hydration mismatch by showing loading state until client is ready
+  if (!isClient) {
+    return (
+      <div className="flex flex-col min-h-screen bg-background">
+        <Navbar />
+        <main className="flex-1">
+          <div className="container mx-auto px-4 py-8">
+            <div className="max-w-2xl mx-auto">
+              <div className="text-center mb-8">
+                <h1 className="text-3xl font-bold mb-2">Finding Your File</h1>
+                <p className="text-muted-foreground">
+                  Looking up your AI-generated content using session ID
+                </p>
+              </div>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Search className="w-5 h-5" />
+                    Session Lookup
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="text-center py-8">
+                    <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-primary" />
+                    <p className="text-muted-foreground">Initializing...</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </main>
+        <Footer locale={locale} />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-background">

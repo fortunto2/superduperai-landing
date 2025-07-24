@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import Stripe from 'stripe';
-import { updateWebhookStatusWithFallback } from '@/lib/webhook-status-store';
-import { getPrompt } from '@/lib/kv';
+import { getSessionData, updateSessionData } from '@/lib/kv';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-06-30.basil',
@@ -94,50 +93,7 @@ async function generateVideoWithSuperDuperAI(
   return fileId;
 }
 
-// Get full prompt from metadata or KV
-async function getFullPrompt(sessionId: string, metadataPrompt: string, _hasLongPrompt: string): Promise<string> {
-  try {
-    // Always try to get prompt from KV first (for analytics)
-    console.log('📝 Retrieving prompt from KV for session:', sessionId);
-    const kvPrompt = await getPrompt(sessionId);
-    if (kvPrompt) {
-      console.log('✅ Retrieved prompt from KV:', kvPrompt.length, 'chars');
-      return kvPrompt;
-    }
-    
-    // Fallback to metadata prompt (for backward compatibility)
-    if (metadataPrompt && !metadataPrompt.startsWith('[PROMPT:')) {
-      console.log('📝 Using metadata prompt as fallback:', metadataPrompt.length, 'chars');
-      return metadataPrompt;
-    }
-    
-    // If metadata contains prompt reference, try to extract length
-    const promptMatch = metadataPrompt.match(/\[PROMPT:(\d+)chars\]/);
-    if (promptMatch) {
-      const expectedLength = parseInt(promptMatch[1]);
-      console.warn(`⚠️ Prompt reference found but KV data missing. Expected ${expectedLength} chars.`);
-    }
-    
-    // Final fallback - return empty or metadata as-is
-    return metadataPrompt || '';
-  } catch (error) {
-    console.error('❌ Error getting full prompt:', error);
-    return metadataPrompt || '';
-  }
-}
-
-// Update webhook status using KV with fallback
-async function updateWebhookStatus(sessionId: string, data: { status: 'pending' | 'processing' | 'completed' | 'error'; fileId?: string; error?: string; toolSlug?: string; toolTitle?: string }) {
-  try {
-    await updateWebhookStatusWithFallback(sessionId, {
-      ...data,
-      timestamp: new Date().toISOString()
-    });
-    console.log(`📊 Webhook status updated for ${sessionId}:`, data);
-  } catch (error) {
-    console.error('Failed to update webhook status:', error);
-  }
-}
+// Simplified - no more complex prompt handling needed
 
 export async function POST(request: NextRequest) {
   const body = await request.text();
@@ -215,74 +171,49 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   console.log('✅ Checkout completed:', session.id);
   const sessionId = session.id;
 
-  // Update webhook status to processing
-  await updateWebhookStatus(sessionId, { status: 'processing' });
+  // Get session data from Redis (no more dependency on Stripe metadata)
+  const sessionData = await getSessionData(sessionId);
   
-  // Extract metadata from checkout session
-  const {
-    prompt: metadataPrompt, 
-    video_count, 
-    customer_email,
-    duration = '8',
-    resolution = '1280x720',
-    style = 'cinematic',
-    toolSlug,
-    toolTitle,
-    hasLongPrompt = 'false'
-  } = session.metadata || {};
-
-  // Get full prompt (from KV if it's long, from metadata if short)
-  const prompt = await getFullPrompt(sessionId, metadataPrompt || '', hasLongPrompt);
-
-  if (!prompt || !video_count) {
-    console.warn('⚠️ Missing required metadata in checkout session:', sessionId, session.metadata);
-    
-    // For test events from Stripe CLI, use default values
-    if (!prompt && !video_count) {
-      console.log('🧪 Detected test event, using default values for testing');
-      const testPrompt = 'A beautiful sunset over the ocean with waves gently crashing on the shore';
-      
-      try {
-        const fileId = await generateVideoWithSuperDuperAI(testPrompt, 8, '1280x720', 'cinematic');
-        console.log('🎬 Test VEO3 file created:', fileId);
-        await updateWebhookStatus(sessionId, { status: 'completed', fileId });
-        return;
-      } catch (error) {
-        console.error('❌ Failed to generate test video:', error);
-        await updateWebhookStatus(sessionId, { status: 'error', error: 'Test generation failed' });
-        return;
-      }
-    }
-    
-    await updateWebhookStatus(sessionId, { status: 'error', error: 'Missing required metadata' });
+  if (!sessionData) {
+    console.error('❌ No session data found in Redis for:', sessionId);
+    console.error('This means checkout creation failed to store data properly');
     return;
   }
-  
-  // Determine base URL - use NEXT_PUBLIC_APP_URL or fallback to Vercel URL
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 
-                 (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 
-                 'http://localhost:3000');
+
+  console.log('📊 Retrieved session data:', {
+    promptLength: sessionData.prompt.length,
+    videoCount: sessionData.videoCount,
+    tool: sessionData.toolSlug
+  });
+
+  // Update status to processing
+  await updateSessionData(sessionId, { status: 'processing' });
   
   try {
-    console.log('🎬 Starting VEO3 generation directly with SuperDuperAI');
+    console.log('🎬 Starting VEO3 generation with session data');
     
-    // Start VEO3 generation directly with SuperDuperAI (async, don't wait)
-    const fileId = await generateVideoWithSuperDuperAI(prompt, parseInt(duration), resolution, style);
+    // Generate video using data from Redis
+    const fileId = await generateVideoWithSuperDuperAI(
+      sessionData.prompt, 
+      sessionData.duration, 
+      sessionData.resolution, 
+      sessionData.style
+    );
+    
     console.log('🎬 VEO3 generation started with fileId:', fileId);
 
-    // Update webhook status to processing with fileId (client can start polling)
-    await updateWebhookStatus(sessionId, { 
+    // Update session data with fileId
+    await updateSessionData(sessionId, { 
       status: 'processing', 
-      fileId,
-      toolSlug: toolSlug || undefined,
-      toolTitle: toolTitle || undefined
+      fileId
     });
 
-    console.log('✅ Webhook completed quickly, client will poll fileId:', fileId);
+    console.log('✅ Webhook completed, client can poll fileId:', fileId);
 
-    // TODO: Send email notification to customer with file status link
-    const email = customer_email || session.customer_details?.email;
+    // TODO: Send email notification
+    const email = session.customer_details?.email;
     if (email) {
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://superduperai.co';
       const statusUrl = `${baseUrl}/en/file/${fileId}`;
       console.log('📧 TODO: Send email to', email, 'with status URL:', statusUrl);
     }
@@ -290,27 +221,19 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   } catch (error) {
     console.error('❌ Failed to start VEO3 generation:', error);
     
-    // Update webhook status to error
-    await updateWebhookStatus(sessionId, { status: 'error', error: error instanceof Error ? error.message : 'Unknown error' });
-    
-    // TODO: Send error notification to customer
-    const email = customer_email || session.customer_details?.email;
-    if (email) {
-      console.log('📧 TODO: Send error email to', email);
-    }
+    // Update session with error
+    await updateSessionData(sessionId, { 
+      status: 'error', 
+      error: error instanceof Error ? error.message : 'Unknown error' 
+    });
   }
 }
 
 async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
   console.log('✅ Payment succeeded:', paymentIntent.id);
   
-  let prompt, video_count, customer_email, duration = '8', resolution = '1280x720', style = 'cinematic';
-  let toolSlug, toolTitle;
-  let sessionId: string | undefined;
-
-  // First, get the checkout session
+  // Get the checkout session from payment intent
   try {
-    // Get the checkout session from payment intent
     const sessions = await stripe.checkout.sessions.list({
       payment_intent: paymentIntent.id,
       limit: 1
@@ -322,88 +245,61 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
     }
 
     const session = sessions.data[0];
-    sessionId = session.id;
+    const sessionId = session.id;
     console.log('🔍 Found checkout session:', sessionId);
 
-    // Update webhook status to processing
-    await updateWebhookStatus(sessionId, { status: 'processing' });
-
-    // Extract metadata from checkout session (not payment intent)
-    const metadata = session.metadata || {};
-    const metadataPrompt = metadata.prompt;
-    const hasLongPrompt = metadata.hasLongPrompt || 'false';
-    video_count = metadata.video_count;
-    customer_email = metadata.customer_email;
-    duration = metadata.duration || '8';
-    resolution = metadata.resolution || '1280x720';
-    style = metadata.style || 'cinematic';
-    toolSlug = metadata.toolSlug;
-    toolTitle = metadata.toolTitle;
-
-    // Get full prompt (from KV if it's long, from metadata if short)
-    prompt = await getFullPrompt(sessionId, metadataPrompt || '', hasLongPrompt);
-
-    if (!prompt || !video_count) {
-      console.error('❌ Missing required metadata in checkout session:', sessionId, session.metadata);
-      await updateWebhookStatus(sessionId, { status: 'error', error: 'Missing required metadata' });
+    // Get session data from Redis
+    const sessionData = await getSessionData(sessionId);
+    
+    if (!sessionData) {
+      console.error('❌ No session data found in Redis for:', sessionId);
       return;
     }
-  } catch (sessionError) {
-    console.error('❌ Failed to get checkout session for payment intent:', paymentIntent.id, sessionError);
-    return;
-  }
 
-  // Now generate the video
-  try {
-    // Determine base URL - use NEXT_PUBLIC_APP_URL or fallback to Vercel URL
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 
-                   (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 
-                   'http://localhost:3000');
-    
-    console.log('🌐 Webhook calling API at:', baseUrl);
-    console.log('📋 Environment vars:', {
-      NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
-      VERCEL_URL: process.env.VERCEL_URL,
-      NODE_ENV: process.env.NODE_ENV
-    });
-    
-    // Start VEO3 generation directly with SuperDuperAI (async, don't wait)
-    const fileId = await generateVideoWithSuperDuperAI(prompt, parseInt(duration), resolution, style);
-    console.log('🎬 VEO3 generation started with fileId:', fileId);
+    // Update status to processing
+    await updateSessionData(sessionId, { status: 'processing' });
 
-    // Update webhook status to processing with fileId (client can start polling)
-    if (sessionId) {
-      await updateWebhookStatus(sessionId, { 
+    try {
+      console.log('🎬 Starting VEO3 generation with session data');
+      
+      // Generate video using data from Redis
+      const fileId = await generateVideoWithSuperDuperAI(
+        sessionData.prompt, 
+        sessionData.duration, 
+        sessionData.resolution, 
+        sessionData.style
+      );
+      
+      console.log('🎬 VEO3 generation started with fileId:', fileId);
+
+      // Update session data with fileId
+      await updateSessionData(sessionId, { 
         status: 'processing', 
-        fileId,
-        toolSlug: toolSlug,
-        toolTitle: toolTitle
+        fileId
       });
-    }
 
-    console.log('✅ Webhook completed quickly, client will poll fileId:', fileId);
+      console.log('✅ Webhook completed, client can poll fileId:', fileId);
 
-    // TODO: Send email notification to customer with file status link
-    if (customer_email) {
-      const statusUrl = `${baseUrl}/en/file/${fileId}`;
-      console.log('📧 TODO: Send email to', customer_email, 'with status URL:', statusUrl);
-    }
+      // TODO: Send email notification
+      const email = session.customer_details?.email;
+      if (email) {
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://superduperai.co';
+        const statusUrl = `${baseUrl}/en/file/${fileId}`;
+        console.log('📧 TODO: Send email to', email, 'with status URL:', statusUrl);
+      }
 
-  } catch (error) {
-    console.error('❌ Failed to start VEO3 generation:', error);
-    
-    // Update webhook status to error
-    if (sessionId) {
-      await updateWebhookStatus(sessionId, { 
+    } catch (error) {
+      console.error('❌ Failed to start VEO3 generation:', error);
+      
+      // Update session with error
+      await updateSessionData(sessionId, { 
         status: 'error', 
         error: error instanceof Error ? error.message : 'Unknown error' 
       });
     }
     
-    // TODO: Send error notification to customer
-    if (customer_email) {
-      console.log('📧 TODO: Send error email to', customer_email);
-    }
+  } catch (sessionError) {
+    console.error('❌ Failed to get checkout session for payment intent:', paymentIntent.id, sessionError);
   }
 }
 

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { storePrompt } from '@/lib/kv';
+import { storeSessionData, type SessionData } from '@/lib/kv';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-06-30.basil',
@@ -33,20 +33,26 @@ export async function POST(request: NextRequest) {
     const appUrl = getAppUrl();
     console.log('🔗 Using app URL:', appUrl);
 
-    // Handle prompts (store all in KV for analytics, use short reference in Stripe metadata)
-    const promptToStore = prompt || '';
-    const isLongPrompt = promptToStore.length > 400; // Leave some buffer for Stripe metadata
-    
-    let metadataPrompt = '';
-    if (isLongPrompt) {
-      // Store full prompt in KV and use short reference in metadata
-      metadataPrompt = `[PROMPT:${promptToStore.length}chars]`;
-      console.log('📝 Long prompt detected, storing in KV:', promptToStore.length, 'chars');
-    } else {
-      // For short prompts, still store in KV but use prompt in metadata too
-      metadataPrompt = promptToStore;
-      console.log('📝 Short prompt, storing in KV for analytics:', promptToStore.length, 'chars');
-    }
+    // Store everything in Redis, keep Stripe metadata minimal
+    const sessionData: SessionData = {
+      prompt: prompt || '',
+      videoCount: quantity,
+      duration: 8,
+      resolution: '1280x720',
+      style: 'cinematic',
+      toolSlug: toolSlug || 'veo3-prompt-generator',
+      toolTitle: toolTitle || 'Free VEO3 Viral Prompt Generator',
+      createdAt: new Date().toISOString(),
+      status: 'pending' as const
+    };
+
+    console.log('💾 Storing session data in Redis:', sessionData.prompt.length, 'chars');
+
+    // Minimal Stripe metadata - only essential info
+    const metadata = {
+      video_count: quantity.toString(),
+      tool: 'veo3-generator'
+    };
 
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
@@ -60,26 +66,17 @@ export async function POST(request: NextRequest) {
       mode: 'payment',
       success_url: `${appUrl}/en/payment-success/{CHECKOUT_SESSION_ID}`,
       cancel_url: `${appUrl}/en/tool/veo3-prompt-generator`,
-      metadata: {
-        videoCount: quantity.toString(),
-        prompt: metadataPrompt,
-        video_count: quantity.toString(),
-        duration: '8',
-        resolution: '1280x720',
-        style: 'cinematic',
-        toolSlug: toolSlug || '',
-        toolTitle: toolTitle || '',
-        hasLongPrompt: isLongPrompt.toString(),
-      },
+      metadata,
     });
 
-    // Store all prompts in KV for analytics
+    // Store complete session data in Redis
     try {
-      await storePrompt(session.id, promptToStore);
-      console.log('💾 Prompt stored in KV for analytics:', session.id, `(${promptToStore.length} chars)`);
+      await storeSessionData(session.id, sessionData);
+      console.log('💾 Session data stored in Redis:', session.id);
     } catch (error) {
-      console.error('❌ Failed to store prompt in KV:', error);
-      // Continue anyway - we'll try to get prompt from metadata
+      console.error('❌ Failed to store session data in Redis:', error);
+      // This is critical - if we can't store session data, webhook will fail
+      throw new Error('Failed to store session data');
     }
 
     return NextResponse.json({ 

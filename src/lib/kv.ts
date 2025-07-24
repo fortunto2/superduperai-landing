@@ -136,6 +136,76 @@ export async function deleteWebhookStatus(sessionId: string): Promise<void> {
   }
 }
 
+// Store complete session data
+export interface SessionData {
+  prompt: string;
+  videoCount: number;
+  duration: number;
+  resolution: string;
+  style: string;
+  toolSlug: string;
+  toolTitle: string;
+  createdAt: string;
+  status: 'pending' | 'processing' | 'completed' | 'error';
+  fileId?: string;
+  error?: string;
+}
+
+export async function storeSessionData(sessionId: string, data: SessionData): Promise<void> {
+  try {
+    const client = await getRedisClient();
+    const sessionKey = getSessionKey(sessionId);
+    
+    // Store complete session data with expiration (30 days)
+    await client.setEx(sessionKey, 30 * 24 * 60 * 60, JSON.stringify({
+      ...data,
+      timestamp: new Date().toISOString()
+    }));
+    
+    console.log('💾 Stored session data in Redis:', sessionId, `(${data.prompt.length} chars prompt)`);
+  } catch (error) {
+    console.error('❌ Failed to store session data in Redis:', error);
+    throw error;
+  }
+}
+
+export async function getSessionData(sessionId: string): Promise<SessionData | null> {
+  try {
+    const client = await getRedisClient();
+    const sessionKey = getSessionKey(sessionId);
+    const data = await client.get(sessionKey);
+    
+    if (data) {
+      const parsed = JSON.parse(data) as SessionData;
+      console.log('📊 Retrieved session data from Redis:', sessionId, parsed.status);
+      return parsed;
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('❌ Failed to get session data from Redis:', error);
+    return null;
+  }
+}
+
+export async function updateSessionData(sessionId: string, updates: Partial<SessionData>): Promise<void> {
+  try {
+    const client = await getRedisClient();
+    const sessionKey = getSessionKey(sessionId);
+    const existing = await client.get(sessionKey);
+    
+    if (existing) {
+      const parsed = JSON.parse(existing) as SessionData;
+      const updated = { ...parsed, ...updates, timestamp: new Date().toISOString() };
+      await client.setEx(sessionKey, 30 * 24 * 60 * 60, JSON.stringify(updated));
+      console.log('🔄 Updated session data in Redis:', sessionId, updates);
+    }
+  } catch (error) {
+    console.error('❌ Failed to update session data in Redis:', error);
+    throw error;
+  }
+}
+
 // Store prompt data (for long prompts that exceed Stripe metadata limits)
 export async function storePrompt(sessionId: string, prompt: string): Promise<void> {
   try {

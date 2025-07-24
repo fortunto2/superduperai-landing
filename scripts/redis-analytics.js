@@ -12,7 +12,7 @@
  * node scripts/redis-analytics.js --delete cs_live_xxx
  */
 
-import { createClient } from 'redis';
+const { createClient } = require('redis');
 
 // Parse command line arguments
 const args = process.argv.slice(2);
