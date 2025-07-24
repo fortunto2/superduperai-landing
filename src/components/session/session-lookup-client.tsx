@@ -56,9 +56,11 @@ export default function SessionLookupClient({ sessionId, locale }: SessionLookup
       
       if (webhookResponse.ok) {
         const webhookData = await webhookResponse.json();
-        console.log('📊 Webhook data found (KV):', webhookData);
+        console.log('📊 Session data found:', webhookData);
         
-        if (webhookData.fileId) {
+        // Handle different session statuses
+        if (webhookData.status === 'processing' && webhookData.fileId) {
+          // File is being processed - redirect to file page
           setResult({
             found: true,
             fileId: webhookData.fileId,
@@ -68,11 +70,48 @@ export default function SessionLookupClient({ sessionId, locale }: SessionLookup
             prompt: webhookData.prompt
           });
           
-          // Auto-redirect after a short delay
           setTimeout(() => {
             router.push(`/${locale}/file/${webhookData.fileId}`);
           }, 2000);
           
+          return;
+        } else if (webhookData.status === 'completed' && webhookData.fileId) {
+          // File is completed - redirect to file page
+          setResult({
+            found: true,
+            fileId: webhookData.fileId,
+            toolSlug: webhookData.toolSlug,
+            toolTitle: webhookData.toolTitle,
+            status: webhookData.status,
+            prompt: webhookData.prompt
+          });
+          
+          setTimeout(() => {
+            router.push(`/${locale}/file/${webhookData.fileId}`);
+          }, 2000);
+          
+          return;
+        } else if (webhookData.status === 'pending') {
+          // Payment completed but video generation not started yet
+          setResult({
+            found: false,
+            status: 'pending',
+            toolSlug: webhookData.toolSlug,
+            toolTitle: webhookData.toolTitle,
+            prompt: webhookData.prompt,
+            error: 'Payment completed! Video generation will start shortly. Please check back in a few minutes.'
+          });
+          return;
+        } else if (webhookData.status === 'error') {
+          // Error occurred during processing
+          setResult({
+            found: false,
+            status: 'error',
+            toolSlug: webhookData.toolSlug,
+            toolTitle: webhookData.toolTitle,
+            prompt: webhookData.prompt,
+            error: webhookData.error || 'An error occurred during video generation. Please try generating a new video.'
+          });
           return;
         }
       }
@@ -234,8 +273,87 @@ export default function SessionLookupClient({ sessionId, locale }: SessionLookup
                   </div>
                 )}
 
+                {/* Pending State */}
+                {result && !result.found && result.status === 'pending' && (
+                  <div className="text-center py-6">
+                    <Loader2 className="w-12 h-12 text-blue-500 mx-auto mb-4 animate-spin" />
+                    <h3 className="text-lg font-semibold mb-2">Payment Completed!</h3>
+                    <p className="text-muted-foreground mb-6">
+                      {result.error || 'Video generation will start shortly. Please check back in a few minutes.'}
+                    </p>
+                    
+                    {result.toolTitle && (
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Tool: {result.toolTitle}
+                      </p>
+                    )}
+                    
+                    {result.prompt && (
+                      <div className="bg-muted p-4 rounded-lg mb-4 text-left">
+                        <label className="text-xs text-muted-foreground">
+                          Your Prompt ({result.prompt.length} characters)
+                        </label>
+                        <div className="text-sm mt-1 max-h-32 overflow-y-auto border rounded p-2 bg-background">
+                          <pre className="whitespace-pre-wrap text-xs">{result.prompt}</pre>
+                        </div>
+                      </div>
+                    )}
+                    
+                    <div className="space-y-3">
+                      <Button 
+                        onClick={lookupSession}
+                        className="gap-2"
+                      >
+                        <Search className="w-4 h-4" />
+                        Check Status
+                      </Button>
+                      
+                      <div className="text-sm text-muted-foreground">
+                        <p>What happens next:</p>
+                        <ul className="mt-2 space-y-1 text-left max-w-md mx-auto">
+                          <li>• Webhook processing will start video generation</li>
+                                                     <li>• You&apos;ll receive a file ID when generation begins</li>
+                          <li>• Check back in 2-3 minutes for updates</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* Error State */}
-                {result && !result.found && (
+                {result && !result.found && result.status === 'error' && (
+                  <div className="text-center py-6">
+                    <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold mb-2">Generation Error</h3>
+                    <p className="text-muted-foreground mb-6">
+                      {result.error || 'An error occurred during video generation.'}
+                    </p>
+                    
+                    {result.prompt && (
+                      <div className="bg-muted p-4 rounded-lg mb-4 text-left">
+                        <label className="text-xs text-muted-foreground">
+                          Your Prompt ({result.prompt.length} characters)
+                        </label>
+                        <div className="text-sm mt-1 max-h-32 overflow-y-auto border rounded p-2 bg-background">
+                          <pre className="whitespace-pre-wrap text-xs">{result.prompt}</pre>
+                        </div>
+                      </div>
+                    )}
+                    
+                    <div className="space-y-3">
+                      <Button 
+                        onClick={() => router.push(`/${locale}/tool/veo3-prompt-generator`)}
+                        className="gap-2"
+                      >
+                        <Video className="w-4 h-4" />
+                        Try Again with New Generation
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Generic Not Found State */}
+                {result && !result.found && !result.status && (
                   <div className="text-center py-6">
                     <AlertCircle className="w-12 h-12 text-orange-500 mx-auto mb-4" />
                     <h3 className="text-lg font-semibold mb-2">File Not Found</h3>
