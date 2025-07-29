@@ -7,41 +7,19 @@ SuperDuperAI is a professional video creation platform powered by artificial int
 ## Main Sections
 
 ### Tools
-- [Agent-Director Paradigm](/tool/agent-director.md): Direct your AI production team to create professional videos with specialized AI agents
-- [AI Image Generator](/tool/image-generator.md): Create stunning images with our AI-powered generator
-- [Free VEO3 Viral Prompt Generator - Create Trending AI Videos](/tool/veo3-prompt-generator.md): Generate viral-ready video prompts for Google
-- [Vibe Filmmaking](/tool/vibe-filmmaking.md): Turn moods and vibes into stunning cinematic videos with AI
+- No tools available
 
 ### Use Cases
-- [AI for Creators & Influencers](/case/creators-influencers.md): Create more content, grow your audience, and increase revenue with AI-powered video creation
-- [AI Music Videos for Musicians & Artists](/case/musicians-artists.md): Create stunning music videos that match your track
-- [AI Video Solutions for Agencies & Teams](/case/agencies-teams.md): Accelerate video production with collaborative AI tools for rapid prototyping and client deliverables
-- [AI Video Solutions for Small Businesses](/case/small-businesses.md): Create professional video advertising without agencies or extra costs
-- [AI Video Story Generator](/case/video-story.md): Generate stunning video stories with AI in minutes – no editing skills needed.
+- No use cases available
 
 ### Pages
-- [About SuperDuperAI - Our Mission and Team](/about.md): Learn about SuperDuperAI
-- [Creative Partnership Program - SuperDuperAI](/creators.md): Join the SuperDuperAI Creative Partnership Program for content creators and artists. Get free credits, 1-on-1 support, and early access to AI video creation tools.
-- [Pricing - SuperDuperAI Video Generation Plans](/pricing.md): Explore pricing options for SuperDuperAI
-- [Privacy Policy - SuperDuperAI](/privacy.md): Our privacy policy outlines how we collect, use, and protect your personal information.
-- [Terms and Conditions - SuperDuperAI](/terms.md): Terms and conditions for using SuperDuperAI
+- No pages available
 
 ### Blog
-- [AI Model Overview](/blog/model-overview.md): Comparison of image and video models in SuperDuperAI
-- [Flux Kontext](/blog/flux-kontext.md): Advanced editing workflow
-- [Google Imagen 4](/blog/google-imagen-4.md): High fidelity image generation from Google
-- [Hailuo-02 - MiniMax](/blog/hailuo-ai.md): MiniMax
-- [Kling 2.1](/blog/kling-2-1.md): Fast video generation for short clips
-- [Midjourney Motion – Turn Any Still Into Micro-Cinema: Complete Guide & 60+ Prompt Library](/blog/midjourney-v1-video.md): Transform any Midjourney image into cinematic video clips with Motion. Complete guide with 60+ ready-to-paste prompts for artists, marketers, and creators.
-- [OpenAI GPT-Image-1](/blog/gpt-image-1.md): New image generation model now available
-- [Seedance 1.0 - ByteDance](/blog/seedance-ai.md): ByteDance
-- [Sora Text2Video](/blog/sora.md): Generate short clips from text prompts
-- [VEO2 Image2Video](/blog/veo2.md): Convert images into dynamic video
-- [VEO3 AI Video Generator: Complete Professional Guide (2025)](/blog/veo3.md): Master Google
+- No blog posts available
 
 ### Documentation
-- [Image Generation API](/docs/image-generation.md): Complete guide to SuperDuperAI
-- [Video Generation API](/docs/video-generation.md): Complete guide to SuperDuperAI
+- No documentation available
 
 ## Features
 
