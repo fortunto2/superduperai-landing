@@ -1,7 +1,7 @@
 // Use client-side hook to derive the current pathname at runtime
 'use client';
 
-import { usePathname } from 'next/navigation';
+import { usePathname, useParams } from 'next/navigation';
 
 /**
  * CanonicalLink
@@ -17,11 +17,20 @@ import { usePathname } from 'next/navigation';
  */
 export default function CanonicalLink() {
   const pathname = usePathname() || '/';
+  const { locale } = useParams() as { locale?: string };
+
+  // prepend locale prefix when param exists (e.g. /en, /ru)
+  const canonicalPath =
+    locale && pathname !== '/'
+      ? `/${locale}${pathname}`
+      : locale && pathname === '/'
+      ? `/${locale}` // locale home
+      : pathname;
 
   return (
     <link
       rel="canonical"
-      href={`https://superduperai.co${pathname}`}
+      href={`https://superduperai.co${canonicalPath}`}
       // Prevent duplicate tags if React re-renders <head>
       key="canonical"
     />
