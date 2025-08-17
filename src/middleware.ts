@@ -116,25 +116,20 @@ export function middleware(request: NextRequest) {
   const isLocaleRoot = i18n.locales.some((locale) => pathname === `/${locale}`);
   if (isLocaleRoot) {
     // Редиректим с /locale на корень /
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/", request.url), { status: 301 });
   }
 
   const pathnameHasLocale = i18n.locales.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   );
 
-  if (!pathnameHasLocale) {
+  // Skip automatic locale redirect for the root path – keep “/” canonical
+  if (!pathnameHasLocale && pathname !== "/") {
     const locale = getLocale(request) || i18n.defaultLocale;
 
-    // Используем rewrite для корневого пути, сохраняя чистый URL
-    if (pathname === "/" && i18n.preserveRouteOnHome) {
-      const url = new URL(`/${locale}${pathname}`, request.url);
-      return NextResponse.rewrite(url);
-    }
-
-    // Для остальных путей используем обычный redirect
+    // Формируем redirect на соответствующую локаль
     const url = new URL(`/${locale}${pathname}`, request.url);
-    return NextResponse.redirect(url);
+    return NextResponse.redirect(url, { status: 301 });
   }
 
   return NextResponse.next();

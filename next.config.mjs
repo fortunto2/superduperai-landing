@@ -40,12 +40,31 @@ const nextConfig = {
     // Расширения файлов для автоматического разрешения
     resolveExtensions: ['.mdx', '.tsx', '.ts', '.jsx', '.js', '.mjs', '.json'],
   },
+  // ────────────────────────────────
+  //  🌍  i18n
+  //  root («/») = English, others with prefix; no auto redirect
+  i18n: {
+    locales: ['en', 'ru', 'es', 'de'],
+    defaultLocale: 'en',
+    localeDetection: false,
+  },
   // Увеличиваем таймаут для статической генерации
   staticPageGenerationTimeout: 120,
   // Настройки производительности
   poweredByHeader: false, // Удаляем заголовок X-Powered-By
   // Отключаем source maps в production
   productionBrowserSourceMaps: false,
+   // ────────────────────────────────
+   //  🔀 301 redirect from legacy '/en/*' URLs to new canonical paths
+   async redirects() {
+     return [
+       {
+         source: '/en/:path*',
+         destination: '/:path*',
+         permanent: true, // 301
+       },
+     ];
+   },
   // Настройки для Cloudflare
   webpack: (config, { isServer }) => {
     // Помогает с совместимостью MDX в Cloudflare
