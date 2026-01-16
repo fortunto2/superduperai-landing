@@ -1,0 +1,39 @@
+{
+    "functions": {
+        "src/app/api/webhook-status/[sessionId]/route.ts": {
+            "maxDuration": 30
+        },
+        "src/app/api/webhooks/stripe/route.ts": {
+            "maxDuration": 30
+        },
+        "src/app/api/create-checkout/route.ts": {
+            "maxDuration": 30
+        }
+    },
+    "public": true,
+    "headers": [
+        {
+            "source": "/api/(.*)",
+            "headers": [
+                {
+                    "key": "Access-Control-Allow-Origin",
+                    "value": "*"
+                },
+                {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "GET, POST, PUT, DELETE, OPTIONS"
+                },
+                {
+                    "key": "Access-Control-Allow-Headers",
+                    "value": "Content-Type, Authorization"
+                }
+            ]
+        }
+    ],
+    "rewrites": [
+        {
+            "source": "/llms.txt",
+            "destination": "/api/llms-txt"
+        }
+    ]
+}

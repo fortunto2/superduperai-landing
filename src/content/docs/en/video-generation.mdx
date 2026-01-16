@@ -1,0 +1,603 @@
+---
+title: "Video Generation API"
+description: "Complete guide to SuperDuperAI's video generation API. Create stunning videos from text, images, or enhance existing videos with AI."
+date: "2024-12-01"
+slug: "video-generation"
+locale: "en"
+category: "api"
+order: 2
+seo:
+  title: "Video Generation API | SuperDuperAI Developer Guide"
+  description: "Learn how to generate professional videos using SuperDuperAI's API. Text-to-video, image-to-video, and video enhancement capabilities."
+  keywords:
+    - video generation API
+    - AI video API
+    - text to video
+    - image to video
+    - video API
+    - developer guide
+---
+
+Create professional-quality videos from text descriptions, animate images, or enhance existing videos using cutting-edge AI models. Choose from 11 different models optimized for various use cases.
+
+## Interactive API Explorer
+
+Configure and test the API with different models, languages, and data fetching methods:
+
+<InteractiveAPIDocs apiType="video" />
+
+<FeatureGrid>
+  <Feature
+    title="📝 Text-to-Video"
+    description="Create videos from text descriptions • 3 premium models • $2-$3 per second"
+    icon="video"
+  />
+  <Feature
+    title="🖼️ Image-to-Video"
+    description="Animate static images • 7 models available • Starting at $0.40/second"
+    icon="image"
+  />
+  <Feature
+    title="🎬 Video Enhancement"
+    description="Lip-sync and video processing • Specialized models • Professional results"
+    icon="edit"
+  />
+  <Feature
+    title="⚡ Flexible Duration"
+    description="5-20 second videos • Multiple aspect ratios • HD quality output"
+    icon="clock"
+  />
+</FeatureGrid>
+
+## Quick Start
+
+### Basic Setup
+```typescript
+const API_BASE = 'https://editor.superduperai.co/api/v1';
+const headers = {
+  'Authorization': `Bearer ${your_api_token}`,
+  'Content-Type': 'application/json'
+};
+```
+
+### Generate Your First Video
+```typescript
+const generateVideo = async (prompt: string, duration = 5) => {
+  const response = await fetch(`${API_BASE}/file/generate-video`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({
+      config: {
+        prompt: prompt,
+        generation_config_name: 'comfyui/ltx', // Budget option
+        params: {
+          duration: duration,
+          aspect_ratio: '16:9'
+        }
+      }
+    })
+  });
+  
+  const fileData = await response.json(); // Returns single object
+  return fileData.id;
+};
+
+// Wait for video generation (takes longer than images)
+const waitForVideo = async (fileId: string) => {
+  const timeout = 15 * 60 * 1000; // 15 minutes timeout
+  const startTime = Date.now();
+  
+  while (Date.now() - startTime < timeout) {
+    const response = await fetch(`${API_BASE}/file/${fileId}`, { headers });
+    const status = await response.json();
+    
+    if (status.url) return status.url; // Ready!
+    if (status.error) throw new Error(status.error);
+    
+    await new Promise(r => setTimeout(r, 5000)); // Wait 5 seconds
+  }
+  
+  throw new Error('Video generation timeout');
+};
+
+// Complete workflow
+const videoId = await generateVideo("A bird flying over a serene lake at sunset");
+const videoUrl = await waitForVideo(videoId);
+console.log('Generated video:', videoUrl);
+```
+
+## Available Models
+
+### 💰 Budget-Friendly (No VIP Required)
+
+Perfect for testing and cost-effective video generation.
+
+| Model | Type | Price/sec | 5-sec Cost | Best For |
+|-------|------|-----------|------------|----------|
+| `comfyui/ltx` | Image-to-Video | **$0.40** | **$2.00** | Animating images |
+| `comfyui/lip-sync` | Video-to-Video | **$0.40** | **$2.00** | Lip synchronization |
+
+### 🔥 Premium Models (VIP Required)
+
+#### Text-to-Video (3 models)
+Create videos from text descriptions only.
+
+| Model | Duration Options | Price/sec | 5-sec Cost | Provider |
+|-------|------------------|-----------|------------|----------|
+| `google-cloud/veo2-text2video` | 5-8 seconds | $2.00 | $10.00 | Google Cloud |
+| `google-cloud/veo3-text2video` | 5-8 seconds | $3.00 | $15.00 | Google Cloud |
+| `azure-openai/sora` | 5-20 seconds | **$2.00** | **$10.00** | Azure OpenAI |
+
+#### Image-to-Video (6 models)
+Animate existing images into videos.
+
+| Model | Duration Options | Price/sec | 5-sec Cost | Provider |
+|-------|------------------|-----------|------------|----------|
+| `fal-ai/kling-video/v2.1/standard/image-to-video` | 5-10 seconds | $1.00 | $5.00 | FAL AI |
+| `fal-ai/minimax/video-01/image-to-video` | 5 seconds | $1.20 | $6.00 | FAL AI |
+| `fal-ai/minimax/video-01-live/image-to-video` | 5 seconds | $1.20 | $6.00 | FAL AI |
+| `google-cloud/veo2` | 5-8 seconds | $2.00 | $10.00 | Google Cloud |
+| `fal-ai/kling-video/v2.1/pro/image-to-video` | 5-10 seconds | $2.00 | $10.00 | FAL AI |
+| `google-cloud/veo3` | 5-8 seconds | $3.00 | $15.00 | Google Cloud |
+
+## Real-time Progress Tracking
+
+### Polling Method (Recommended)
+
+Due to longer generation times, video polling uses extended intervals:
+
+```typescript
+const pollVideoProgress = async (fileId: string, timeout = 15 * 60 * 1000) => {
+  const startTime = Date.now();
+  
+  while (Date.now() - startTime < timeout) {
+    const response = await fetch(`${API_BASE}/file/${fileId}`, { headers });
+    const status = await response.json();
+    
+    if (status.url) {
+      return status.url; // ✅ Video ready
+    }
+    
+    if (status.error) {
+      throw new Error(status.error); // ❌ Generation failed
+    }
+    
+    // Check video generation progress
+    if (status.video_generation?.progress) {
+      console.log(`Video progress: ${status.video_generation.progress}%`);
+    }
+    
+    // Check tasks
+    if (status.tasks?.length > 0) {
+      const task = status.tasks[0];
+      console.log(`Task status: ${task.status}`);
+    }
+    
+    await new Promise(r => setTimeout(r, 5000)); // Poll every 5 seconds
+  }
+  
+  throw new Error('Video generation timeout');
+};
+```
+
+### Server-Sent Events for Videos
+
+⚠️ **Important**: SSE for video generation may be less reliable due to longer connection times. Always implement polling fallback.
+
+```typescript
+const watchVideoWithSSE = (fileId: string, onProgress: (data: any) => void) => {
+  const eventSource = new EventSource(`${API_BASE}/events/file.${fileId}`, {
+    headers: {
+      'Authorization': `Bearer ${your_api_token}`
+    }
+  });
+  
+  eventSource.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    onProgress(data);
+    
+    // Video generation complete
+    if (data.url) {
+      eventSource.close();
+    }
+    
+    // Generation failed
+    if (data.error) {
+      eventSource.close();
+    }
+  };
+  
+  eventSource.onerror = (error) => {
+    console.warn('Video SSE connection failed, using polling');
+    eventSource.close();
+  };
+  
+  // Auto-close after 20 minutes (videos take longer)
+  setTimeout(() => {
+    eventSource.close();
+  }, 20 * 60 * 1000);
+  
+  return eventSource;
+};
+
+// Robust video generation with SSE + polling fallback
+const generateVideoWithTracking = async (prompt: string, options = {}) => {
+  const videoId = await generateVideo(prompt);
+  
+  return new Promise((resolve, reject) => {
+    let resolved = false;
+    let sse = null;
+    
+    // Try SSE first
+    try {
+      sse = watchVideoWithSSE(videoId, (data) => {
+        if (data.url && !resolved) {
+          resolved = true;
+          resolve(data.url);
+        }
+        
+        // Progress updates
+        if (data.video_generation?.progress) {
+          console.log(`Progress: ${data.video_generation.progress}%`);
+        }
+      });
+    } catch (error) {
+      console.warn('SSE not available, using polling only');
+    }
+    
+    // Polling fallback after 30 seconds
+    setTimeout(async () => {
+      if (!resolved) {
+        if (sse) sse.close();
+        
+        try {
+          const url = await pollVideoProgress(videoId);
+          if (!resolved) {
+            resolved = true;
+            resolve(url);
+          }
+        } catch (error) {
+          if (!resolved) {
+            resolved = true;
+            reject(error);
+          }
+        }
+      }
+    }, 30000);
+  });
+};
+```
+
+## Common Use Cases
+
+### 1. Product Demos
+```typescript
+const createProductDemo = async (productName: string, features: string[]) => {
+  const prompt = `Professional product demonstration of ${productName} showcasing ${features.join(', ')}, clean background, smooth camera movements`;
+  
+  const response = await fetch(`${API_BASE}/file/generate-video`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({
+      config: {
+        prompt,
+        generation_config_name: 'google-cloud/veo2-text2video',
+        params: {
+          duration: 8,
+          aspect_ratio: '16:9',
+          quality: 'hd'
+        }
+      }
+    })
+  });
+  
+  const fileData = await response.json();
+  return await waitForVideo(fileData.id);
+};
+
+// Example
+const demo = await createProductDemo("smartphone", ["camera", "display", "battery"]);
+```
+
+### 2. Social Media Content
+```typescript
+const createSocialVideo = async (concept: string, platform = 'instagram') => {
+  const aspectRatios = {
+    instagram: '9:16', // Stories/Reels
+    youtube: '16:9',   // Standard
+    tiktok: '9:16',    // Vertical
+    twitter: '16:9'    // Landscape
+  };
+  
+  const prompt = `Engaging ${concept} for social media, vibrant colors, dynamic movement, ${platform} style`;
+  
+  const videoId = await generateVideo(prompt);
+  return await waitForVideo(videoId);
+};
+```
+
+### 3. Image Animation
+```typescript
+const animateImage = async (imageId: string, animationType: string) => {
+  const response = await fetch(`${API_BASE}/file/generate-video`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({
+      config: {
+        prompt: `Animate this image with ${animationType}`,
+        generation_config_name: 'comfyui/ltx', // Budget option
+        references: [imageId], // Reference to existing image
+        params: {
+          duration: 5,
+          aspect_ratio: '16:9',
+          motion_strength: 0.8 // How much movement (0.1-1.0)
+        }
+      }
+    })
+  });
+  
+  const fileData = await response.json();
+  return await waitForVideo(fileData.id);
+};
+
+// Example
+const animated = await animateImage(landscapeImageId, "gentle wind through trees");
+```
+
+### 4. Lip Sync Videos
+```typescript
+const createLipSyncVideo = async (videoId: string, audioId: string) => {
+  const response = await fetch(`${API_BASE}/file/generate-video`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({
+      config: {
+        prompt: "Synchronize lip movements with audio",
+        generation_config_name: 'comfyui/lip-sync',
+        references: [videoId, audioId], // Video and audio files
+        params: {
+          sync_accuracy: 'high',
+          preserve_quality: true
+        }
+      }
+    })
+  });
+  
+  const fileData = await response.json();
+  return await waitForVideo(fileData.id);
+};
+```
+
+## Best Practices
+
+### Model Selection Guide
+
+```typescript
+const selectVideoModel = (
+  type: 'text-to-video' | 'image-to-video' | 'video-enhancement',
+  budget: 'low' | 'medium' | 'high',
+  duration: number
+) => {
+  if (type === 'text-to-video') {
+    if (budget === 'medium') return 'google-cloud/veo2-text2video';
+    if (budget === 'high') return 'azure-openai/sora';
+    throw new Error('Text-to-video requires VIP access');
+  }
+  
+  if (type === 'image-to-video') {
+    if (budget === 'low') return 'comfyui/ltx';
+    if (budget === 'medium') return 'fal-ai/kling-video/v2.1/standard/image-to-video';
+    if (budget === 'high') return 'google-cloud/veo3';
+  }
+  
+  if (type === 'video-enhancement') {
+    return 'comfyui/lip-sync'; // Currently only option
+  }
+};
+```
+
+### Optimal Parameters
+
+```typescript
+const optimizedVideoGeneration = async (prompt: string, options = {}) => {
+  const {
+    model = 'comfyui/ltx',
+    duration = 5,
+    aspectRatio = '16:9',
+    quality = 'hd'
+  } = options;
+  
+  // Duration limits by model
+  const durationLimits = {
+    'comfyui/ltx': [5],
+    'google-cloud/veo2-text2video': [5, 6, 7, 8],
+    'google-cloud/veo3-text2video': [5, 6, 7, 8],
+    'azure-openai/sora': [5, 10, 15, 20],
+    'fal-ai/kling-video/v2.1/standard/image-to-video': [5, 10]
+  };
+  
+  const allowedDurations = durationLimits[model] || [5];
+  const safeDuration = allowedDurations.includes(duration) 
+    ? duration 
+    : allowedDurations[0];
+  
+  return fetch(`${API_BASE}/file/generate-video`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({
+      config: {
+        prompt,
+        generation_config_name: model,
+        params: {
+          duration: safeDuration,
+          aspect_ratio: aspectRatio,
+          quality,
+          fps: 24, // Standard frame rate
+          motion_strength: 0.7 // Balanced movement
+        }
+      }
+    })
+  });
+};
+```
+
+### Error Handling & Retries
+
+```typescript
+const robustVideoGeneration = async (
+  prompt: string, 
+  model = 'comfyui/ltx',
+  maxRetries = 2
+) => {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const videoId = await generateVideo(prompt, model);
+      const videoUrl = await waitForVideo(videoId);
+      return videoUrl;
+    } catch (error) {
+      console.log(`Video generation attempt ${attempt} failed:`, error.message);
+      
+      if (attempt === maxRetries) {
+        throw new Error(`Failed after ${maxRetries} attempts: ${error.message}`);
+      }
+      
+      // Exponential backoff
+      await new Promise(r => setTimeout(r, 5000 * attempt));
+    }
+  }
+};
+```
+
+## Response Format
+
+The API returns a single file object (unlike image generation):
+
+```typescript
+// Response structure
+{
+  id: "video-file-id",
+  video_generation_id: "generation-id",
+  video_generation: {
+    generation_config: {
+      name: "comfyui/ltx",
+      price_per_second: 0.4
+    }
+  },
+  url: null, // Initially null, populated when ready
+  tasks: [
+    {
+      type: "video-generation-flow",
+      status: "in_progress"
+    }
+  ]
+}
+```
+
+## Integration Examples
+
+### React Component
+```typescript
+import { useState } from 'react';
+
+export const VideoGenerator = () => {
+  const [loading, setLoading] = useState(false);
+  const [videoUrl, setVideoUrl] = useState(null);
+  const [progress, setProgress] = useState(0);
+  
+  const generateVideo = async (prompt: string) => {
+    setLoading(true);
+    setProgress(0);
+    
+    try {
+      const videoId = await generateVideo(prompt);
+      
+      // Poll with progress updates
+      const progressInterval = setInterval(() => {
+        setProgress(prev => Math.min(prev + 10, 90));
+      }, 10000); // Update every 10 seconds
+      
+      const url = await waitForVideo(videoId);
+      
+      clearInterval(progressInterval);
+      setProgress(100);
+      setVideoUrl(url);
+    } catch (error) {
+      console.error('Video generation failed:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  return (
+    <div>
+      {loading && <div>Generating video... {progress}%</div>}
+      {videoUrl && <video src={videoUrl} controls />}
+    </div>
+  );
+};
+```
+
+### Batch Video Generation
+```typescript
+const generateVideoSeries = async (prompts: string[], model = 'comfyui/ltx') => {
+  const results = [];
+  
+  // Generate videos sequentially to avoid rate limits
+  for (const prompt of prompts) {
+    try {
+      const videoId = await generateVideo(prompt, model);
+      const videoUrl = await waitForVideo(videoId);
+      results.push({ prompt, url: videoUrl, success: true });
+    } catch (error) {
+      results.push({ prompt, error: error.message, success: false });
+    }
+    
+    // Small delay between generations
+    await new Promise(r => setTimeout(r, 2000));
+  }
+  
+  return results;
+};
+```
+
+### Cost Calculator
+```typescript
+const calculateVideoCost = (model: string, duration: number) => {
+  const pricing = {
+    'comfyui/ltx': 0.40,
+    'comfyui/lip-sync': 0.40,
+    'fal-ai/kling-video/v2.1/standard/image-to-video': 1.00,
+    'fal-ai/minimax/video-01/image-to-video': 1.20,
+    'fal-ai/minimax/video-01-live/image-to-video': 1.20,
+    'google-cloud/veo2-text2video': 2.00,
+    'google-cloud/veo2': 2.00,
+    'fal-ai/kling-video/v2.1/pro/image-to-video': 2.00,
+    'google-cloud/veo3-text2video': 3.00,
+    'google-cloud/veo3': 3.00,
+    'azure-openai/sora': 10.00
+  };
+  
+  const pricePerSecond = pricing[model] || 0;
+  return pricePerSecond * duration;
+};
+
+// Example
+const cost = calculateVideoCost('google-cloud/veo2-text2video', 8);
+console.log(`Cost: $${cost.toFixed(2)}`); // Cost: $16.00
+```
+
+## Performance Tips
+
+1. **Choose the right model**: Use budget models for testing, premium for production
+2. **Optimize duration**: Shorter videos generate faster and cost less
+3. **Use appropriate timeouts**: Video generation takes 5-15 minutes
+4. **Handle failures gracefully**: Implement retry logic with exponential backoff
+5. **Monitor costs**: Track usage to stay within budget limits
+
+<CTABox>
+  **Ready to create videos?** Start with our budget-friendly models and scale up as needed!
+</CTABox>
+
+---
+
+*SuperDuperAI Video Generation API • Text-to-Video • Image-to-Video • Professional Quality* 

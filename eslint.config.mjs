@@ -40,7 +40,8 @@ export default [
       '.open-next/**',
       'out/**',
       '.contentlayer/**',
-      '.wrangler/**'
+      '.wrangler/**',
+      'scripts/optimize-veo3-image.js'
     ]
   },
   {

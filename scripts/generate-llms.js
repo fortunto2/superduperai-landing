@@ -10,118 +10,66 @@ const fs = require('fs');
 const path = require('path');
 const packageJson = require('../package.json');
 
-// Заранее определенные данные для llms.txt
-const toolsData = [
-  {
-    title: 'Vibe Filmmaking',
-    slug: 'vibe-filmmaking',
-    description: 'Create videos based on mood or aesthetic instead of detailed scripts.'
-  },
-  {
-    title: 'Agent Director',
-    slug: 'agent-director',
-    description: 'A paradigm where AI agents handle different aspects of video creation.'
-  },
-  {
-    title: 'Image Generator',
-    slug: 'image-generator',
-    description: 'Transform text into professional images and videos.'
-  }
-];
+// Функция для извлечения метаданных из MDX файла
+function extractMdxMetadata(filePath) {
+  try {
+    const content = fs.readFileSync(filePath, 'utf8');
+    const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
+    
+    if (!frontmatterMatch) {
+      return null;
+    }
 
-const casesData = [
-  {
-    title: 'Creators & Influencers',
-    slug: 'creators-influencers',
-    description: 'Content production for bloggers and influencers.'
-  },
-  {
-    title: 'Musicians & Artists',
-    slug: 'musicians-artists',
-    description: 'Create music videos based on the vibe of your tracks.'
-  },
-  {
-    title: 'Small Businesses',
-    slug: 'small-businesses',
-    description: 'Video advertising without agencies.'
-  },
-  {
-    title: 'Agencies & Teams',
-    slug: 'agencies-teams',
-    description: 'Rapid prototyping and collaborative workflows.'
-  },
-  {
-    title: 'Video Storytelling',
-    slug: 'video-story',
-    description: 'Telling stories through video.'
-  }
-];
+    const frontmatter = frontmatterMatch[1];
+    const titleMatch = frontmatter.match(/title:\s*["']([^"']+)["']/);
+    const descriptionMatch = frontmatter.match(/description:\s*["']([^"']+)["']/);
+    const slugMatch = frontmatter.match(/slug:\s*["']([^"']+)["']/);
 
-const pagesData = [
-  {
-    title: 'About',
-    slug: 'about',
-    description: 'Information about SuperDuperAI and the technologies behind the platform.'
-  },
-  {
-    title: 'Pricing',
-    slug: 'pricing',
-    description: 'Available subscription options and features.'
-  },
-  {
-    title: 'Privacy',
-    slug: 'privacy',
-    description: 'Information about data handling and privacy.'
-  },
-  {
-    title: 'Terms',
-    slug: 'terms',
-    description: 'Legal terms of service agreement.'
-  },
-  {
-    title: 'Creators',
-    slug: 'creators',
-    description: 'Special information for content creators.'
-  }
-];
+    if (!titleMatch || !descriptionMatch || !slugMatch) {
+      return null;
+    }
 
-const blogsData = [
-  {
-    title: 'AI Model Overview',
-    slug: 'model-overview',
-    description: 'Comparison of image and video models in SuperDuperAI.'
-  },
-  {
-    title: 'OpenAI Sora',
-    slug: 'sora',
-    description: 'Everything about OpenAI Sora text-to-video model.'
-  },
-  {
-    title: 'Google VEO2',
-    slug: 'veo2',
-    description: 'Google VEO2 image-to-video generation capabilities.'
-  },
-  {
-    title: 'Flux Kontext',
-    slug: 'flux-kontext',
-    description: 'In-context image editing with Flux Kontext model.'
-  },
-  {
-    title: 'Google Imagen 4',
-    slug: 'google-imagen-4',
-    description: 'High-quality image generation with Google Imagen 4.'
-  },
-  {
-    title: 'GPT-Image-1',
-    slug: 'gpt-image-1',
-    description: 'Conversational image generation with OpenAI GPT-Image-1.'
-  },
-  {
-    title: 'Kling 2.1',
-    slug: 'kling-2-1',
-    description: 'Fast text-to-video and image animation with Kling 2.1.'
+    return {
+      title: titleMatch[1],
+      description: descriptionMatch[1],
+      slug: slugMatch[1]
+    };
+  } catch (error) {
+    console.warn(`Warning: Could not read ${filePath}:`, error.message);
+    return null;
   }
-];
+}
+
+// Функция для динамического чтения содержимого из директории
+function getContentData(contentDir, sectionName = 'content') {
+  if (!fs.existsSync(contentDir)) {
+    console.warn(`Warning: Directory ${contentDir} not found, skipping ${sectionName}`);
+    return [];
+  }
+
+  const files = fs.readdirSync(contentDir).filter(file => file.endsWith('.mdx'));
+  const content = [];
+
+  console.log(`📁 Reading ${sectionName} from ${contentDir}:`);
+  
+  for (const file of files) {
+    const filePath = path.join(contentDir, file);
+    const metadata = extractMdxMetadata(filePath);
+    
+    if (metadata) {
+      content.push(metadata);
+      console.log(`   ✓ ${metadata.title} (${metadata.slug})`);
+    } else {
+      console.log(`   ✗ ${file} - missing metadata`);
+    }
+  }
+
+  // Сортируем по алфавиту для консистентности
+  content.sort((a, b) => a.title.localeCompare(b.title));
+
+  console.log(`   📊 Found ${content.length} valid ${sectionName}\n`);
+  return content;
+}
 
 // Создаем директорию public, если её нет
 const publicDir = path.join(__dirname, '../public');
@@ -129,25 +77,54 @@ if (!fs.existsSync(publicDir)) {
   fs.mkdirSync(publicDir, { recursive: true });
 }
 
-// Генерируем ссылки на инструменты
-const toolLinks = toolsData
-  .map(tool => `- [${tool.title}](/tool/${tool.slug}.md): ${tool.description}`)
-  .join('\n');
+console.log('🔄 Generating llms.txt dynamically from MDX files...\n');
 
-// Генерируем ссылки на кейсы
-const caseLinks = casesData
-  .map(caseItem => `- [${caseItem.title}](/case/${caseItem.slug}.md): ${caseItem.description}`)
-  .join('\n');
+// Получаем данные динамически из всех разделов (без fallback)
+const toolsData = getContentData(
+  path.join(__dirname, '../src/content/tool/en'),
+  'tools'
+);
 
-// Генерируем ссылки на страницы
-const pageLinks = pagesData
-  .map(page => `- [${page.title}](/${page.slug}.md): ${page.description}`)
-  .join('\n');
+const casesData = getContentData(
+  path.join(__dirname, '../src/content/case/en'),
+  'use cases'
+);
 
-// Генерируем ссылки на блоги
-const blogLinks = blogsData
-  .map(blog => `- [${blog.title}](/blog/${blog.slug}.md): ${blog.description}`)
-  .join('\n');
+const pagesData = getContentData(
+  path.join(__dirname, '../src/content/pages/en'),
+  'pages'
+);
+
+const blogsData = getContentData(
+  path.join(__dirname, '../src/content/blog/en'),
+  'blog posts'
+);
+
+const docsData = getContentData(
+  path.join(__dirname, '../src/content/docs/en'),
+  'documentation'
+);
+
+// Генерируем ссылки только если есть данные
+const toolLinks = toolsData.length > 0 
+  ? toolsData.map(tool => `- [${tool.title}](/tool/${tool.slug}.md): ${tool.description}`).join('\n')
+  : '- No tools available';
+
+const caseLinks = casesData.length > 0
+  ? casesData.map(caseItem => `- [${caseItem.title}](/case/${caseItem.slug}.md): ${caseItem.description}`).join('\n')
+  : '- No use cases available';
+
+const pageLinks = pagesData.length > 0
+  ? pagesData.map(page => `- [${page.title}](/${page.slug}.md): ${page.description}`).join('\n')
+  : '- No pages available';
+
+const blogLinks = blogsData.length > 0
+  ? blogsData.map(blog => `- [${blog.title}](/blog/${blog.slug}.md): ${blog.description}`).join('\n')
+  : '- No blog posts available';
+
+const docLinks = docsData.length > 0
+  ? docsData.map(doc => `- [${doc.title}](/docs/${doc.slug}.md): ${doc.description}`).join('\n')
+  : '- No documentation available';
 
 // Создаем содержимое файла
 const content = `# SuperDuperAI
@@ -169,6 +146,9 @@ ${pageLinks}
 
 ### Blog
 ${blogLinks}
+
+### Documentation
+${docLinks}
 
 ## Features
 
@@ -199,4 +179,17 @@ const filePath = path.join(publicDir, 'llms.txt');
 // Записываем файл
 fs.writeFileSync(filePath, content, 'utf8');
 
-console.log('✅ Generated llms.txt successfully'); 
+console.log('✅ Generated llms.txt successfully');
+console.log(`📝 Content summary:`);
+console.log(`   - ${toolsData.length} tools`);
+console.log(`   - ${casesData.length} use cases`);
+console.log(`   - ${pagesData.length} pages`);
+console.log(`   - ${blogsData.length} blog posts`);
+console.log(`   - ${docsData.length} documentation pages`);
+console.log(`   - Total: ${toolsData.length + casesData.length + pagesData.length + blogsData.length + docsData.length} items`);
+
+// Проверяем на возможные проблемы
+const totalItems = toolsData.length + casesData.length + pagesData.length + blogsData.length + docsData.length;
+if (totalItems === 0) {
+  console.warn('⚠️  Warning: No content found in any section. Check MDX files and frontmatter.');
+} 

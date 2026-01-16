@@ -12,4 +12,4 @@ scripts/
 
 # Generated content
 .contentlayer/
-public/llms.txt 
+public/llms.txt scripts/optimize-veo3-image.js

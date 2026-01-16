@@ -5,6 +5,7 @@ import AnalyticsProviders from "@/components/ui/analytics-providers";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import { siteConfig } from "@/config/site";
+import CanonicalLink from "@/components/ui/canonical-link";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const jetbrainsMono = JetBrains_Mono({
@@ -57,6 +58,7 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
+        <CanonicalLink />
       </head>
       <body
         className={`${inter.variable} ${jetbrainsMono.variable} antialiased min-h-screen`}

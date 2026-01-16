@@ -65,54 +65,63 @@
 ```
 SuperDuperAI/
 ├── src/
-│   ├── app/                   # Next.js App Router
-│   │   ├── page.tsx           # Главная страница
-│   │   ├── layout.tsx         # Корневой лейаут
-│   │   ├── [slug]/            # Динамический роут для статических страниц
-│   │   ├── case/              # Страницы кейсов
-│   │   │   └── [slug]/        # Динамический роут для кейсов
-│   │   ├── tool/              # Страницы инструментов
-│   │   │   └── [slug]/        # Динамический роут для инструментов
-│   │   ├── api/               # API-эндпоинты
-│   │   │   ├── og/            # Генерация OpenGraph изображений
-│   │   │   ├── markdown/      # API для MDX-контента
-│   │   │   └── llms-txt/      # Поддержка llms.txt для LLM
-│   │   └── robots.txt/        # Генерация robots.txt
-│   ├── components/            # React-компоненты
-│   │   ├── landing/           # Компоненты лендинга
-│   │   │   ├── hero.tsx       # Hero-секция
-│   │   │   ├── features.tsx   # Секция особенностей
-│   │   │   ├── how-it-works.tsx # Как это работает
-│   │   │   ├── use-cases.tsx  # Сценарии использования
-│   │   │   ├── testimonials.tsx # Отзывы
-│   │   │   ├── cta.tsx        # Призыв к действию
-│   │   │   ├── navbar.tsx     # Навигационная панель
-│   │   │   └── footer.tsx     # Футер
-│   │   ├── content/           # MDX-компоненты
-│   │   │   ├── mdx-components.tsx # Основные MDX-компоненты
-│   │   │   ├── feature.tsx    # Компонент особенности
-│   │   │   ├── feature-grid.tsx # Сетка особенностей
-│   │   │   ├── steps.tsx      # Компонент шагов
-│   │   │   └── cta-box.tsx    # Блок с призывом к действию
-│   │   └── ui/                # UI-компоненты
-│   │       ├── button.tsx     # Кнопка
-│   │       ├── card.tsx       # Карточка
-│   │       └── icons/         # SVG-иконки
-│   ├── content/               # MDX-контент
-│   │   ├── tool/              # Инструменты
-│   │   ├── case/              # Кейсы
-│   │   └── pages/             # Информационные страницы
-│   └── lib/                   # Утилиты и хелперы
-│       ├── metadata.ts        # Генерация метаданных
-│       └── generate-og.tsx    # Генерация OG-изображений
-├── public/                    # Статические файлы
-│   └── images/                # Изображения
-├── docs/                      # Документация
-│   ├── seo/                   # SEO-документация
-│   └── tasks/                 # Задачи проекта
-├── .contentlayer/             # Сгенерированные ContentLayer данные
-├── .next/                     # Next.js сборка
-└── ... (конфигурационные файлы)
+│   ├── app/                     # Next.js App Router
+│   │   ├── [locale]/            # Locale-based routing
+│   │   │   ├── (landing)/       # Route group for landing pages
+│   │   │   │   ├── layout.tsx   # Layout for landing pages
+│   │   │   │   └── page.tsx     # Main landing page component
+│   │   │   ├── layout.tsx       # Layout for localized routes
+│   │   │   ├── not-found.tsx    # Custom 404 page
+│   │   │   ├── sitemap.ts       # Sitemap generation
+│   │   │   └── template.tsx     # Template for localized routes
+│   │   ├── api/                 # API endpoints
+│   │   ├── favicon.ico          # Favicon
+│   │   ├── globals.css          # Global CSS styles
+│   │   ├── layout.tsx           # Root layout
+│   │   ├── opengraph-image.tsx  # OpenGraph image generation
+│   │   └── page.tsx             # Root page
+│   ├── components/              # React components
+│   │   ├── content/             # Components for MDX content
+│   │   ├── landing/             # Components for the landing page
+│   │   └── ui/                  # General UI components
+│   ├── config/                  # Configuration files
+│   │   ├── dictionaries/        # i18n dictionaries
+│   │   ├── i18n-config.ts       # i18n configuration
+│   │   └── site.ts              # Site-wide configuration
+│   ├── content/                 # Content collections for Contentlayer
+│   │   ├── blog/                # Blog posts
+│   │   ├── case/                # Case studies
+│   │   ├── docs/                # Documentation pages
+│   │   ├── homes/               # Home page content
+│   │   ├── pages/               # Static pages
+│   │   └── tool/                # Tool pages
+│   ├── hooks/                   # Custom React hooks
+│   │   └── use-translation.ts   # Hook for translations
+│   ├── lib/                     # Library functions and utilities
+│   │   ├── constants.ts         # Project constants
+│   │   ├── generate-og-image.tsx # OG image generation utility
+│   │   ├── get-dictionary.ts    # Function to get i18n dictionaries
+│   │   ├── get-valid-locale.ts  # Function to validate locales
+│   │   ├── metadata.ts          # Metadata generation utilities
+│   │   ├── user-identifier.ts   # User identification logic
+│   │   └── utils.ts             # General utility functions
+│   ├── middleware.ts            # Next.js middleware
+│   ├── tests/                   # Test files
+│   └── types/                   # TypeScript type definitions
+│       └── translation.d.ts   # Types for translations
+├── public/                      # Static assets
+│   ├── images/                  # Images
+│   ├── markdown/                # Raw markdown files (if any)
+│   ├── llms.txt                 # LLM instructions file
+│   └── robots.txt               # Robots.txt file
+├── docs/                        # Project documentation
+│   ├── api/                     # API documentation
+│   ├── seo/                     # SEO documentation
+│   └── tasks/                   # Task descriptions
+├── scripts/                     # Node.js scripts
+├── .contentlayer/               # Generated files from Contentlayer
+├── .next/                       # Next.js build output
+└── ... (config files)           # Configuration files
 ```
 
 ## Дерево документации SuperDuperAI

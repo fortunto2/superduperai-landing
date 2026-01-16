@@ -55,6 +55,7 @@ node_modules/.cache/
 .next/cache/*
 !.next/cache/.gitkeep
 .contentlayer/
+.veo3-generations/*.json
 
 # Strapi backend (separate project)
 strapi-backend/

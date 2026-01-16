@@ -1,27 +1,15 @@
 {
     "mcpServers": {
-        "browser_debug_frontend": {
-            "command": "npx",
-            "args": [
-                "-y",
-                "@agentdeskai/browser-tools-mcp@1.2.0"
-            ],
-            "enabled": true
-        },
-        "browser_tools_server": {
-            "command": "npx",
-            "args": [
-                "-y",
-                "@agentdeskai/browser-tools-server@1.2.0"
-            ],
-            "enabled": true
-        },
         "context7": {
             "command": "npx",
             "args": [
                 "-y",
                 "@upstash/context7-mcp@latest"
             ]
+        },
+        "agentzero": {
+            "type": "sse",
+            "url": "http://localhost:50001/mcp/t-0/sse"
         }
     }
 }

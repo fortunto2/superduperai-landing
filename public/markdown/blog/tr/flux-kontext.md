@@ -2,7 +2,7 @@
 title: Akı kontext
 description: Gelişmiş Düzenleme İş Akışı
 date: 2025-05-20
-slug: aki-kontext
+slug: flux-kontext
 locale: tr
 seo:
   title: Akı kontext düzenleme
@@ -13,7 +13,7 @@ seo:
 title: Akı kontext
 description: Gelişmiş Düzenleme İş Akışı
 date: 2025-05-20
-slug: aki-kontext
+slug: flux-kontext
 locale: tr
 seo:
   title: Akı kontext düzenleme

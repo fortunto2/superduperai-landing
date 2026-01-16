@@ -1,5 +1,6 @@
 import { default as Link } from "@/components/ui/optimized-link";
 import { APP_URLS } from "@/lib/constants";
+import { siteConfig } from "@/config/site";
 import {
   DiscordIcon,
   InstagramIcon,
@@ -35,16 +36,16 @@ export function Footer({ locale }: { locale: string }) {
           <div className="space-y-4">
             <h3 className="text-xl font-bold">{t("footer.company")}</h3>
             <div className="text-muted-foreground space-y-2">
-              <p>{t("footer.corp")}</p>
-              <p>{t("footer.address1")}</p>
-              <p>{t("footer.address2")}</p>
-              <p>{t("footer.phone")}</p>
+              <p>{siteConfig.company.name}</p>
+              <p>{siteConfig.company.address1}</p>
+              <p>{siteConfig.company.address2}</p>
+              <p>{siteConfig.company.phone}</p>
               <a
-                href={`mailto:${t("footer.email")}`}
+                href={`mailto:${siteConfig.company.email}`}
                 className="hover:text-primary transition-colors duration-300"
-                title={t("footer.email")}
+                title={siteConfig.company.email}
               >
-                {t("footer.email")}
+                {siteConfig.company.email}
               </a>
             </div>
           </div>
@@ -95,6 +96,15 @@ export function Footer({ locale }: { locale: string }) {
                   title={t("footer.pages.blog")}
                 >
                   {t("footer.pages.blog")}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/docs"
+                  className="hover:text-primary transition-colors duration-300"
+                  title="Documentation"
+                >
+                  Documentation
                 </Link>
               </li>
               <li>
