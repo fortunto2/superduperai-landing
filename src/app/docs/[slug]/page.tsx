@@ -1,4 +1,5 @@
 import DocPage from "@/app/[locale]/docs/[slug]/page";
+import { allDocs } from ".contentlayer/generated";
 
 interface WrapperProps {
   params: Promise<{ slug: string }>;
@@ -13,4 +14,11 @@ export default async function Page({ params }: WrapperProps) {
   return (
     <DocPage params={Promise.resolve({ locale: "en", slug })} />
   );
+}
+
+export async function generateStaticParams() {
+  const docs = allDocs.filter((doc) => doc.locale === "en");
+  return docs.map((doc) => ({
+    slug: doc.slug,
+  }));
 }
