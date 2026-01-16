@@ -14,6 +14,7 @@ import { VideoShowcase } from '@/components/landing/video-showcase';
 import { SimpleVeo3Generator } from './simple-veo3-generator';
 import { CodeBlock } from '@/components/ui/code-block';
 import { InteractiveAPIDocs } from './interactive-api-docs';
+import { CompanyAddress, CompanyContact } from '@/components/ui/company-address';
 
 // Минимальное определение компонентов для проверки работоспособности
 const components = {
@@ -51,7 +52,9 @@ const components = {
   PricingSection,
   VideoShowcase,
   SimpleVeo3Generator,
-  InteractiveAPIDocs
+  InteractiveAPIDocs,
+  CompanyAddress,
+  CompanyContact
 };
 
 interface MDXProps {

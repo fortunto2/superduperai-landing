@@ -530,7 +530,7 @@ SuperDuperAI/
 
 ### 12.3. Контактная информация
 - Компания: SuperDuperAi, Corp.
-- Адрес: 57 Saulsbury Rd, Unit E #1333, Dover, DE 19904
+- Адрес: 1207 Delaware Ave #4241, Wilmington, DE 19806
 - Телефон: +1 818 619 0966
 - Email: info@superduperai.co
 
