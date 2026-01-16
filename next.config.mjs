@@ -40,14 +40,7 @@ const nextConfig = {
     // Расширения файлов для автоматического разрешения
     resolveExtensions: ['.mdx', '.tsx', '.ts', '.jsx', '.js', '.mjs', '.json'],
   },
-  // ────────────────────────────────
-  //  🌍  i18n
-  //  root («/») = English, others with prefix; no auto redirect
-  i18n: {
-    locales: ['en', 'ru', 'es', 'de'],
-    defaultLocale: 'en',
-    localeDetection: false,
-  },
+  // i18n is handled via App Router: middleware.ts + [locale] dynamic routes
   // Увеличиваем таймаут для статической генерации
   staticPageGenerationTimeout: 120,
   // Настройки производительности

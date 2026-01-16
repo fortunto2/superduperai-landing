@@ -3,11 +3,27 @@ import { headers } from 'next/headers';
 import Stripe from 'stripe';
 import { getSessionData, updateSessionData } from '@/lib/kv';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-06-30.basil',
-});
+// Lazy-initialize Stripe client to avoid build-time errors when env vars aren't available
+let stripeInstance: Stripe | null = null;
 
-const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+function getStripe(): Stripe {
+  if (!stripeInstance) {
+    if (!process.env.STRIPE_SECRET_KEY) {
+      throw new Error('STRIPE_SECRET_KEY is not configured');
+    }
+    stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY, {
+      apiVersion: '2025-06-30.basil',
+    });
+  }
+  return stripeInstance;
+}
+
+function getEndpointSecret(): string {
+  if (!process.env.STRIPE_WEBHOOK_SECRET) {
+    throw new Error('STRIPE_WEBHOOK_SECRET is not configured');
+  }
+  return process.env.STRIPE_WEBHOOK_SECRET;
+}
 
 // SuperDuperAI configuration
 const configureSuperduperAI = () => {
@@ -108,11 +124,14 @@ export async function POST(request: NextRequest) {
 
   let event: Stripe.Event;
 
+  const stripe = getStripe();
+  const endpointSecret = getEndpointSecret();
+
   try {
     event = stripe.webhooks.constructEvent(body, signature, endpointSecret);
   } catch (error) {
     console.error('❌ Stripe webhook signature verification failed:', error);
-    console.error('Expected secret:', endpointSecret?.substring(0, 10) + '...');
+    console.error('Expected secret:', endpointSecret.substring(0, 10) + '...');
     console.error('Signature:', signature?.substring(0, 50) + '...');
     console.error('Body length:', body.length);
     console.error('Environment:', process.env.NODE_ENV);
@@ -231,8 +250,9 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
 
 async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
   console.log('✅ Payment succeeded:', paymentIntent.id);
-  
+
   // Get the checkout session from payment intent
+  const stripe = getStripe();
   try {
     const sessions = await stripe.checkout.sessions.list({
       payment_intent: paymentIntent.id,
