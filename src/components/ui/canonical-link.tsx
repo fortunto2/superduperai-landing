@@ -4,6 +4,7 @@
 import { usePathname, useParams } from 'next/navigation';
 
 const DEFAULT_LOCALE = 'en';
+const LOCALES = ['en', 'ru', 'es', 'de', 'hi', 'tr'];
 
 /**
  * CanonicalLink
@@ -23,16 +24,28 @@ export default function CanonicalLink() {
   const pathname = usePathname() || '/';
   const { locale } = useParams() as { locale?: string };
 
+  // Strip existing locale prefix from pathname (if any)
+  let pathWithoutLocale = pathname;
+  for (const loc of LOCALES) {
+    if (pathname === `/${loc}`) {
+      pathWithoutLocale = '/';
+      break;
+    }
+    if (pathname.startsWith(`/${loc}/`)) {
+      pathWithoutLocale = pathname.slice(loc.length + 1);
+      break;
+    }
+  }
+
   // For default locale (en): no prefix
   // For other locales: add prefix
   let canonicalPath: string;
-
   if (!locale || locale === DEFAULT_LOCALE) {
-    // English: canonical URL without /en/ prefix
-    canonicalPath = pathname === '/' ? '/' : pathname;
+    canonicalPath = pathWithoutLocale;
+  } else if (pathWithoutLocale === '/') {
+    canonicalPath = `/${locale}`;
   } else {
-    // Other locales: include prefix
-    canonicalPath = pathname === '/' ? `/${locale}` : `/${locale}${pathname}`;
+    canonicalPath = `/${locale}${pathWithoutLocale}`;
   }
 
   return (
