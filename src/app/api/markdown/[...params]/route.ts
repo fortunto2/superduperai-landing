@@ -16,8 +16,9 @@ async function mdxToMarkdown(filePath: string): Promise<string> {
     ? `---\n${frontmatterMatch[1]}\n---\n\n`
     : "";
 
-  // Удаляем импорты и экспорты
+  // Удаляем frontmatter, импорты и экспорты
   let markdown = content
+    .replace(/^---\n[\s\S]*?\n---\n*/, "") // Remove frontmatter from content
     .replace(/^import\s+.*?from\s+['"].*?['"];?\s*$/gm, "")
     .replace(/^export\s+.*?$/gm, "");
 
