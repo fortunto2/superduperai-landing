@@ -12,7 +12,8 @@ export const revalidate = false;
 
 export async function GET() {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "superduperai.co";
-  const site = `https://${baseUrl}`;
+  // Handle case where baseUrl already includes protocol
+  const site = baseUrl.startsWith("http") ? baseUrl : `https://${baseUrl}`;
 
   type Entry = { path: string; locale: string; lastMod: Date };
   const entries: Entry[] = [];

@@ -49,11 +49,12 @@ const nextConfig = {
   productionBrowserSourceMaps: false,
    // ────────────────────────────────
    //  🔀 301 redirect from legacy '/en/*' URLs to new canonical paths
+   //  Note: /en alone is handled by middleware, here we handle /en/something
    async redirects() {
      return [
        {
-         source: '/en/:path*',
-         destination: '/:path*',
+         source: '/en/:path+',
+         destination: '/:path+',
          permanent: true, // 301
        },
      ];

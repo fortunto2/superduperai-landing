@@ -112,10 +112,9 @@ export function middleware(request: NextRequest) {
     return NextResponse.next({ request: { headers } });
   }
 
-  // Проверяем, является ли текущий путь корневым путем с локалью (например, /en, /ru)
-  const isLocaleRoot = i18n.locales.some((locale) => pathname === `/${locale}`);
-  if (isLocaleRoot) {
-    // Редиректим с /locale на корень /
+  // Only redirect /en to / (English canonical URL is without prefix)
+  // Other locales like /ru, /es keep their locale prefix
+  if (pathname === `/${i18n.defaultLocale}`) {
     return NextResponse.redirect(new URL("/", request.url), { status: 301 });
   }
 
