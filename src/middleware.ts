@@ -123,13 +123,19 @@ export function middleware(request: NextRequest) {
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   );
 
-  // Skip automatic locale redirect for the root path – keep “/” canonical
-  if (!pathnameHasLocale && pathname !== "/") {
+  // Handle root path "/" - rewrite to default locale internally (keep "/" as canonical URL)
+  if (pathname === "/") {
     const locale = getLocale(request) || i18n.defaultLocale;
+    const url = new URL(`/${locale}`, request.url);
+    return NextResponse.rewrite(url);
+  }
 
-    // Формируем redirect на соответствующую локаль
+  // For other paths without locale, rewrite to locale path internally
+  // (canonical URL stays without locale prefix for default locale)
+  if (!pathnameHasLocale) {
+    const locale = getLocale(request) || i18n.defaultLocale;
     const url = new URL(`/${locale}${pathname}`, request.url);
-    return NextResponse.redirect(url, { status: 301 });
+    return NextResponse.rewrite(url);
   }
 
   return NextResponse.next();
