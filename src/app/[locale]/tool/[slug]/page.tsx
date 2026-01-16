@@ -101,7 +101,7 @@ function ToolPageContent({
       ]}
       hasH1Heading={hasH1Heading}
     >
-      <MDXContent code={tool.body.code} />
+      <MDXContent code={tool.body.code} locale={locale} />
     </PageWrapper>
   );
 }

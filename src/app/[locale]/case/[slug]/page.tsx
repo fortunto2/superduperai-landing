@@ -102,7 +102,7 @@ function CasePageContent({
       ]}
       hasH1Heading={hasH1Heading}
     >
-      <MDXContent code={caseItem.body.code} />
+      <MDXContent code={caseItem.body.code} locale={locale} />
     </PageWrapper>
   );
 }

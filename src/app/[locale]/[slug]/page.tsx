@@ -110,7 +110,7 @@ function PageContent({
       hasH1Heading={hasH1Heading}
       locale={locale}
     >
-      <MDXContent code={page.body.code} />
+      <MDXContent code={page.body.code} locale={locale} />
     </PageWrapper>
   );
 }

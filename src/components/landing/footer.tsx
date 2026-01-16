@@ -48,6 +48,16 @@ export function Footer({ locale }: { locale: string }) {
                 {siteConfig.company.email}
               </a>
             </div>
+            {/* Turkish office for TR locale */}
+            {locale === "tr" && (
+              <div className="text-muted-foreground space-y-2 mt-4 pt-4 border-t border-border/20">
+                <p className="font-medium">{siteConfig.companyTR.name}</p>
+                <p>{siteConfig.companyTR.address1}</p>
+                <p>{siteConfig.companyTR.address2}</p>
+                <p>{siteConfig.companyTR.address3}</p>
+                <p>{siteConfig.companyTR.phone}</p>
+              </div>
+            )}
           </div>
 
           <div className="space-y-4">

@@ -101,7 +101,7 @@ function BlogPageContent({
       ]}
       hasH1Heading={hasH1Heading}
     >
-      <MDXContent code={post.body.code} />
+      <MDXContent code={post.body.code} locale={locale} />
     </PageWrapper>
   );
 }

@@ -14,4 +14,12 @@ export const siteConfig = {
     phone: "+1 818 619 0966",
     email: "info@superduperai.co",
   },
+  companyTR: {
+    name: "SUPER DUPER AI TEKNOLOJI LIMITED SIRKETI",
+    address1: "Pinarbasi Mahallesi, Hurriyet Caddesi",
+    address2: "Antalya Teknokent Ulugbey AR-GE 2 Binasi No: 3A, Ic Kapi No: B164",
+    address3: "07070 Konyaalti, Antalya, TURKEY",
+    phone: "+90 507 340 8692",
+    email: "info@superduperai.co",
+  },
 };

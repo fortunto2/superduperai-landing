@@ -33,7 +33,7 @@ export default async function DocPage({ params }: DocPageProps) {
       ]}
     >
       <div className="prose prose-lg dark:prose-invert max-w-none">
-        <MDXContent code={doc.body.code} />
+        <MDXContent code={doc.body.code} locale={locale} />
       </div>
     </PageWrapper>
   );
