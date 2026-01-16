@@ -55,3 +55,12 @@ node_modules/.cache/
 .next/cache/*
 !.next/cache/.gitkeep
 .contentlayer/
+
+# Strapi backend (separate project)
+strapi-backend/
+
+# Generated markdown files
+public/markdown/
+
+# Generated images
+public/images/screens/*.avif
