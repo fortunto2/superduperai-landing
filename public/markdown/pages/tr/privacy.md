@@ -14,27 +14,19 @@ seo:
     - kişisel bilgi
 ---
 
----
-title: "Gizlilik Politikası - SuperDuperAI"
-description: "Gizlilik politikamız kişisel bilgilerinizi nasıl topladığımızı, kullandığımızı ve koruduğumuzu açıklar."
-date: "2023-05-01"
-locale: "tr"
-slug: "privacy"
-seo:
-  title: "Gizlilik Politikası - SuperDuperAI"
-  description: "SuperDuperAI'ın kişisel bilgilerinizi nasıl topladığını, kullandığını ve koruduğunu öğrenin."
-  keywords:
-    - gizlilik politikası
-    - veri koruma
-    - SuperDuperAI gizlilik
-    - kişisel bilgi
----
-
 # Gizlilik Politikası
 
-  Son Güncelleme: 1 Mayıs 2023
+  Son Güncelleme: 18 Ocak 2025
 
 SuperDuperAI olarak gizliliğinizi korumaya ve kişisel bilgilerinizin güvenliğini sağlamaya kararlıyız. Bu Gizlilik Politikası, web sitemizi ve hizmetlerimizi kullandığınızda verilerinizi nasıl topladığımızı, kullandığımızı, paylaştığımızı ve koruduğumuzu açıklar.
+
+## Veri Sorumlusu
+
+Türkiye'deki kullanıcılar için kişisel verilerinizin işlenmesinden sorumlu veri sorumlusu **SUPER DUPER AI TEKNOLOJI LIMITED SIRKETI**'dir. Şirketimiz Türkiye'de kayıtlı olup merkezi Antalya Teknokent, Antalya, Türkiye adresinde bulunmaktadır.
+
+Diğer ülkelerdeki kullanıcılar için veri sorumlusu, Amerika Birleşik Devletleri Delaware eyaletinde kayıtlı **SuperDuperAi Corp**'dur.
+
+Her bir kuruluş bağımsız olarak faaliyet göstermekte ve kendi bölgesinde işlediği verilerden münferiden sorumludur.
 
 ## Topladığımız Bilgiler
 

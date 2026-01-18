@@ -14,22 +14,6 @@ seo:
     - AI technology
 ---
 
----
-title: "About SuperDuperAI - Our Mission and Team"
-description: "Learn about SuperDuperAI's mission, technology, and vision for democratizing video creation with AI."
-date: "2023-06-01"
-slug: "about"
-locale: "en"
-seo:
-  title: "About SuperDuperAI - Our Mission and Team"
-  description: "Learn about SuperDuperAI's mission, technology, and vision for democratizing video creation with AI."
-  keywords:
-    - SuperDuperAI mission
-    - AI video team
-    - video creation
-    - AI technology
----
-
 At SuperDuperAI Public Benefit Corp, we are committed to harnessing the power of generative AI tools to create a positive impact on both society and the environment.
 
 ### Mission-Driven
@@ -74,23 +58,13 @@ We're always excited to hear from you, whether you have questions about our tech
 
 ### Contact Information
 
-  
-    Company Address
-    
-      SuperDuperAi, Corp. (Public Benefit Corporation)
-    
-    1207 Delaware Ave #4241
-    Wilmington, DE 19806
-  
+**United States**
+SuperDuperAi Corp
+Delaware, United States
 
-  
-    Get In Touch
-    Phone: +1 818 619 0966
-    Email: info@superduperai.co
-    Support: help@superduperai.co
-  
+**Turkey**
+SUPER DUPER AI TEKNOLOJI LIMITED SIRKETI
+Antalya Teknokent, Antalya, Turkey
 
-  
-    Schedule a Demo →
-  
+**Email:** hello@superduperai.co
 

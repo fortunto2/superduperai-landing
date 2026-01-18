@@ -14,27 +14,19 @@ seo:
     - service agreement
 ---
 
----
-title: "Terms and Conditions - SuperDuperAI"
-description: "Terms and conditions for using SuperDuperAI's video generation platform and services."
-date: "2023-05-01"
-slug: "terms"
-locale: "en"
-seo:
-  title: "Terms and Conditions - SuperDuperAI"
-  description: "Legal terms and conditions governing your use of SuperDuperAI's video generation platform and services."
-  keywords:
-    - terms and conditions
-    - legal terms
-    - SuperDuperAI terms
-    - service agreement
----
-
 # Terms and Conditions
 
-  Last Updated: May 1, 2023
+  Last Updated: January 18, 2025
 
 Welcome to SuperDuperAI. By accessing or using our services, you agree to be bound by these Terms and Conditions. Please read them carefully.
+
+## Service Provider
+
+These Terms and Conditions are entered into between you and **SuperDuperAi Corp**, a Delaware corporation, United States, except as set forth below:
+
+**For customers in Turkey:** The Services are provided by **SUPER DUPER AI TEKNOLOJI LIMITED SIRKETI**, a company registered in Turkey with its principal office located at Antalya Teknokent, Antalya, Turkey. For customers accessing the Services from Turkey, references to "SuperDuperAI," "we," "us," or "our" in these Terms shall refer to this Turkish entity.
+
+Each entity operates independently and is solely responsible for the Services it provides in its respective region.
 
 ## Acceptance of Terms
 

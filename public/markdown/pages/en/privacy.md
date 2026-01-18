@@ -14,27 +14,21 @@ seo:
     - personal information
 ---
 
----
-title: "Privacy Policy - SuperDuperAI"
-description: "Our privacy policy outlines how we collect, use, and protect your personal information."
-date: "2023-05-01"
-locale: "en"
-slug: "privacy"
-seo:
-  title: "Privacy Policy - SuperDuperAI"
-  description: "Learn how SuperDuperAI collects, uses, and protects your personal information."
-  keywords:
-    - privacy policy
-    - data protection
-    - SuperDuperAI privacy
-    - personal information
----
-
 # Privacy Policy
 
-  Last Updated: May 1, 2023
+  Last Updated: January 18, 2025
 
 At SuperDuperAI, we are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, share, and protect your data when you use our website and services.
+
+## Data Controller
+
+The data controller responsible for your personal information depends on your location:
+
+**For customers in Turkey:** Your data controller is **SUPER DUPER AI TEKNOLOJI LIMITED SIRKETI**, a company registered in Turkey with its principal office located at Antalya Teknokent, Antalya, Turkey.
+
+**For all other customers:** Your data controller is **SuperDuperAi Corp**, a Delaware corporation, United States.
+
+Each entity operates independently and is solely responsible for the data it processes in its respective region.
 
 ## Information We Collect
 

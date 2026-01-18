@@ -14,22 +14,6 @@ seo:
     - AI teknolojisi
 ---
 
----
-title: "SuperDuperAI Hakkında - Misyonumuz ve Ekibimiz"
-description: "SuperDuperAI'nin misyonu, teknolojisi ve AI ile video oluşturmayı demokratikleştirme vizyonu hakkında bilgi edinin."
-date: "2023-06-01"
-slug: "about"
-locale: "tr"
-seo:
-  title: "SuperDuperAI Hakkında - Misyonumuz ve Ekibimiz"
-  description: "SuperDuperAI'nin misyonu, teknolojisi ve AI ile video oluşturmayı demokratikleştirme vizyonu hakkında bilgi edinin."
-  keywords:
-    - SuperDuperAI misyonu
-    - AI video ekibi
-    - video oluşturma
-    - AI teknolojisi
----
-
 SuperDuperAI Public Benefit Corp olarak, hem toplum hem de çevre üzerinde olumlu bir etki yaratmak için generatif AI araçlarının gücünden yararlanmaya kendimizi adadık.
 
 ### Misyon Odaklı
@@ -74,23 +58,13 @@ Teknolojimiz hakkında sorularınız olsun, işbirliği fırsatlarını tartış
 
 ### İletişim Bilgileri
 
-  
-    Şirket Adresi
-    
-      SuperDuperAi, Corp. (Public Benefit Corporation)
-    
-    1207 Delaware Ave #4241
-    Wilmington, DE 19806
-  
+**Türkiye**
+SUPER DUPER AI TEKNOLOJI LIMITED SIRKETI
+Antalya Teknokent, Antalya, Türkiye
 
-  
-    İletişime Geçin
-    Telefon: +1 818 619 0966
-    E-posta: info@superduperai.co
-    Destek: help@superduperai.co
-  
+**Amerika Birleşik Devletleri**
+SuperDuperAi Corp
+Delaware, ABD
 
-  
-    Demo Planla →
-  
+**E-posta:** hello@superduperai.co
 

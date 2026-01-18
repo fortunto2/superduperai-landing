@@ -14,27 +14,19 @@ seo:
     - hizmet sözleşmesi
 ---
 
----
-title: "Şartlar ve Koşullar - SuperDuperAI"
-description: "SuperDuperAI'ın video üretim platformu ve hizmetlerini kullanmak için şartlar ve koşullar."
-date: "2023-05-01"
-slug: "terms"
-locale: "tr"
-seo:
-  title: "Şartlar ve Koşullar - SuperDuperAI"
-  description: "SuperDuperAI'ın video üretim platformu ve hizmetlerini kullanımınızı düzenleyen yasal şartlar ve koşullar."
-  keywords:
-    - şartlar ve koşullar
-    - yasal şartlar
-    - SuperDuperAI şartları
-    - hizmet sözleşmesi
----
-
 # Şartlar ve Koşullar
 
-  Son Güncelleme: 1 Mayıs 2023
+  Son Güncelleme: 18 Ocak 2025
 
 SuperDuperAI'ya hoş geldiniz. Hizmetlerimize erişerek veya kullanarak bu Şartlar ve Koşullar'a bağlı olmayı kabul ediyorsunuz. Lütfen bunları dikkatlice okuyun.
+
+## Hizmet Sağlayıcı
+
+Türkiye'deki kullanıcılar için Hizmetler, **SUPER DUPER AI TEKNOLOJI LIMITED SIRKETI** tarafından sağlanmaktadır. Şirketimiz Türkiye'de kayıtlı olup merkezi Antalya Teknokent, Antalya, Türkiye adresinde bulunmaktadır.
+
+Bu Şartlar ve Koşullar'da geçen "SuperDuperAI", "biz", "bize" veya "bizim" ifadeleri, Türkiye'den Hizmetlere erişen kullanıcılar için SUPER DUPER AI TEKNOLOJI LIMITED SIRKETI'ni ifade etmektedir.
+
+Diğer ülkelerdeki kullanıcılar için Hizmetler, Amerika Birleşik Devletleri Delaware eyaletinde kayıtlı SuperDuperAi Corp tarafından sağlanmaktadır. Her bir kuruluş bağımsız olarak faaliyet göstermekte ve kendi bölgesinde sağladığı Hizmetlerden münferiden sorumludur.
 
 ## Şartların Kabulü
 
