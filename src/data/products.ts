@@ -36,6 +36,7 @@ export const products: Product[] = [
     category: "ai",
     status: "new",
     badge: "New",
+    externalUrl: "https://chat.superduperai.co",
     image: "/images/products/chatbot.webp",
   },
   {
