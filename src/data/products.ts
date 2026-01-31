@@ -45,9 +45,9 @@ export const products: Product[] = [
   {
     slug: "face-alarm",
     name: "FaceAlarm",
-    tagline: "Wake up with face detection",
+    tagline: "Face yoga tracker with daily selfie alarm",
     description:
-      "Smart alarm clock that uses face detection to make sure you're actually awake. No more snoozing — the alarm stops only when it sees your face.",
+      "Track your face transformation daily. AI-powered alarm won't turn off until you take a selfie — perfect for face yoga, gua sha, and skincare routines.",
     icon: "alarm",
     category: "utility",
     status: "new",
