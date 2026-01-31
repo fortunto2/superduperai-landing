@@ -1,12 +1,11 @@
 import { Navbar } from "@/components/landing/navbar";
 import { Hero } from "@/components/landing/hero";
-import { Features } from "@/components/landing/features";
-import { HowItWorks } from "@/components/landing/how-it-works";
-import { CaseUseCases } from "@/components/landing/case-use-cases";
-import { CTA } from "@/components/landing/cta";
+import { Products } from "@/components/landing/products";
+import { MobileApps } from "@/components/landing/mobile-apps";
+import { Founder } from "@/components/landing/founder";
+import { Services } from "@/components/landing/services";
+import { CTAGeneric } from "@/components/landing/cta-generic";
 import { Footer } from "@/components/landing/footer";
-import { ApprovedBy } from "@/components/landing/approved-by";
-import { FAQ } from "@/components/landing/faq";
 import { allHomes } from ".contentlayer/generated";
 import {
   generatePageMetadata,
@@ -14,7 +13,6 @@ import {
   HOME_BANNER_PATH,
 } from "@/lib/metadata";
 import { notFound } from "next/navigation";
-import { VideoShowcase } from "@/components/landing/video-showcase";
 
 export async function generateMetadata({
   params,
@@ -64,7 +62,6 @@ export default async function Home({
   try {
     const { locale } = await params;
 
-    // Получение данных из ContentLayer для главной страницы
     const homeData = allHomes.find((home) => home.locale === locale);
 
     if (!homeData) {
@@ -75,17 +72,12 @@ export default async function Home({
       <div className="flex flex-col min-h-screen bg-gradient-to-b from-background to-background/90">
         <Navbar />
         <main className="flex-1">
-          <Hero />
-          <HowItWorks />
-          <Features />
-          <CaseUseCases />
-          <VideoShowcase />
-          <ApprovedBy locale={locale} />
-          <FAQ
-            items={homeData.faq}
-            locale={locale}
-          />
-          <CTA />
+          <Hero ctaHref="/product/video-editor" ctaExternal={false} />
+          <Products />
+          <MobileApps />
+          <Founder />
+          <Services />
+          <CTAGeneric />
         </main>
         <Footer locale={locale} />
       </div>

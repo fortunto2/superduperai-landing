@@ -27,10 +27,22 @@ export const APP_URLS = {
   
   /** API documentation URL */
   API_DOCS_URL: "https://docs.superduperai.co",
-  
+
   /** Twitter URL */
   TWITTER_URL: "https://twitter.com/superduperai",
 
-  EMAIL: "info@superduperai.co"
+  EMAIL: "info@superduperai.co",
 
+  /** Products */
+  PRODUCTS_URL: "/product",
+  VIDEO_EDITOR_URL: "/product/video-editor",
+
+  /** Founder */
+  FOUNDER_URL: "https://rusty.superduperai.co",
+
+  /** Services anchor */
+  SERVICES_ANCHOR: "#services",
+
+  /** KubizBeat */
+  KUBIZBEAT_APP_STORE: "https://apps.apple.com/app/kubizbeat",
 }; 

@@ -9,8 +9,14 @@ import Image from "next/image";
 import { useTranslation } from "@/hooks/use-translation";
 import { useParams } from "next/navigation";
 import { getValidLocale } from "@/lib/get-valid-locale";
+import { default as Link } from "@/components/ui/optimized-link";
 
-export function Hero() {
+interface HeroProps {
+  ctaHref?: string;
+  ctaExternal?: boolean;
+}
+
+export function Hero({ ctaHref, ctaExternal = true }: HeroProps) {
   const params = useParams();
   const locale = getValidLocale(params.locale);
   const { t } = useTranslation(locale);
@@ -79,20 +85,35 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
         >
-          <Button
-            size="lg"
-            className="text-lg px-8 btn-accent"
-            asChild
-          >
-            <a
-              href={APP_URLS.EDITOR_URL}
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-              title={t("hero.cta")}
+          {ctaExternal ? (
+            <Button
+              size="lg"
+              className="text-lg px-8 btn-accent"
+              asChild
             >
-              {t("hero.cta")}
-            </a>
-          </Button>
+              <a
+                href={ctaHref || APP_URLS.EDITOR_URL}
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+                title={t("hero.cta")}
+              >
+                {t("hero.cta")}
+              </a>
+            </Button>
+          ) : (
+            <Button
+              size="lg"
+              className="text-lg px-8 btn-accent"
+              asChild
+            >
+              <Link
+                href={ctaHref || "/product/video-editor"}
+                title={t("hero.cta")}
+              >
+                {t("hero.cta")}
+              </Link>
+            </Button>
+          )}
         </motion.div>
 
         {/* Слайдер со скриншотами */}

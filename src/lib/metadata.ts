@@ -4,7 +4,7 @@ import { i18n } from '@/config/i18n-config';
 import { siteConfig } from '@/config/site';
 
 // Определение типов данных для каждого типа страницы
-export type PageType = 'home' | 'page' | 'tool' | 'case' | 'blog';
+export type PageType = 'home' | 'page' | 'tool' | 'case' | 'blog' | 'product';
 
 // Интерфейс для метаданных страницы
 export interface PageMeta {
@@ -28,7 +28,8 @@ export const GRADIENTS: Record<PageType, [string, string]> = {
   page: ['#4f46e5', '#ec4899'],   // Сине-розовый для статических страниц
   tool: ['#3b82f6', '#8b5cf6'],   // Сине-фиолетовый для инструментов
   case: ['#10b981', '#3b82f6'],   // Зелено-синий для кейсов
-  blog: ['#8b5cf6', '#f43f5e']    // Фиолетово-красный для блога
+  blog: ['#8b5cf6', '#f43f5e'],    // Фиолетово-красный для блога
+  product: ['#f59e0b', '#8b5cf6']  // Amber-purple for products
 };
 
 // Статический баннер для главной страницы

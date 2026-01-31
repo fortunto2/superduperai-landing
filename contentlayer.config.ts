@@ -136,6 +136,32 @@ export const Home = defineDocumentType(() => ({
   },
 }));
 
+// Определение типа документа для продуктов
+export const Product = defineDocumentType(() => ({
+  name: "Product",
+  filePathPattern: "products/**/*.mdx",
+  contentType: "mdx",
+  fields: {
+    title: { type: "string", required: true },
+    description: { type: "string", required: true },
+    date: { type: "date", required: true },
+    slug: { type: "string", required: true },
+    icon: { type: "string", required: false },
+    featured: { type: "boolean", required: false, default: false },
+    appStoreUrl: { type: "string", required: false },
+    externalUrl: { type: "string", required: false },
+    image: { type: "string", required: false },
+    seo: { type: "nested", of: SEO, required: false },
+    locale: { type: "string", required: true },
+  },
+  computedFields: {
+    url: {
+      type: "string",
+      resolve: (doc) => `/product/${doc.slug}`,
+    },
+  },
+}));
+
 // Определение типа документа для блога
 export const Blog = defineDocumentType(() => ({
   name: "Blog",
@@ -159,7 +185,7 @@ export const Blog = defineDocumentType(() => ({
 
 export default makeSource({
   contentDirPath: "src/content",
-  documentTypes: [Tool, Case, Doc, Page, Home, Blog],
+  documentTypes: [Tool, Case, Doc, Page, Home, Blog, Product],
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [

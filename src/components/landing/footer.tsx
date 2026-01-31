@@ -32,7 +32,7 @@ export function Footer({ locale }: { locale: string }) {
   return (
     <footer className="w-full py-12 bg-card/50 border-t border-border/50">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           <div className="space-y-4">
             <h3 className="text-xl font-bold">{t("footer.company")}</h3>
             <div className="text-muted-foreground space-y-2">
@@ -131,6 +131,68 @@ export function Footer({ locale }: { locale: string }) {
 
               {/* Добавляем остальные страницы из PageList компонента прямо здесь */}
               <PageList locale={locale} />
+            </ul>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="text-xl font-bold">{t("marketing.products")}</h3>
+            <ul className="space-y-2 text-muted-foreground">
+              <li>
+                <Link
+                  href="/product/video-editor"
+                  className="hover:text-primary transition-colors duration-300"
+                  title="Video Editor"
+                >
+                  Video Editor
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/product/super-chatbot"
+                  className="hover:text-primary transition-colors duration-300"
+                  title="Super Chatbot"
+                >
+                  Super Chatbot
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/product/kubizbeat"
+                  className="hover:text-primary transition-colors duration-300"
+                  title="KubizBeat"
+                >
+                  KubizBeat
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/product/face-alarm"
+                  className="hover:text-primary transition-colors duration-300"
+                  title="FaceAlarm"
+                >
+                  FaceAlarm
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/product/jaw-harp-synth"
+                  className="hover:text-primary transition-colors duration-300"
+                  title="Jaw Harp Synth"
+                >
+                  Jaw Harp Synth
+                </Link>
+              </li>
+              <li>
+                <a
+                  href={APP_URLS.FOUNDER_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-primary transition-colors duration-300"
+                  title="About the Founder"
+                >
+                  Founder
+                </a>
+              </li>
             </ul>
           </div>
 

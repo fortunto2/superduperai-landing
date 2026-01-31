@@ -61,18 +61,18 @@ export function Navbar() {
             {t("navbar.home")}
           </Link>
           <Link
+            href="/product"
+            className="text-muted-foreground hover:text-accent transition-colors"
+            title={t("navbar.products") + " - SuperDuperAI"}
+          >
+            {t("navbar.products")}
+          </Link>
+          <Link
             href="/about"
             className="text-muted-foreground hover:text-accent transition-colors"
             title={t("navbar.about") + " - SuperDuperAI"}
           >
             {t("navbar.about")}
-          </Link>
-          <Link
-            href="/pricing"
-            className="text-muted-foreground hover:text-accent transition-colors"
-            title={t("navbar.pricing") + " - SuperDuperAI"}
-          >
-            {t("navbar.pricing")}
           </Link>
           <Link
             href="/blog"
@@ -82,11 +82,11 @@ export function Navbar() {
             {t("navbar.blog")}
           </Link>
           <Link
-            href="/tool"
+            href="/#services"
             className="text-muted-foreground hover:text-accent transition-colors"
-            title="Tools - SuperDuperAI"
+            title={t("navbar.services") + " - SuperDuperAI"}
           >
-            Tools
+            {t("navbar.services")}
           </Link>
         </nav>
 
@@ -154,20 +154,20 @@ export function Navbar() {
                 {t("navbar.home")}
               </Link>
               <Link
+                href="/product"
+                className="text-muted-foreground hover:text-accent transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+                title={t("navbar.products") + " - SuperDuperAI"}
+              >
+                {t("navbar.products")}
+              </Link>
+              <Link
                 href="/about"
                 className="text-muted-foreground hover:text-accent transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
                 title={t("navbar.about") + " - SuperDuperAI"}
               >
                 {t("navbar.about")}
-              </Link>
-              <Link
-                href="/pricing"
-                className="text-muted-foreground hover:text-accent transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
-                title={t("navbar.pricing") + " - SuperDuperAI"}
-              >
-                {t("navbar.pricing")}
               </Link>
               <Link
                 href="/blog"
@@ -178,12 +178,12 @@ export function Navbar() {
                 {t("navbar.blog")}
               </Link>
               <Link
-                href="/tool"
+                href="/#services"
                 className="text-muted-foreground hover:text-accent transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
-                title="Tools - SuperDuperAI"
+                title={t("navbar.services") + " - SuperDuperAI"}
               >
-                Tools
+                {t("navbar.services")}
               </Link>
               <Link
                 href="/terms"

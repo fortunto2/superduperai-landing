@@ -34,6 +34,7 @@
     "pages": "Pages",
     "tools": "AI Tools",
     "cases": "Use Cases",
+    "products": "Products",
     "ai_tool_title": "AI tool by SuperDuperAI",
     "ai_case_title": "Case Study by SuperDuperAI",
     "view_all_tools": "View All Tools →",
@@ -82,6 +83,12 @@
     "button": "Start Creating for Free",
     "note": "No credit card required"
   },
+  "ctaGeneric": {
+    "title": "Let's Build Something Super Together",
+    "description": "From AI video creation to intelligent chatbots — explore our products or book a consultation to discuss your project.",
+    "button": "Explore Products",
+    "note": "Or book a free consultation"
+  },
   "navbar": {
     "home": "Home",
     "about": "About",
@@ -89,10 +96,46 @@
     "terms": "Terms",
     "privacy": "Privacy",
     "blog": "Blog",
+    "products": "Products",
+    "services": "Services",
     "start": "Start For Free",
     "menu": "Menu",
     "close_menu": "Close menu",
     "open_menu": "Open menu"
+  },
+  "products": {
+    "section_title": "Our Products",
+    "section_description": "AI-powered tools for creators, businesses, and musicians.",
+    "learn_more": "Learn more",
+    "available_ios": "Available on iOS"
+  },
+  "founder": {
+    "name": "Rustam Akbuzat",
+    "role": "AI Engineer / Multi-Agent Systems",
+    "bio": "Founder of SuperDuperAI, former CTO at Zenpulsar (social analytics), creator of Life2Film (photo-to-video AI). Building AI-powered creative tools that make professional content creation accessible to everyone.",
+    "philosophy": "Purpose over profit. I believe the best technology is the kind that empowers ordinary people to do extraordinary things — without gatekeepers, expensive tools, or years of training.",
+    "cta": "More about Rustam"
+  },
+  "services": {
+    "section_title": "Consulting & Services",
+    "section_description": "Custom AI solutions for your business. From prototype to production.",
+    "ai_agents_title": "AI Agents & Automation",
+    "ai_agents_desc": "Design and deploy multi-agent systems for customer support, content creation, data processing, and business automation.",
+    "rag_title": "RAG & Knowledge Systems",
+    "rag_desc": "Build retrieval-augmented generation systems that give your AI accurate, up-to-date answers from your own data.",
+    "mvp_title": "AI MVP Development",
+    "mvp_desc": "Go from idea to working prototype fast. Full-stack AI product development with Next.js, Python, and cloud infrastructure.",
+    "training_title": "Team Training & Workshops",
+    "training_desc": "Hands-on workshops on prompt engineering, AI integration, and building with LLMs for your engineering team.",
+    "cta": "Book a Consultation"
+  },
+  "mobileApps": {
+    "section_title": "Mobile Apps",
+    "section_description": "AI creativity in your pocket.",
+    "kubizbeat_tagline": "AI-powered music creation for iOS",
+    "kubizbeat_description": "Create beats, melodies, and full tracks with AI assistance. Tap-based interface designed for mobile music production.",
+    "facealarm_tagline": "Smart alarm with face detection",
+    "facealarm_description": "The alarm that makes sure you're actually awake. Uses on-device face detection — stops ringing only when it sees your face."
   },
   "ui": {
     "faq": "FAQ",
