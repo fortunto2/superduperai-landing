@@ -4,8 +4,9 @@ import { motion } from "framer-motion";
 import { useParams } from "next/navigation";
 import { getValidLocale } from "@/lib/get-valid-locale";
 import { useTranslation } from "@/hooks/use-translation";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, FileText } from "lucide-react";
 import { APP_URLS } from "@/lib/constants";
+import { default as Link } from "@/components/ui/optimized-link";
 
 export function Founder() {
   const params = useParams();
@@ -47,15 +48,24 @@ export function Founder() {
                   {t("founder.philosophy")}
                 </p>
 
-                <a
-                  href={APP_URLS.FOUNDER_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-sm text-accent hover:text-accent/80 transition-colors"
-                >
-                  {t("founder.cta")}
-                  <ArrowUpRight className="h-4 w-4" />
-                </a>
+                <div className="flex flex-wrap gap-4">
+                  <Link
+                    href="/about"
+                    className="inline-flex items-center gap-2 text-sm px-4 py-2 rounded-lg border border-accent/30 bg-accent/10 text-accent hover:bg-accent/20 transition-colors"
+                  >
+                    <FileText className="h-4 w-4" />
+                    {t("founder.manifesto")}
+                  </Link>
+                  <a
+                    href={APP_URLS.FOUNDER_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-sm text-accent hover:text-accent/80 transition-colors"
+                  >
+                    {t("founder.cta")}
+                    <ArrowUpRight className="h-4 w-4" />
+                  </a>
+                </div>
               </div>
             </div>
           </motion.div>

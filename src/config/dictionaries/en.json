@@ -85,10 +85,10 @@
     "note": "No credit card required"
   },
   "ctaGeneric": {
-    "title": "Let's Build Something Super Together",
-    "description": "From AI video creation to intelligent chatbots — explore our products or book a consultation to discuss your project.",
+    "title": "Let's Build Products That Change the World",
+    "description": "We're always looking for like-minded people who want to create meaningful products together. Got an idea, a partnership, or just want to talk? Let's connect.",
     "button": "Explore Products",
-    "note": "Or book a free consultation"
+    "note": "Schedule a Call"
   },
   "navbar": {
     "home": "Home",
@@ -115,7 +115,8 @@
     "role": "AI Engineer / Multi-Agent Systems",
     "bio": "Founder of SuperDuperAI and creator of Life2Film (photo-to-video AI). Building AI-powered creative tools that make professional content creation accessible to everyone.",
     "philosophy": "Purpose over profit. I believe the best technology is the kind that empowers ordinary people to do extraordinary things — without gatekeepers, expensive tools, or years of training.",
-    "cta": "More about Rustam"
+    "cta": "More about Rustam",
+    "manifesto": "About & Manifesto"
   },
   "services": {
     "section_title": "Consulting & Services",
