@@ -92,13 +92,14 @@ function ProductPageContent({
   const simple = isSimplePage(slug);
 
   // Determine CTA href and label
-  const ctaHref = productData?.externalUrl || productData?.appStoreUrl;
+  const hasAppStore = productData?.platform?.includes("Android") || productData?.platform?.includes("iOS");
+  const googlePlayUrl = productData?.appStoreUrl;
+  const appStoreComingSoon = productData?.platform?.includes("iOS") && !productData?.appStoreUrl?.includes("apple");
+  const ctaHref = productData?.externalUrl;
   const ctaExternal = !!ctaHref;
-  const ctaLabel = productData?.externalUrl
-    ? `Visit ${productData.name}`
-    : productData?.appStoreUrl
-      ? "Download on App Store"
-      : "Get Started";
+  const ctaLabel = ctaHref
+    ? `Visit ${productData?.name || product.title}`
+    : "Get Started";
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-background to-background/90">
@@ -110,9 +111,11 @@ function ProductPageContent({
             tagline={productData.tagline}
             description={productData.description}
             ctaLabel={ctaLabel}
-            ctaHref={ctaHref}
+            ctaHref={hasAppStore ? undefined : ctaHref}
             ctaExternal={ctaExternal}
             badge={productData.badge}
+            googlePlayUrl={googlePlayUrl}
+            appStoreComingSoon={appStoreComingSoon}
           />
         )}
 
@@ -137,13 +140,15 @@ function ProductPageContent({
           </div>
         </div>
 
-        {!simple && ctaHref && (
+        {!simple && (ctaHref || hasAppStore) && (
           <ProductCTA
             title={`Ready to try ${productData?.name || product.title}?`}
             description={productData?.tagline || product.description}
             ctaLabel={ctaLabel}
             ctaHref={ctaHref}
             ctaExternal={ctaExternal}
+            googlePlayUrl={googlePlayUrl}
+            appStoreComingSoon={appStoreComingSoon}
           />
         )}
       </main>

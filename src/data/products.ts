@@ -51,9 +51,10 @@ export const products: Product[] = [
     icon: "alarm",
     category: "utility",
     status: "new",
-    badge: "iOS App",
-    platform: ["iOS"],
+    badge: "New",
+    platform: ["Android", "iOS"],
     externalUrl: "https://www.face-alarm.com",
+    appStoreUrl: "https://play.google.com/store/apps/details?id=com.facealarm.app",
     image: "/images/products/face-alarm.webp",
   },
   {
