@@ -43,7 +43,8 @@
   "hero": {
     "title": "Turn Vibes into Videos Instantly",
     "description": "Revolutionary AI platform for creating professional videos without skills, equipment, or budget. 10x faster and cheaper.",
-    "cta": "Start Creating for Free"
+    "cta": "Try For Free",
+    "cta_learn_more": "Learn More"
   },
   "features": {
     "section_title": "What Makes SuperDuperAI Super",
@@ -132,10 +133,10 @@
   "mobileApps": {
     "section_title": "Mobile Apps",
     "section_description": "AI creativity in your pocket.",
-    "kubizbeat_tagline": "AI-powered music creation for iOS",
-    "kubizbeat_description": "Create beats, melodies, and full tracks with AI assistance. Tap-based interface designed for mobile music production.",
     "facealarm_tagline": "Smart alarm with face detection",
-    "facealarm_description": "The alarm that makes sure you're actually awake. Uses on-device face detection — stops ringing only when it sees your face."
+    "facealarm_description": "The alarm that makes sure you're actually awake. Uses on-device face detection — stops ringing only when it sees your face.",
+    "jawharp_tagline": "Digital jaw harp (kubyz) for iOS",
+    "jawharp_description": "Virtual jaw harp synthesizer with authentic sound engine, touch controls, and effects. Play traditional instrument sounds on your iPhone."
   },
   "ui": {
     "faq": "FAQ",

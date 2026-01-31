@@ -14,9 +14,10 @@ import { default as Link } from "@/components/ui/optimized-link";
 interface HeroProps {
   ctaHref?: string;
   ctaExternal?: boolean;
+  ctaLabelKey?: string;
 }
 
-export function Hero({ ctaHref, ctaExternal = true }: HeroProps) {
+export function Hero({ ctaHref, ctaExternal = true, ctaLabelKey }: HeroProps) {
   const params = useParams();
   const locale = getValidLocale(params.locale);
   const { t } = useTranslation(locale);
@@ -95,9 +96,9 @@ export function Hero({ ctaHref, ctaExternal = true }: HeroProps) {
                 href={ctaHref || APP_URLS.EDITOR_URL}
                 target="_blank"
                 rel="noopener noreferrer nofollow"
-                title={t("hero.cta")}
+                title={t(ctaLabelKey || "hero.cta")}
               >
-                {t("hero.cta")}
+                {t(ctaLabelKey || "hero.cta")}
               </a>
             </Button>
           ) : (
@@ -108,9 +109,9 @@ export function Hero({ ctaHref, ctaExternal = true }: HeroProps) {
             >
               <Link
                 href={ctaHref || "/product/video-editor"}
-                title={t("hero.cta")}
+                title={t(ctaLabelKey || "hero.cta")}
               >
-                {t("hero.cta")}
+                {t(ctaLabelKey || "hero.cta")}
               </Link>
             </Button>
           )}

@@ -43,6 +43,4 @@ export const APP_URLS = {
   /** Services anchor */
   SERVICES_ANCHOR: "#services",
 
-  /** KubizBeat */
-  KUBIZBEAT_APP_STORE: "https://apps.apple.com/app/kubizbeat",
 }; 

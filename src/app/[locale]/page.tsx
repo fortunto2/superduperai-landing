@@ -72,7 +72,7 @@ export default async function Home({
       <div className="flex flex-col min-h-screen bg-gradient-to-b from-background to-background/90">
         <Navbar />
         <main className="flex-1">
-          <Hero ctaHref="/product/video-editor" ctaExternal={false} />
+          <Hero ctaHref="/product/video-editor" ctaExternal={false} ctaLabelKey="hero.cta_learn_more" />
           <Products />
           <MobileApps />
           <Founder />

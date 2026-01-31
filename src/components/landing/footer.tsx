@@ -157,15 +157,6 @@ export function Footer({ locale }: { locale: string }) {
               </li>
               <li>
                 <Link
-                  href="/product/kubizbeat"
-                  className="hover:text-primary transition-colors duration-300"
-                  title="KubizBeat"
-                >
-                  KubizBeat
-                </Link>
-              </li>
-              <li>
-                <Link
                   href="/product/face-alarm"
                   className="hover:text-primary transition-colors duration-300"
                   title="FaceAlarm"

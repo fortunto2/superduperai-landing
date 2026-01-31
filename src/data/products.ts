@@ -39,19 +39,6 @@ export const products: Product[] = [
     image: "/images/products/chatbot.webp",
   },
   {
-    slug: "kubizbeat",
-    name: "KubizBeat",
-    tagline: "AI music creation on iOS",
-    description:
-      "Create beats, melodies, and full tracks with AI assistance. Tap-based interface designed for mobile music production.",
-    icon: "music",
-    category: "music",
-    status: "new",
-    badge: "iOS App",
-    appStoreUrl: "https://apps.apple.com/app/kubizbeat",
-    image: "/images/products/kubizbeat.webp",
-  },
-  {
     slug: "face-alarm",
     name: "FaceAlarm",
     tagline: "Wake up with face detection",
