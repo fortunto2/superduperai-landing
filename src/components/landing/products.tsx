@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { default as Link } from "@/components/ui/optimized-link";
 import { products } from "@/data/products";
-import { Video, Bot, Music, ArrowRight, Smartphone, AlarmClock } from "lucide-react";
+import { Video, Bot, Music, ArrowRight, AlarmClock } from "lucide-react";
 import { useParams } from "next/navigation";
 import { getValidLocale } from "@/lib/get-valid-locale";
 import { useTranslation } from "@/hooks/use-translation";
@@ -45,7 +45,7 @@ export function Products() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
           {products.map((product, index) => {
             const href =
               product.slug === "video-editor"
@@ -68,13 +68,27 @@ export function Products() {
                     <div className="p-3 rounded-xl bg-accent/10 text-accent">
                       {iconMap[product.icon] || <Video className="h-7 w-7" />}
                     </div>
-                    {product.badge && (
-                      <span
-                        className={`text-xs px-2.5 py-1 rounded-full border ${statusColors[product.status]}`}
-                      >
-                        {product.badge}
-                      </span>
-                    )}
+                    <div className="flex items-center gap-2">
+                      {product.platform && product.platform.length > 0 && (
+                        <div className="flex gap-1">
+                          {product.platform.map((p) => (
+                            <span
+                              key={p}
+                              className="text-[10px] px-2 py-0.5 rounded-full border border-border/50 text-muted-foreground"
+                            >
+                              {p}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                      {product.badge && (
+                        <span
+                          className={`text-xs px-2.5 py-1 rounded-full border ${statusColors[product.status]}`}
+                        >
+                          {product.badge}
+                        </span>
+                      )}
+                    </div>
                   </div>
 
                   <h3 className="text-xl font-bold mb-1 group-hover:text-accent transition-colors">
@@ -91,13 +105,6 @@ export function Products() {
                     <span>{t("products.learn_more")}</span>
                     <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </div>
-
-                  {product.appStoreUrl && (
-                    <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
-                      <Smartphone className="h-3 w-3" />
-                      <span>{t("products.available_ios")}</span>
-                    </div>
-                  )}
                 </Link>
               </motion.div>
             );

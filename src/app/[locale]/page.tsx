@@ -1,7 +1,6 @@
 import { Navbar } from "@/components/landing/navbar";
 import { Hero } from "@/components/landing/hero";
 import { Products } from "@/components/landing/products";
-import { MobileApps } from "@/components/landing/mobile-apps";
 import { Founder } from "@/components/landing/founder";
 import { Services } from "@/components/landing/services";
 import { CTAGeneric } from "@/components/landing/cta-generic";
@@ -74,7 +73,6 @@ export default async function Home({
         <main className="flex-1">
           <Hero ctaHref="/product/video-editor" ctaExternal={false} ctaLabelKey="hero.cta_learn_more" />
           <Products />
-          <MobileApps />
           <Founder />
           <Services />
           <CTAGeneric />

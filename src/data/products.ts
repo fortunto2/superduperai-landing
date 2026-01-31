@@ -7,6 +7,7 @@ export interface Product {
   category: "video" | "ai" | "music" | "utility";
   status: "flagship" | "new" | "beta" | "coming-soon";
   badge?: string;
+  platform?: string[];
   externalUrl?: string;
   appStoreUrl?: string;
   image?: string;
@@ -23,6 +24,7 @@ export const products: Product[] = [
     category: "video",
     status: "flagship",
     badge: "Flagship",
+    platform: ["Web"],
     externalUrl: "https://editor.superduperai.co",
     image: "/images/screens/screen1.webp",
   },
@@ -36,6 +38,7 @@ export const products: Product[] = [
     category: "ai",
     status: "new",
     badge: "New",
+    platform: ["Web"],
     externalUrl: "https://chat.superduperai.co",
     image: "/images/products/chatbot.webp",
   },
@@ -49,6 +52,7 @@ export const products: Product[] = [
     category: "utility",
     status: "new",
     badge: "iOS App",
+    platform: ["iOS"],
     externalUrl: "https://www.face-alarm.com",
     image: "/images/products/face-alarm.webp",
   },
@@ -62,6 +66,7 @@ export const products: Product[] = [
     category: "music",
     status: "beta",
     badge: "Beta",
+    platform: ["iOS"],
     image: "/images/products/jaw-harp.webp",
   },
 ];
