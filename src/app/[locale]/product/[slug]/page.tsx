@@ -134,8 +134,8 @@ function ProductPageContent({
               ctaExternal={ctaExternal}
               badge={productData.badge}
               googlePlayUrl={googlePlayUrl}
-              appStoreUrl={appStoreUrl}
-              appStoreComingSoon={appStoreComingSoon}
+              appStoreUrl={APP_STORE_IDS[slug] ? undefined : appStoreUrl}
+              appStoreComingSoon={APP_STORE_IDS[slug] ? false : appStoreComingSoon}
             />
             {APP_STORE_IDS[slug] && (
               <AppStoreEmbed
