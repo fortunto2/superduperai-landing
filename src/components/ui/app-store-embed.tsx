@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Star, ChevronLeft, ChevronRight } from "lucide-react";
+import { Star, Apple, ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   Carousel,
@@ -153,12 +153,26 @@ export function AppStoreEmbed({
           className="rounded-[22px] shadow-lg"
           unoptimized
         />
-        <div className="flex flex-col items-center sm:items-start gap-1">
+        <div className="flex flex-col items-center sm:items-start gap-2">
           <h3 className="text-2xl font-bold">{app.name}</h3>
           <p className="text-sm text-muted-foreground">{app.developer}</p>
           {app.rating > 0 && (
             <StarRating rating={app.rating} count={app.ratingCount} />
           )}
+          <a
+            href={app.appStoreUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-black hover:bg-gray-800 text-white text-sm font-medium rounded-xl transition-colors mt-2"
+          >
+            <Apple className="w-5 h-5" />
+            <div className="text-left">
+              <div className="text-[10px] opacity-70 leading-none">
+                Download on the
+              </div>
+              <div className="leading-tight font-semibold">App Store</div>
+            </div>
+          </a>
         </div>
       </div>
 
