@@ -20,8 +20,12 @@ const command = args[0] || 'stats';
 const limit = parseInt(args.find(arg => arg.startsWith('--limit='))?.split('=')[1] || '20');
 const sessionId = args.find(arg => arg.startsWith('--delete='))?.split('=')[1];
 
-// Redis connection
-const redisUrl = process.env.REDIS_URL || 'redis://default:cmGE7trsPdzSwSUviLJXrwgVukdXnaL7@redis-10317.c256.us-east-1-2.ec2.redns.redis-cloud.com:10317';
+// Redis connection - requires REDIS_URL environment variable
+const redisUrl = process.env.REDIS_URL;
+if (!redisUrl) {
+  console.error('❌ REDIS_URL environment variable is required');
+  process.exit(1);
+}
 const client = createClient({ url: redisUrl });
 
 async function connectRedis() {
