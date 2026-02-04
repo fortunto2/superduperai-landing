@@ -20,6 +20,8 @@ interface AppData {
 interface AppStoreEmbedProps {
   appId: string;
   country?: string;
+  /** Override screenshots if API doesn't return them yet */
+  screenshots?: string[];
 }
 
 function StarRating({ rating, count }: { rating: number; count: number }) {
@@ -72,7 +74,7 @@ function Skeleton() {
   );
 }
 
-export function AppStoreEmbed({ appId, country = "us" }: AppStoreEmbedProps) {
+export function AppStoreEmbed({ appId, country = "us", screenshots: overrideScreenshots }: AppStoreEmbedProps) {
   const [app, setApp] = useState<AppData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -116,6 +118,9 @@ export function AppStoreEmbed({ appId, country = "us" }: AppStoreEmbedProps) {
   if (loading) return <Skeleton />;
   if (error || !app) return null;
 
+  // Use override screenshots if provided, otherwise use API data
+  const screenshots = overrideScreenshots?.length ? overrideScreenshots : app.screenshots;
+
   return (
     <div className="w-full max-w-2xl mx-auto rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden my-8">
       {/* Header */}
@@ -154,10 +159,10 @@ export function AppStoreEmbed({ appId, country = "us" }: AppStoreEmbedProps) {
       </div>
 
       {/* Screenshots carousel */}
-      {app.screenshots.length > 0 && (
+      {screenshots.length > 0 && (
         <div className="px-6 pb-4">
           <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-border snap-x">
-            {app.screenshots.map((url, i) => (
+            {screenshots.map((url, i) => (
               <Image
                 key={i}
                 src={url}
