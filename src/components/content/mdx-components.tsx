@@ -16,6 +16,7 @@ import { CodeBlock } from '@/components/ui/code-block';
 import { InteractiveAPIDocs } from './interactive-api-docs';
 import { CompanyAddress as CompanyAddressBase, CompanyContact as CompanyContactBase } from '@/components/ui/company-address';
 import { ProductCards } from './product-cards';
+import { AppStoreEmbed } from '@/components/ui/app-store-embed';
 
 // Create components factory that accepts locale
 function createComponents(locale?: string) {
@@ -57,7 +58,8 @@ function createComponents(locale?: string) {
     InteractiveAPIDocs,
     CompanyAddress: () => <CompanyAddressBase locale={locale} />,
     CompanyContact: () => <CompanyContactBase locale={locale} />,
-    ProductCards
+    ProductCards,
+    AppStoreEmbed
   };
 }
 
