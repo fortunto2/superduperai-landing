@@ -93,8 +93,10 @@ function ProductPageContent({
 
   // Determine CTA href and label
   const hasAppStore = productData?.platform?.includes("Android") || productData?.platform?.includes("iOS");
-  const googlePlayUrl = productData?.appStoreUrl;
-  const appStoreComingSoon = productData?.platform?.includes("iOS") && !productData?.appStoreUrl?.includes("apple");
+  const storeUrl = productData?.appStoreUrl;
+  const googlePlayUrl = storeUrl?.includes("play.google.com") ? storeUrl : undefined;
+  const appStoreUrl = storeUrl?.includes("apps.apple.com") ? storeUrl : undefined;
+  const appStoreComingSoon = productData?.platform?.includes("iOS") && !appStoreUrl;
   const ctaHref = productData?.externalUrl;
   const ctaExternal = !!ctaHref;
   const ctaLabel = ctaHref
@@ -115,6 +117,7 @@ function ProductPageContent({
             ctaExternal={ctaExternal}
             badge={productData.badge}
             googlePlayUrl={googlePlayUrl}
+            appStoreUrl={appStoreUrl}
             appStoreComingSoon={appStoreComingSoon}
           />
         )}
@@ -148,6 +151,7 @@ function ProductPageContent({
             ctaHref={ctaHref}
             ctaExternal={ctaExternal}
             googlePlayUrl={googlePlayUrl}
+            appStoreUrl={appStoreUrl}
             appStoreComingSoon={appStoreComingSoon}
           />
         )}

@@ -65,9 +65,10 @@ export const products: Product[] = [
       "Virtual jaw harp (kubyz) synthesizer. Play traditional instrument sounds with modern digital effects on your iPhone.",
     icon: "music",
     category: "music",
-    status: "beta",
-    badge: "Beta",
+    status: "new",
+    badge: "New",
     platform: ["iOS"],
+    appStoreUrl: "https://apps.apple.com/app/jaw-harp-synth/id6758465213",
     image: "/images/products/jaw-harp.webp",
   },
 ];
