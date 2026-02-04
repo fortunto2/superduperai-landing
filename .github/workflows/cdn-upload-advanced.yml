@@ -1,0 +1,88 @@
+name: Build and Upload CDN Static
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL || 'https://api.example.com' }}
+      NEXT_PUBLIC_WS_URL: ${{ secrets.NEXT_PUBLIC_WS_URL || 'wss://api.example.com' }}
+      GOOGLE_TAG_MANAGER_ID: ${{ secrets.GOOGLE_TAG_MANAGER_ID }}
+      NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID: ${{ secrets.GOOGLE_TAG_MANAGER_ID }}
+      CDN_URL: ${{ secrets.CDN_URL || 'https://cdn.example.com' }}
+      NEXT_PUBLIC_CDN_URL: ${{ secrets.CDN_URL || 'https://cdn.example.com' }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+          
+      - name: Cache Next.js build
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.yarn
+            .next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('yarn.lock') }}-${{ hashFiles('src/**/*.{js,jsx,ts,tsx}') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('yarn.lock') }}-
+            ${{ runner.os }}-nextjs-
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Check env variables
+        run: |
+          echo "Environment: NODE_ENV=$NODE_ENV"
+          echo "CDN URL: $CDN_URL"
+          echo "API URL: $NEXT_PUBLIC_API_URL"
+
+      - name: Build frontend
+        run: yarn build
+        env: 
+          NEXT_PUBLIC_CDN_ENABLED: true
+          NEXT_TELEMETRY_DISABLED: 1
+
+      - name: Check if assetPrefix is used
+        run: |
+          if grep -q "$CDN_URL" .next/BUILD_ID; then
+            echo "✓ CDN is properly configured in production build"
+          else
+            echo "⚠️ CDN might not be properly configured. Checking further..."
+            grep -r "$CDN_URL" .next/ || echo "No CDN references found"
+          fi
+
+      - name: Prepare static assets for upload
+        run: |
+          mkdir -p cdn-upload
+          cp -r .next/static cdn-upload/_next/
+          ls -la cdn-upload/_next/static
+
+      - name: Upload static to Cloudflare R2
+        uses: ryand56/r2-upload-action@latest
+        with:
+          r2-account-id: ${{ secrets.R2_ACCOUNT_ID }}
+          r2-access-key-id: ${{ secrets.R2_ACCESS_KEY_ID }}
+          r2-secret-access-key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          r2-bucket: ${{ secrets.R2_BUCKET_NAME }}
+          source-dir: cdn-upload/_next/static
+          destination-dir: _next/static
+          output-file-url: true
+          multipart-concurrent: true
+          
+      - name: Notify success
+        run: |
+          echo "✅ Successfully uploaded static assets to CDN"
+          echo "CDN URL: $CDN_URL/_next/static/" 

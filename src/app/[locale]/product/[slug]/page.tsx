@@ -10,6 +10,22 @@ import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { generatePageMetadata, GRADIENTS } from "@/lib/metadata";
 import { Product } from ".contentlayer/generated";
 import { getProductBySlug } from "@/data/products";
+import { AppStoreEmbed } from "@/components/ui/app-store-embed";
+
+// App Store app IDs for products with iOS apps
+const APP_STORE_IDS: Record<string, { appId: string; screenshots?: string[] }> = {
+  "jaw-harp-synth": {
+    appId: "6758465213",
+    screenshots: [
+      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/92/87/97/928797e7-c6a8-95ac-c039-0d0e66299a9e/Simulator_Screenshot_-_iPhone_17_Pro_Max_-_2026-01-31_at_12.12.28.png/460x0w.webp",
+      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/4c/02/c2/4c02c21e-9219-63d9-f00d-488095708362/Simulator_Screenshot_-_iPhone_17_Pro_Max_-_2026-01-31_at_12.12.33.png/460x0w.webp",
+      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/3d/c9/57/3dc95759-b5d7-4cc2-7be6-8bf412f268a7/Simulator_Screenshot_-_iPhone_17_Pro_Max_-_2026-01-31_at_12.31.55.png/460x0w.webp",
+      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/83/8c/ec/838cec29-07ad-946b-594b-1421dacfceb8/Simulator_Screenshot_-_iPhone_17_Pro_Max_-_2026-01-31_at_12.12.56.png/460x0w.webp",
+      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/13/ae/b8/13aeb850-3498-0c75-4ff6-2c87578a3567/Simulator_Screenshot_-_iPhone_17_Pro_Max_-_2026-01-31_at_12.13.01.png/460x0w.webp",
+      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/b1/f9/6f/b1f96fd7-183e-e0cd-fcdd-cacf91022a90/Simulator_Screenshot_-_iPhone_17_Pro_Max_-_2026-01-31_at_12.12.45.png/460x0w.webp",
+    ],
+  },
+};
 
 export async function generateMetadata({
   params,
@@ -108,18 +124,26 @@ function ProductPageContent({
       <Navbar />
       <main className="flex-1">
         {!simple && productData && (
-          <ProductHero
-            name={productData.name}
-            tagline={productData.tagline}
-            description={productData.description}
-            ctaLabel={ctaLabel}
-            ctaHref={hasAppStore ? undefined : ctaHref}
-            ctaExternal={ctaExternal}
-            badge={productData.badge}
-            googlePlayUrl={googlePlayUrl}
-            appStoreUrl={appStoreUrl}
-            appStoreComingSoon={appStoreComingSoon}
-          />
+          <>
+            <ProductHero
+              name={productData.name}
+              tagline={productData.tagline}
+              description={productData.description}
+              ctaLabel={ctaLabel}
+              ctaHref={hasAppStore ? undefined : ctaHref}
+              ctaExternal={ctaExternal}
+              badge={productData.badge}
+              googlePlayUrl={googlePlayUrl}
+              appStoreUrl={appStoreUrl}
+              appStoreComingSoon={appStoreComingSoon}
+            />
+            {APP_STORE_IDS[slug] && (
+              <AppStoreEmbed
+                appId={APP_STORE_IDS[slug].appId}
+                screenshots={APP_STORE_IDS[slug].screenshots}
+              />
+            )}
+          </>
         )}
 
         <div className="container py-12">

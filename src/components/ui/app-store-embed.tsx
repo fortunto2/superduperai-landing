@@ -1,8 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { Star, Apple } from "lucide-react";
+import { Star, Apple, ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  type CarouselApi,
+} from "@/components/ui/carousel";
+import { cn } from "@/lib/utils";
 
 interface AppData {
   appId: string;
@@ -55,29 +62,33 @@ function StarRating({ rating, count }: { rating: number; count: number }) {
 
 function Skeleton() {
   return (
-    <div className="w-full max-w-2xl mx-auto rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden animate-pulse">
-      <div className="p-6 flex gap-4">
-        <div className="w-[120px] h-[120px] rounded-[22px] bg-muted" />
-        <div className="flex flex-col justify-between py-1 flex-1">
-          <div>
-            <div className="h-6 w-40 bg-muted rounded mb-2" />
-            <div className="h-4 w-24 bg-muted rounded" />
-          </div>
-          <div className="h-10 w-20 bg-muted rounded-full" />
+    <div className="w-full animate-pulse">
+      <div className="flex gap-6 items-center justify-center py-8">
+        <div className="w-[100px] h-[100px] rounded-[22px] bg-muted" />
+        <div className="flex flex-col gap-2">
+          <div className="h-6 w-40 bg-muted rounded" />
+          <div className="h-4 w-24 bg-muted rounded" />
         </div>
       </div>
-      <div className="px-6 pb-6">
-        <div className="h-4 w-full bg-muted rounded mb-2" />
-        <div className="h-4 w-3/4 bg-muted rounded" />
+      <div className="flex gap-4 justify-center pb-8">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="w-[200px] h-[433px] bg-muted rounded-2xl" />
+        ))}
       </div>
     </div>
   );
 }
 
-export function AppStoreEmbed({ appId, country = "us", screenshots: overrideScreenshots }: AppStoreEmbedProps) {
+export function AppStoreEmbed({
+  appId,
+  country = "us",
+  screenshots: overrideScreenshots,
+}: AppStoreEmbedProps) {
   const [app, setApp] = useState<AppData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
 
   useEffect(() => {
     async function fetchData() {
@@ -115,37 +126,44 @@ export function AppStoreEmbed({ appId, country = "us", screenshots: overrideScre
     fetchData();
   }, [appId, country]);
 
+  useEffect(() => {
+    if (!api) return;
+
+    setCurrent(api.selectedScrollSnap());
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap());
+    });
+  }, [api]);
+
   if (loading) return <Skeleton />;
   if (error || !app) return null;
 
-  // Use override screenshots if provided, otherwise use API data
-  const screenshots = overrideScreenshots?.length ? overrideScreenshots : app.screenshots;
+  const screenshots =
+    overrideScreenshots?.length ? overrideScreenshots : app.screenshots;
 
   return (
-    <div className="w-full max-w-2xl mx-auto rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden my-8">
-      {/* Header */}
-      <div className="p-6 flex gap-4">
+    <div className="w-full py-8">
+      {/* App info header */}
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-8 px-4">
         <Image
           src={app.icon}
           alt={app.name}
-          width={120}
-          height={120}
-          className="rounded-[22px] shadow-lg flex-shrink-0"
+          width={100}
+          height={100}
+          className="rounded-[22px] shadow-lg"
           unoptimized
         />
-        <div className="flex flex-col justify-between py-1">
-          <div>
-            <h3 className="text-xl font-semibold">{app.name}</h3>
-            <p className="text-sm text-muted-foreground">{app.developer}</p>
-            {app.rating > 0 && (
-              <StarRating rating={app.rating} count={app.ratingCount} />
-            )}
-          </div>
+        <div className="flex flex-col items-center sm:items-start gap-2">
+          <h3 className="text-2xl font-bold">{app.name}</h3>
+          <p className="text-sm text-muted-foreground">{app.developer}</p>
+          {app.rating > 0 && (
+            <StarRating rating={app.rating} count={app.ratingCount} />
+          )}
           <a
             href={app.appStoreUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-black hover:bg-gray-800 text-white text-sm font-medium rounded-xl transition-colors w-fit"
+            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-black hover:bg-gray-800 text-white text-sm font-medium rounded-xl transition-colors mt-2"
           >
             <Apple className="w-5 h-5" />
             <div className="text-left">
@@ -160,29 +178,78 @@ export function AppStoreEmbed({ appId, country = "us", screenshots: overrideScre
 
       {/* Screenshots carousel */}
       {screenshots.length > 0 && (
-        <div className="px-6 pb-4">
-          <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-border snap-x">
-            {screenshots.map((url, i) => (
-              <Image
+        <div className="relative px-4 md:px-12">
+          <Carousel
+            setApi={setApi}
+            opts={{
+              align: "center",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {screenshots.map((url, i) => (
+                <CarouselItem
+                  key={i}
+                  className="pl-2 md:pl-4 basis-[280px] md:basis-[320px] cursor-pointer"
+                  onClick={() => api?.scrollTo(i)}
+                >
+                  <div
+                    className={cn(
+                      "transition-all duration-300 ease-out",
+                      current === i
+                        ? "scale-100 opacity-100"
+                        : "scale-90 opacity-50"
+                    )}
+                  >
+                    <Image
+                      src={url}
+                      alt={`${app.name} screenshot ${i + 1}`}
+                      width={320}
+                      height={693}
+                      className="rounded-2xl shadow-2xl"
+                      unoptimized
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+
+            {/* Navigation buttons */}
+            <button
+              onClick={() => api?.scrollPrev()}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors"
+              aria-label="Previous screenshot"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            <button
+              onClick={() => api?.scrollNext()}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors"
+              aria-label="Next screenshot"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+          </Carousel>
+
+          {/* Dots indicator */}
+          <div className="flex justify-center gap-2 mt-6">
+            {screenshots.map((_, i) => (
+              <button
                 key={i}
-                src={url}
-                alt={`${app.name} screenshot ${i + 1}`}
-                width={200}
-                height={433}
-                className="rounded-xl flex-shrink-0 shadow-md snap-start"
-                unoptimized
+                onClick={() => api?.scrollTo(i)}
+                className={cn(
+                  "w-2 h-2 rounded-full transition-all",
+                  current === i
+                    ? "bg-white w-6"
+                    : "bg-white/30 hover:bg-white/50"
+                )}
+                aria-label={`Go to screenshot ${i + 1}`}
               />
             ))}
           </div>
         </div>
       )}
-
-      {/* Description */}
-      <div className="px-6 pb-6">
-        <p className="text-sm text-muted-foreground whitespace-pre-line line-clamp-6">
-          {app.description}
-        </p>
-      </div>
     </div>
   );
 }

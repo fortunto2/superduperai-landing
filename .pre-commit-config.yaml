@@ -1,0 +1,62 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-yaml
+        exclude: ^infra/
+      - id: check-added-large-files
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.6
+    hooks:
+      - id: ruff
+        args: [--no-fix]
+        files: ^backend/
+        entry: cd backend && uv run ruff check
+
+  - repo: local
+    hooks:
+      - id: lint
+        name: Run linting
+        entry: cd backend && uv run ruff check
+        language: system
+        pass_filenames: false
+        types: [python]
+        files: ^backend/
+        stages: [pre-commit]
+        
+      # - id: format
+      #   name: Check formatting
+      #   entry: cd backend && uv run ruff format
+      #   language: system
+      #   pass_filenames: false
+      #   types: [python]
+      #   files: ^backend/
+      #   stages: [pre-commit]
+
+      - id: pytest
+        name: Run pytest
+        entry: cd backend && uv run pytest
+        language: system
+        pass_filenames: false
+        types: [python]
+        files: ^backend/
+        stages: [pre-commit]
+
+        
+      - id: eslint
+        name: Run ESLint
+        entry: cd frontend && yarn lint
+        language: system
+        pass_filenames: false
+        types: [javascript, jsx, ts, tsx]
+        files: ^frontend/src/.*\.(js|jsx|ts|tsx)$
+        stages: [pre-commit]
+        
+      # - id: prettier
+      #   name: Check frontend formatting
+      #   entry: cd frontend && yarn prettier --check .
+      #   language: system
+      #   pass_filenames: false
+      #   types: [javascript, jsx, ts, tsx, css, json]
+      #   files: ^frontend/
+      #   stages: [pre-commit]

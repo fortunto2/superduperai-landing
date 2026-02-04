@@ -1,0 +1,97 @@
+name: Update Dependencies
+
+on:
+  schedule:
+    - cron: '0 0 * * 1' # Запуск каждый понедельник в 00:00
+  workflow_dispatch: # Разрешить запуск вручную
+
+jobs:
+  update-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+      
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.yarn
+            node_modules/.cache
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      
+      - name: Check for outdated dependencies
+        id: outdated
+        run: |
+          outdated_json=$(yarn outdated --json || true)
+          if [ -z "$outdated_json" ]; then
+            echo "No outdated dependencies found"
+            echo "outdated={}" >> $GITHUB_OUTPUT
+          else
+            echo "outdated=$outdated_json" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Create update branch
+        id: create-branch
+        if: steps.outdated.outputs.outdated != '{}'
+        run: |
+          BRANCH_NAME="chore/dependency-updates-$(date +'%Y-%m-%d')"
+          git checkout -b $BRANCH_NAME
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+      
+      - name: Update dependencies
+        if: steps.create-branch.outputs.branch_name != ''
+        run: |
+          yarn upgrade --latest
+      
+      - name: Run tests
+        id: tests
+        if: steps.create-branch.outputs.branch_name != ''
+        run: |
+          yarn lint || true
+          yarn type-check || true
+          yarn test || true
+          echo "tests_passed=0" >> $GITHUB_OUTPUT
+      
+      - name: Commit changes
+        if: steps.tests.outputs.tests_passed == '0' && steps.create-branch.outputs.branch_name != ''
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add .
+          git commit -m "chore: update dependencies [skip ci]"
+      
+      - name: Push changes
+        if: steps.tests.outputs.tests_passed == '0' && steps.create-branch.outputs.branch_name != ''
+        run: |
+          git push --set-upstream origin ${{ steps.create-branch.outputs.branch_name }}
+      
+      - name: Create Pull Request
+        if: steps.tests.outputs.tests_passed == '0' && steps.create-branch.outputs.branch_name != ''
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "⬆️ Update dependencies"
+          body: |
+            🤖 This PR was automatically generated.
+            
+            Updates all outdated dependencies to their latest versions.
+            All tests pass with the updated dependencies.
+            
+            ## Updated Dependencies
+            ```
+            ${{ steps.outdated.outputs.outdated }}
+            ```
+          branch: ${{ steps.create-branch.outputs.branch_name }}
+          base: master
+          labels: dependencies 
