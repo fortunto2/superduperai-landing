@@ -69,7 +69,7 @@ export const products: Product[] = [
     badge: "New",
     platform: ["iOS"],
     appStoreUrl: "https://apps.apple.com/app/jaw-harp-synth/id6758465213",
-    image: "/images/products/jaw-harp.webp",
+    image: "/images/products/jaw-harp-icon.jpg",
   },
 ];
 

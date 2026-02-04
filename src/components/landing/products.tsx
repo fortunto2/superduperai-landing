@@ -2,11 +2,12 @@
 
 import { motion } from "framer-motion";
 import { default as Link } from "@/components/ui/optimized-link";
-import { products } from "@/data/products";
+import { products, Product } from "@/data/products";
 import { Video, Bot, Music, ArrowRight, AlarmClock } from "lucide-react";
 import { useParams } from "next/navigation";
 import { getValidLocale } from "@/lib/get-valid-locale";
 import { useTranslation } from "@/hooks/use-translation";
+import Image from "next/image";
 
 const iconMap: Record<string, React.ReactNode> = {
   video: <Video className="h-7 w-7" />,
@@ -21,6 +22,27 @@ const statusColors: Record<string, string> = {
   beta: "bg-amber-500/20 text-amber-400 border-amber-500/30",
   "coming-soon": "bg-muted text-muted-foreground border-border",
 };
+
+function ProductIcon({ product }: { product: Product }) {
+  // Use image if available (e.g. App Store icon)
+  if (product.image) {
+    return (
+      <Image
+        src={product.image}
+        alt={product.name}
+        width={48}
+        height={48}
+        className="rounded-xl"
+      />
+    );
+  }
+  // Fallback to lucide icon
+  return (
+    <div className="p-3 rounded-xl bg-accent/10 text-accent">
+      {iconMap[product.icon] || <Video className="h-7 w-7" />}
+    </div>
+  );
+}
 
 export function Products() {
   const params = useParams();
@@ -65,9 +87,7 @@ export function Products() {
                   className="group relative flex flex-col h-full p-6 rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm hover:border-accent/30 hover:bg-card/80 transition-all duration-300"
                 >
                   <div className="flex items-start justify-between mb-4">
-                    <div className="p-3 rounded-xl bg-accent/10 text-accent">
-                      {iconMap[product.icon] || <Video className="h-7 w-7" />}
-                    </div>
+                    <ProductIcon product={product} />
                     <div className="flex items-center gap-2">
                       {product.platform && product.platform.length > 0 && (
                         <div className="flex gap-1">

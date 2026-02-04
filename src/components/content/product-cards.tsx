@@ -1,8 +1,9 @@
 "use client";
 
-import { products } from "@/data/products";
+import { products, Product } from "@/data/products";
 import { default as Link } from "@/components/ui/optimized-link";
 import { Video, Bot, Music, ArrowRight, AlarmClock } from "lucide-react";
+import Image from "next/image";
 
 const iconMap: Record<string, React.ReactNode> = {
   video: <Video className="h-6 w-6" />,
@@ -18,6 +19,25 @@ const statusColors: Record<string, string> = {
   "coming-soon": "bg-muted text-muted-foreground border-border",
 };
 
+function ProductIcon({ product }: { product: Product }) {
+  if (product.image) {
+    return (
+      <Image
+        src={product.image}
+        alt={product.name}
+        width={40}
+        height={40}
+        className="rounded-lg"
+      />
+    );
+  }
+  return (
+    <div className="p-2.5 rounded-lg bg-accent/10 text-accent">
+      {iconMap[product.icon] || <Video className="h-6 w-6" />}
+    </div>
+  );
+}
+
 export function ProductCards() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8 not-prose">
@@ -31,9 +51,7 @@ export function ProductCards() {
             className="group relative flex flex-col h-full p-5 rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm hover:border-accent/30 hover:bg-card/80 transition-all duration-300 no-underline"
           >
             <div className="flex items-start justify-between mb-3">
-              <div className="p-2.5 rounded-lg bg-accent/10 text-accent">
-                {iconMap[product.icon] || <Video className="h-6 w-6" />}
-              </div>
+              <ProductIcon product={product} />
               <div className="flex items-center gap-2">
                 {product.platform && product.platform.length > 0 && (
                   <div className="flex gap-1">
