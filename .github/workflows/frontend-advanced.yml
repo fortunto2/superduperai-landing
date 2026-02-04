@@ -10,7 +10,7 @@ on:
       - 'src/**'
       - 'public/**'
       - 'package.json'
-      - 'yarn.lock'
+      - 'pnpm-lock.yaml'
       - '.github/workflows/frontend-advanced.yml'
   pull_request:
     branches:
@@ -21,7 +21,7 @@ on:
       - 'src/**'
       - 'public/**'
       - 'package.json'
-      - 'yarn.lock'
+      - 'pnpm-lock.yaml'
   workflow_dispatch:
 
 jobs:
@@ -33,38 +33,43 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'yarn'
+          cache: 'pnpm'
         
       - name: Cache Next.js build
         uses: actions/cache@v4
         with:
           path: |
-            ~/.yarn
+            ~/.pnpm-store
             .next/cache
             node_modules/.cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('yarn.lock') }}-${{ hashFiles('src/**/*.{js,jsx,ts,tsx}') }}
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('src/**/*.{js,jsx,ts,tsx}') }}
           restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('yarn.lock') }}-
+            ${{ runner.os }}-nextjs-${{ hashFiles('pnpm-lock.yaml') }}-
             ${{ runner.os }}-nextjs-
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Lint
-        run: yarn lint
+        run: pnpm lint
         
       - name: Type Check
-        run: yarn type-check
+        run: pnpm type-check
       
       - name: Run Tests
-        run: yarn test || echo "No tests configured"
+        run: pnpm test || echo "No tests configured"
       
       - name: Build
-        run: yarn build
+        run: pnpm build
         env:
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL || 'https://api.example.com' }}
           NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL || 'https://example.com' }} 
@@ -84,14 +89,19 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-        
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          
+
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
         
       - name: Download build artifacts
         uses: actions/download-artifact@v4

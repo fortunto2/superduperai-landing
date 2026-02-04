@@ -10,30 +10,35 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'yarn'
-      
+          cache: 'pnpm'
+
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
           path: |
-            ~/.yarn
+            ~/.pnpm-store
             node_modules/.cache
-          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-pnpm-
       
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
       
       - name: Check for outdated dependencies
         id: outdated
         run: |
-          outdated_json=$(yarn outdated --json || true)
+          outdated_json=$(pnpm outdated --json || true)
           if [ -z "$outdated_json" ]; then
             echo "No outdated dependencies found"
             echo "outdated={}" >> $GITHUB_OUTPUT
@@ -52,15 +57,15 @@ jobs:
       - name: Update dependencies
         if: steps.create-branch.outputs.branch_name != ''
         run: |
-          yarn upgrade --latest
+          pnpm update --latest
       
       - name: Run tests
         id: tests
         if: steps.create-branch.outputs.branch_name != ''
         run: |
-          yarn lint || true
-          yarn type-check || true
-          yarn test || true
+          pnpm lint || true
+          pnpm type-check || true
+          pnpm test || true
           echo "tests_passed=0" >> $GITHUB_OUTPUT
       
       - name: Commit changes

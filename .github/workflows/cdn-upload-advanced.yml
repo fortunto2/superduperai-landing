@@ -23,25 +23,30 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'yarn'
+          cache: 'pnpm'
           
       - name: Cache Next.js build
         uses: actions/cache@v4
         with:
           path: |
-            ~/.yarn
+            ~/.pnpm-store
             .next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('yarn.lock') }}-${{ hashFiles('src/**/*.{js,jsx,ts,tsx}') }}
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('src/**/*.{js,jsx,ts,tsx}') }}
           restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('yarn.lock') }}-
+            ${{ runner.os }}-nextjs-${{ hashFiles('pnpm-lock.yaml') }}-
             ${{ runner.os }}-nextjs-
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Check env variables
         run: |
@@ -50,7 +55,7 @@ jobs:
           echo "API URL: $NEXT_PUBLIC_API_URL"
 
       - name: Build frontend
-        run: yarn build
+        run: pnpm build
         env: 
           NEXT_PUBLIC_CDN_ENABLED: true
           NEXT_TELEMETRY_DISABLED: 1
