@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import PacHubRandomGallery from "@/components/landing/pac-hub-random-gallery";
 
 const GOOGLE_FORM_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSdB5GRFbJYX6D5_HC09-qOuRDEaHjJv20JTTd5zk7SUXZ4CgQ/viewform?embedded=true";
@@ -129,6 +130,8 @@ export default function PacHubPage() {
           </div>
         </Card>
       </section>
+
+      <PacHubRandomGallery />
 
       {/* Registration form */}
       <section id="register" className="border-t border-white/5 py-10">
