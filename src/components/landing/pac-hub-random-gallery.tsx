@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 const GALLERY_IMAGES = [
@@ -25,25 +25,26 @@ function pickRandomSlides(pool: readonly string[], count: number): string[] {
 }
 
 export default function PacHubRandomGallery() {
-  const initialSlides = useMemo(
-    () => pickRandomSlides(GALLERY_IMAGES, SLIDES_TO_SHOW),
-    []
-  );
-  const [slides, setSlides] = useState<string[]>(initialSlides);
+const [slides, setSlides] = useState<string[]>(() =>
+  GALLERY_IMAGES.slice(0, SLIDES_TO_SHOW)
+);
 
-  useEffect(() => {
-    const interval = window.setInterval(() => {
-      setSlides((current) => {
-        let next = pickRandomSlides(GALLERY_IMAGES, SLIDES_TO_SHOW);
-        while (next.join("|") === current.join("|")) {
-          next = pickRandomSlides(GALLERY_IMAGES, SLIDES_TO_SHOW);
-        }
-        return next;
-      });
-    }, ROTATE_MS);
+useEffect(() => {
+  const roll = () => {
+    setSlides((current) => {
+      let next = pickRandomSlides(GALLERY_IMAGES, SLIDES_TO_SHOW);
+      while (next.join("|") === current.join("|")) {
+        next = pickRandomSlides(GALLERY_IMAGES, SLIDES_TO_SHOW);
+      }
+      return next;
+    });
+  };
 
-    return () => window.clearInterval(interval);
-  }, []);
+  roll(); // Start with a random trio after hydration
+  const interval = window.setInterval(roll, ROTATE_MS);
+
+  return () => window.clearInterval(interval);
+}, []);
 
   return (
     <section className="border-t border-white/5 py-10">
