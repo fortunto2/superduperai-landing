@@ -23,8 +23,8 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Пропускаем специальные файлы без изменений
-  if (PUBLIC_FILES.some((file) => pathname === file)) {
+  // Пропускаем специальные файлы и файлы с расширениями (.txt, .xml, .ico и т.д.)
+  if (PUBLIC_FILES.some((file) => pathname === file) || /\.\w{2,5}$/.test(pathname)) {
     return NextResponse.next();
   }
 
