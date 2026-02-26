@@ -6,6 +6,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import { siteConfig } from "@/config/site";
 import CanonicalLink from "@/components/ui/canonical-link";
+import { JsonLd } from "@/components/ui/json-ld";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const jetbrainsMono = JetBrains_Mono({
@@ -59,6 +60,87 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <CanonicalLink />
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "SuperDuperAI",
+            url: "https://superduperai.co",
+            description: siteConfig.description,
+            potentialAction: {
+              "@type": "SearchAction",
+              target: {
+                "@type": "EntryPoint",
+                urlTemplate:
+                  "https://superduperai.co/en/find-file?q={search_term_string}",
+              },
+              "query-input": "required name=search_term_string",
+            },
+          }}
+        />
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: "SuperDuperAi, Corp.",
+            url: "https://superduperai.co",
+            logo: "https://superduperai.co/images/logo.png",
+            description:
+              "Revolutionary AI platform for creating professional videos without skills. Multi-agent AI video creation.",
+            address: {
+              "@type": "PostalAddress",
+              streetAddress: siteConfig.company.address1,
+              addressLocality: "Wilmington",
+              addressRegion: "DE",
+              postalCode: "19806",
+              addressCountry: "US",
+            },
+            contactPoint: {
+              "@type": "ContactPoint",
+              telephone: siteConfig.company.phone,
+              email: siteConfig.company.email,
+              contactType: "customer service",
+            },
+            sameAs: [
+              "https://x.com/superduperaico",
+              "https://www.youtube.com/@SuperDuperAI",
+            ],
+          }}
+        />
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "SuperDuperAI",
+            url: "https://superduperai.co",
+            applicationCategory: "MultimediaApplication",
+            operatingSystem: "Web",
+            description:
+              "Create stunning video stories in minutes. Turn ideas into captivating video stories instantly. Revolutionary AI platform for creating professional videos without skills.",
+            offers: {
+              "@type": "Offer",
+              price: "0",
+              priceCurrency: "USD",
+              description: "Free tier available with premium plans starting at $29/month",
+            },
+            aggregateRating: {
+              "@type": "AggregateRating",
+              ratingValue: "4.8",
+              ratingCount: "2000",
+              bestRating: "5",
+              worstRating: "1",
+            },
+            featureList: [
+              "AI Video Generation",
+              "Multi-Agent Video Creation",
+              "Character Consistency with LORA Training",
+              "4K Resolution Output",
+              "87+ Visual Styles",
+              "Vibe-Based Filmmaking",
+              "Agent-Director Paradigm",
+            ],
+          }}
+        />
       </head>
       <body
         className={`${inter.variable} ${jetbrainsMono.variable} antialiased min-h-screen`}

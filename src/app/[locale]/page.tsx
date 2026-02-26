@@ -12,6 +12,7 @@ import {
   HOME_BANNER_PATH,
 } from "@/lib/metadata";
 import { notFound } from "next/navigation";
+import { JsonLd } from "@/components/ui/json-ld";
 
 export async function generateMetadata({
   params,
@@ -67,8 +68,25 @@ export default async function Home({
       notFound();
     }
 
+    const faqItems = (homeData as unknown as { faq?: { question: string; answer: string }[] }).faq || [];
+    const faqSchema = faqItems.length > 0
+      ? {
+          "@context": "https://schema.org" as const,
+          "@type": "FAQPage" as const,
+          mainEntity: faqItems.map((item) => ({
+            "@type": "Question" as const,
+            name: item.question,
+            acceptedAnswer: {
+              "@type": "Answer" as const,
+              text: item.answer,
+            },
+          })),
+        }
+      : null;
+
     return (
       <div className="flex flex-col min-h-screen bg-gradient-to-b from-background to-background/90">
+        {faqSchema && <JsonLd data={faqSchema} />}
         <Navbar />
         <main className="flex-1">
           <Hero ctaHref="/product/video-editor" ctaExternal={false} ctaLabelKey="hero.cta_learn_more" />
