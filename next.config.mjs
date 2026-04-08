@@ -57,6 +57,27 @@ const nextConfig = {
          destination: '/:path+',
          permanent: true, // 301
        },
+       // Disabled products — redirect to homepage
+       {
+         source: '/:locale/editor/:path*',
+         destination: '/',
+         permanent: false, // 302 (temporary, will bring back)
+       },
+       {
+         source: '/editor/:path*',
+         destination: '/',
+         permanent: false,
+       },
+       {
+         source: '/:locale/chat/:path*',
+         destination: '/',
+         permanent: false,
+       },
+       {
+         source: '/chat/:path*',
+         destination: '/',
+         permanent: false,
+       },
      ];
    },
   // Настройки для Cloudflare
