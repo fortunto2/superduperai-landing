@@ -109,8 +109,12 @@ function ProductPageContent({
 
   // Determine CTA href and label
   const hasAppStore = productData?.platform?.includes("Android") || productData?.platform?.includes("iOS");
+  // A product can be on both stores, so the two live in their own fields. The URL sniffing
+  // stays as a fallback for entries that still carry a Play link in the legacy appStoreUrl —
+  // guessing the store from the URL is what hid FaceAlarm's App Store button until now.
   const storeUrl = productData?.appStoreUrl;
-  const googlePlayUrl = storeUrl?.includes("play.google.com") ? storeUrl : undefined;
+  const googlePlayUrl =
+    productData?.playStoreUrl ?? (storeUrl?.includes("play.google.com") ? storeUrl : undefined);
   const appStoreUrl = storeUrl?.includes("apps.apple.com") ? storeUrl : undefined;
   const appStoreComingSoon = productData?.platform?.includes("iOS") && !appStoreUrl;
   const ctaHref = productData?.externalUrl;

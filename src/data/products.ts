@@ -10,6 +10,7 @@ export interface Product {
   platform?: string[];
   externalUrl?: string;
   appStoreUrl?: string;
+  playStoreUrl?: string;
   image?: string;
 }
 
@@ -54,7 +55,8 @@ export const products: Product[] = [
     badge: "New",
     platform: ["Android", "iOS"],
     externalUrl: "https://www.face-alarm.com",
-    appStoreUrl: "https://play.google.com/store/apps/details?id=com.facealarm.app",
+    appStoreUrl: "https://apps.apple.com/app/facealarm-face-yoga-tracker/id6758454962",
+    playStoreUrl: "https://play.google.com/store/apps/details?id=com.facealarm.app",
     image: "/images/products/face-alarm.webp",
   },
   {
