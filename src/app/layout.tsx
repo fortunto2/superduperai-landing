@@ -1,6 +1,7 @@
 import "@/app/globals.css";
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
+import Script from "next/script";
 import AnalyticsProviders from "@/components/ui/analytics-providers";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
@@ -147,6 +148,21 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         {children}
+        {/*
+          Our own counter. No cookie and no client-side id at all — the anonymous id is derived
+          at the edge and rotates daily — so it adds nothing to the consent question the
+          providers below already raise. It exists so this landing and the iOS apps of the same
+          products can be compared in one query instead of three dashboards that never agree.
+          It wraps history.pushState, so App Router navigations count as page views.
+          Source: https://github.com/fortunto2/superduper-analytics
+        */}
+        {process.env.NODE_ENV === "production" && (
+          <Script
+            src="https://analytics.superduperai.co/sda.js"
+            data-source="superduperai"
+            strategy="afterInteractive"
+          />
+        )}
         <AnalyticsProviders />
         <SpeedInsights />
         <Analytics />
