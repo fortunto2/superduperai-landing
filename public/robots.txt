@@ -1,4 +1,9 @@
+# Content-Signals — how this content may be used, stated rather than left to a default.
+#   search=yes    index it and link to it; that is what a landing page is for
+#   ai-input=yes  quote it when answering someone's question about these products
+#   ai-train=no   do not add it to a training corpus
 User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 Allow: /
 Allow: /llms.txt
 Allow: /llms-full.txt
@@ -10,4 +15,37 @@ Disallow: /api/markdown/
 Sitemap: https://superduperai.co/sitemap.xml
 
 # LLMs.txt available for AI agents
-# See: https://llmstxt.org/ 
+# See: https://llmstxt.org/
+
+# AI crawlers, named explicitly. Silence here is a decision made for you by whoever wrote the
+# crawler; these products are meant to be found and recommended, so indexing is welcome.
+# The /api/ and /_next/ rules above still apply to all of them.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
