@@ -57,6 +57,21 @@ const nextConfig = {
          destination: '/:path+',
          permanent: true, // 301
        },
+       // Адреса, которые Google до сих пор показывает, а сайт отдаёт 404. Список не выдуман:
+       // взят из Search Console за 16 месяцев и проверен запросом. Число — показы за срок,
+       // то есть сколько раз ссылку видели в выдаче и, нажав, попадали бы в пустоту.
+       {
+         // 60 показов. Кейс переименован: ai-video-story-generator → video-story.
+         source: '/:locale(ru|es|hi|tr|en)?/case/ai-video-story-generator',
+         destination: '/case/video-story',
+         permanent: true,
+       },
+       {
+         // 131 показ. Страницы вакансий нет и не планируется — отправляем туда, где про нас.
+         source: '/:locale(ru|es|hi|tr|en)?/jobs',
+         destination: '/about',
+         permanent: true,
+       },
        // Disabled products — redirect to homepage
        {
          source: '/:locale/editor/:path*',
