@@ -12,6 +12,21 @@
     },
     "headers": [
         {
+            "source": "/(.*)",
+            "has": [
+                {
+                    "type": "host",
+                    "value": "old.superduperai.co"
+                }
+            ],
+            "headers": [
+                {
+                    "key": "X-Robots-Tag",
+                    "value": "noindex, nofollow"
+                }
+            ]
+        },
+        {
             "source": "/api/(.*)",
             "headers": [
                 {
